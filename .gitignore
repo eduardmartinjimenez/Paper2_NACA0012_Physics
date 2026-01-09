@@ -1,3 +1,4 @@
+### Ignorar todo menos Python_scripts
 # Track only the Python scripts in Python_scripts/
 
 # Ignore everything by default
