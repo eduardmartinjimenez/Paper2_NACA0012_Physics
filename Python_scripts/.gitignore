@@ -1,0 +1,29 @@
+# Ignore common Python build and cache artifacts inside Python_scripts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Tools caches
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+.cache/
+
+# Editors and OS files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs and build dirs
+*.log
+build/
+dist/

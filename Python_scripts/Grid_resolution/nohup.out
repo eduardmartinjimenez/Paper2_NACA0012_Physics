@@ -1,0 +1,749 @@
+nohup: ignoring input
+nohup: ignoring input
+Found 104 snapshot files in /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/
+Mesh file exists! /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/temporal_last_snapshot/3d_NACA0012_Re50000_AoA5-CROP-MESH.h5
+Average data file exists! /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/temporal_last_snapshot/3d_NACA0012_Re50000_AoA5_avg_22640000-COMP-DATA.h5
+Loading compressed mesh from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/temporal_last_snapshot/3d_NACA0012_Re50000_AoA5-CROP-MESH.h5
+Compressed mesh shape: (130, 1586, 1620)
+Loading averaged snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/temporal_last_snapshot/3d_NACA0012_Re50000_AoA5_avg_22640000-COMP-DATA.h5
+Loaded mean velocity fields from snapshot
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7020000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7020000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 1.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7040000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7040000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 2.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7060000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7060000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 3.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7080000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7080000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 4.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7100000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7100000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 5.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7120000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7120000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 6.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7140000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7140000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 7.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7160000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7160000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 8.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7180000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7180000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 9.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7200000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7200000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 10.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7220000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7220000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 11.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7240000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7240000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 12.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7260000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7260000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 13.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7280000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7280000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 14.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7300000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7300000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 15.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7320000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7320000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 16.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7340000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7340000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 17.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7360000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7360000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 18.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7380000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7380000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 19.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7400000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7400000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 20.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7420000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7420000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 21.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7440000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7440000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 22.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7460000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7460000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 23.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7480000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7480000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 24.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7500000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7500000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 25.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7520000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7520000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 26.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7540000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7540000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 27.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7560000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7560000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 28.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7580000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7580000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 29.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7600000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7600000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 30.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7620000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7620000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 31.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7640000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7640000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 32.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7660000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7660000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 33.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7680000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7680000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 34.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7700000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7700000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 35.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7720000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7720000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 36.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7740000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7740000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 37.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7760000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7760000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 38.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7780000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7780000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 39.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7800000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7800000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 40.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7820000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7820000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 41.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7840000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7840000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 42.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7860000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7860000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 43.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7880000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7880000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 44.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7900000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7900000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 45.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7920000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7920000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 46.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7940000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7940000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 47.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7960000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7960000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 48.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7980000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_7980000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 49.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8000000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8000000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 50.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8020000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8020000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 51.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8040000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8040000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 52.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8060000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8060000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 53.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8080000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8080000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 54.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8100000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8100000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 55.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8120000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8120000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 56.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8140000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8140000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 57.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8160000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8160000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 58.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8180000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8180000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 59.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8200000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8200000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 60.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8220000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8220000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 61.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8240000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8240000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 62.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8260000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8260000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 63.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8280000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8280000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 64.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8300000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8300000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 65.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8320000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8320000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 66.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8340000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8340000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 67.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8360000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8360000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 68.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8380000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8380000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 69.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8400000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8400000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 70.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8420000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8420000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 71.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8440000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8440000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 72.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8460000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8460000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 73.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8480000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8480000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 74.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8500000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8500000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 75.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8520000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8520000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 76.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8540000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8540000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 77.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8560000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8560000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 78.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8580000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8580000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 79.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8600000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8600000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 80.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8620000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8620000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 81.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8640000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8640000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 82.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8660000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8660000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 83.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8680000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8680000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 84.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8700000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8700000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 85.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8720000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8720000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 86.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8740000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8740000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 87.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8760000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8760000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 88.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8780000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8780000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 89.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8800000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8800000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 90.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8820000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8820000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 91.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8840000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8840000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 92.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8860000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8860000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 93.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8880000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8880000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 94.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8900000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8900000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 95.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8920000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8920000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 96.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8940000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8940000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 97.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8960000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8960000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 98.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8980000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_8980000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 99.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_9000000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_9000000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 100.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_9020000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_9020000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 101.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_9040000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_9040000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 102.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_9060000-COMP-DATA.h5
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_9060000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 103.
+Processing file: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_9080000-COMP-DATA.h5
+/home/jofre/Members/Eduard/Paper2/Python_scripts/Grid_resolution/compute_strain_rate_tensor.py:196: RuntimeWarning: divide by zero encountered in divide
+  eta = (nu_ref**3 / epsilon_prime) ** (1 / 4)
+/home/jofre/Members/Eduard/Paper2/Python_scripts/Grid_resolution/compute_strain_rate_tensor.py:200: RuntimeWarning: divide by zero encountered in divide
+  tau_eta = (nu_ref / epsilon_prime) ** (1 / 2)
+Loading snapshot from: /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_30296325/3d_NACA0012_Re50000_AoA5_9080000-COMP-DATA.h5
+Loaded instantaneous velocity fields for snapshot.
+Computed fluctuating velocity components.
+Computed velocity gradients.
+Computed Sij_Sij for current snapshot.
+Finished processing snapshot 104.
+Computed mean Sij_Sij from 104 snapshots.
+Saved Sij_Sij_temporal_avg to /home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/3d_NACA0012_Re50000_AoA5_strain_rate_tensor_batch_30296325.h5
+Mean dissipation rate (epsilon_prime) shape: (1584, 1618)
+Mean Kolmogorov length scale (eta) shape: (1584, 1618)
+Mean Kolmogorov time scale (tau_eta) shape: (1584, 1618)
+Minimum Kolmogorov time scale in domain: 2.685e-03 s
+Minimum tau_eta at location: (np.int64(623), np.int64(963))
+Loaded Sij_Sij_temporal_avg from saved file for verification.

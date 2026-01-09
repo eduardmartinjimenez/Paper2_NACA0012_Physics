@@ -1,0 +1,12 @@
+# Track only the Python scripts in Python_scripts/
+
+# Ignore everything by default
+*
+
+# Allow repo files and Python_scripts content
+!.gitignore
+!Python_scripts/
+!Python_scripts/**
+
+# Optionally allow a README or other docs at root
+!README.md
