@@ -47,6 +47,7 @@ class CompressedSnapshotLoader:
         """
         Load a compressed snapshot file and return the fields as 1D arrays.
         Averages are loaded only if present in the file.
+        Handles both naming conventions: avg_u_compressed and u_avg_compressed.
         """
         if not os.path.exists(snapshot_file_path):
             raise FileNotFoundError(f"Snapshot file not found: {snapshot_file_path}")
@@ -58,22 +59,54 @@ class CompressedSnapshotLoader:
             w = f["w_compressed"][:]
             p = f["p_compressed"][:]
 
-            avg_u = f["avg_u_compressed"][:] 
-            avg_v = f["avg_v_compressed"][:] 
-            avg_w = f["avg_w_compressed"][:] 
-            avg_p = f["avg_p_compressed"][:] 
+            # Handle both naming conventions for averaged fields
+            if "avg_u_compressed" in f.keys():
+                avg_u = f["avg_u_compressed"][:]
+            elif "u_avg_compressed" in f.keys():
+                avg_u = f["u_avg_compressed"][:]
+            else:
+                avg_u = None
+                
+            if "avg_v_compressed" in f.keys():
+                avg_v = f["avg_v_compressed"][:]
+            elif "v_avg_compressed" in f.keys():
+                avg_v = f["v_avg_compressed"][:]
+            else:
+                avg_v = None
+                
+            if "avg_w_compressed" in f.keys():
+                avg_w = f["avg_w_compressed"][:]
+            elif "w_avg_compressed" in f.keys():
+                avg_w = f["w_avg_compressed"][:]
+            else:
+                avg_w = None
+                
+            if "avg_p_compressed" in f.keys():
+                avg_p = f["avg_p_compressed"][:]
+            elif "p_avg_compressed" in f.keys():
+                avg_p = f["p_avg_compressed"][:]
+            else:
+                avg_p = None
         
-        return {
+        result = {
             "u": u,
             "v": v,
             "w": w,
             "p": p,
-            "avg_u": avg_u,
-            "avg_v": avg_v,
-            "avg_w": avg_w,
-            "avg_p": avg_p,
             "topo": self.topo
         }
+        
+        # Only add averages if they were found
+        if avg_u is not None:
+            result["avg_u"] = avg_u
+        if avg_v is not None:
+            result["avg_v"] = avg_v
+        if avg_w is not None:
+            result["avg_w"] = avg_w
+        if avg_p is not None:
+            result["avg_p"] = avg_p
+        
+        return result
 
     def get_coordinates(self):
         """

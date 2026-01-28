@@ -5,8 +5,8 @@ import gc
 
 # Define file path and name
 
-FILE_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/temporal_last_snapshot/Not_last/Q_iso_surface_figure/"
-FILE_BASENAME = "3d_NACA0012_Re50000_AoA5_U"
+FILE_PATH = "/gpfs/scratch/upc108/EDU/NACA_0012_AOA12_Re50000_1716x1662x128/slices_data/slice_test/compressed_slices/"
+FILE_BASENAME = "slice_1"
 
 # REDUCED_TOPOLOGY_PATH = os.path.join(INPUT_BASE_PATH, INPUT_BASENAME+"-reduced-topology.h5")
 # INPUT_REDUCED_DATA_PATH = os.path.join(INPUT_BASE_PATH, INPUT_BASENAME+"_"+INPUT_REDUCED_DATA_INST+"-reduced-data.h5")
@@ -94,6 +94,18 @@ def save_xdmf(inst, data_shape):
     f.write("\n")
     f.write(f"      </Geometry>")
     f.write("\n")
+    f.write(f"      <Attribute Name='tag_IBM' AttributeType='Scalar' Center='Node'>")
+    f.write("\n")
+    f.write(
+        f"        <DataItem Dimensions='{shape}' NumberType='Float' Precision='8' Format='HDF'>"
+    )
+    f.write("\n")
+    f.write(f"            {mesh_source_file}:/tag_IBM")
+    f.write("\n")
+    f.write(f"        </DataItem>")
+    f.write("\n")
+    f.write(f"      </Attribute>")
+    f.write("\n")
     f.write(f"      <Attribute Name='u' AttributeType='Scalar' Center='Node'>")
     f.write("\n")
     f.write(
@@ -130,11 +142,72 @@ def save_xdmf(inst, data_shape):
     f.write("\n")
     f.write(f"      </Attribute>")
     f.write("\n")
+    f.write(f"      <Attribute Name='P' AttributeType='Scalar' Center='Node'>")
+    f.write("\n")
+    f.write(
+        f"        <DataItem Dimensions='{shape}' NumberType='Float' Precision='8' Format='HDF'>"
+    )
+    f.write("\n")
+    f.write(f"            {data_source_file}:/p")
+    f.write("\n")
+    f.write(f"        </DataItem>")
+    f.write("\n")
+    f.write(f"      </Attribute>")
+    f.write("\n")
+    f.write(f"      <Attribute Name='avg_u' AttributeType='Scalar' Center='Node'>")
+    f.write("\n")
+    f.write(
+        f"        <DataItem Dimensions='{shape}' NumberType='Float' Precision='8' Format='HDF'>"
+    )
+    f.write("\n")
+    f.write(f"            {data_source_file}:/avg_u")
+    f.write("\n")
+    f.write(f"        </DataItem>")
+    f.write("\n")
+    f.write(f"      </Attribute>")
+    f.write("\n")
+    f.write(f"      <Attribute Name='avg_v' AttributeType='Scalar' Center='Node'>")
+    f.write("\n")
+    f.write(
+        f"        <DataItem Dimensions='{shape}' NumberType='Float' Precision='8' Format='HDF'>"
+    )
+    f.write("\n")
+    f.write(f"            {data_source_file}:/avg_v")
+    f.write("\n")
+    f.write(f"        </DataItem>")
+    f.write("\n")
+    f.write(f"      </Attribute>")
+    f.write("\n")
+    f.write(f"      <Attribute Name='avg_w' AttributeType='Scalar' Center='Node'>")
+    f.write("\n")
+    f.write(
+        f"        <DataItem Dimensions='{shape}' NumberType='Float' Precision='8' Format='HDF'>"
+    )
+    f.write("\n")
+    f.write(f"            {data_source_file}:/avg_w")
+    f.write("\n")
+    f.write(f"        </DataItem>")
+    f.write("\n")
+    f.write(f"      </Attribute>")
+    f.write("\n")
+    f.write(f"      <Attribute Name='avg_P' AttributeType='Scalar' Center='Node'>")
+    f.write("\n")
+    f.write(
+        f"        <DataItem Dimensions='{shape}' NumberType='Float' Precision='8' Format='HDF'>"
+    )
+    f.write("\n")
+    f.write(f"            {data_source_file}:/avg_P")
+    f.write("\n")
+    f.write(f"        </DataItem>")
+    f.write("\n")
+    f.write(f"      </Attribute>")
+    f.write("\n")
     f.write(f"    </Grid>")
     f.write("\n")
     f.write(f"  </Domain>")
     f.write("\n")
     f.write(f"</Xdmf>")
+
 
     f.close()
 
@@ -157,7 +230,11 @@ if __name__ == "__main__":
     x = mesh["x"][:, :, :]
     y = mesh["y"][:, :, :]
     z = mesh["z"][:, :, :]
+    tag_ibm = mesh["tag_IBM"][:, :, :]
     compressed_topo = mesh["compressed_topology"][:]
+
+    del tag_ibm
+    gc.collect()
 
     mesh.close()
     gc.collect()
@@ -178,6 +255,7 @@ if __name__ == "__main__":
         u_compressed = data_file["u_compressed"][:]
         v_compressed = data_file["v_compressed"][:]
         w_compressed = data_file["w_compressed"][:]
+        p_compressed = data_file["p_compressed"][:]
 
         data_file.close()
         del data_file
@@ -186,13 +264,15 @@ if __name__ == "__main__":
         u = np.full_like(x, np.nan)
         v = np.full_like(x, np.nan)
         w = np.full_like(x, np.nan)
+        p = np.full_like(x, np.nan)
 
         # Extracting compressed data to expanded fields
         extract_compressed_data(u, u_compressed, compressed_topo)
         extract_compressed_data(v, v_compressed, compressed_topo)
         extract_compressed_data(w, w_compressed, compressed_topo)
+        extract_compressed_data(p, p_compressed, compressed_topo)
 
-        del u_compressed, v_compressed, w_compressed
+        del u_compressed, v_compressed, w_compressed, p_compressed
         gc.collect()
 
         # Saving expanded fields
@@ -205,8 +285,9 @@ if __name__ == "__main__":
         output_file.create_dataset("u", data=u, dtype="float32")
         output_file.create_dataset("v", data=v, dtype="float32")
         output_file.create_dataset("w", data=w, dtype="float32")
+        output_file.create_dataset("p", data=p, dtype="float32")
 
-        del u, v, w
+        del u, v, w, p
 
         gc.collect()
 

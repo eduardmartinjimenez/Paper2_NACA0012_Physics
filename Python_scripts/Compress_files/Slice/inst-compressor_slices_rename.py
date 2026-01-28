@@ -4,22 +4,21 @@ import numpy as np
 import gc
 
 # Define input file path and base name
-INPUT_FILE_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/temporal_last_snapshot/Not_last/"
-INPUT_FILE_BASENAME = "3d_ibm_stl_naca0012_1916_1988_128_aoa5_Re50000"
+INPUT_FILE_PATH = "/home/jofre/Members/George/Simulations/NACA_0012_AOA5_Re10000_502x443x64/slices_data/slice_5/"
+INPUT_FILE_BASENAME = "slice_5_output"
 
 # Define ouput folder path
-OUTPUT_FILE_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/temporal_last_snapshot/Not_last/Q_iso_surface_figure/"
-
+OUTPUT_FILE_PATH = "/home/jofre/Members/George/Simulations/NACA_0012_AOA5_Re10000_502x443x64/slices_data/slice_5_compr/"
 # Rename ONLY the output files. If None, it uses INPUT_FILE_BASENAME.
-OUTPUT_FILE_BASENAME = "3d_NACA0012_Re50000_AoA5_U"
+OUTPUT_FILE_BASENAME = "slice_5"
 
 # Define crop region:
-X_MIN = -0.2
-Y_MIN = -0.1
+X_MIN = -0.5
+Y_MIN = 0.0
 Z_MIN = -1.0
 
-X_MAX = 1.5
-Y_MAX = 0.3
+X_MAX = 8.0
+Y_MAX = 1.0
 Z_MAX = 1.0
 
 def read_instants():
@@ -175,11 +174,11 @@ if __name__ == "__main__":
         w_cropped = crop_3d_by_physical_coords(
             w_data, coords_array, min_coords, max_coords
         )
-        # p_cropped = crop_3d_by_physical_coords(
-        #     p_data, coords_array, min_coords, max_coords
-        # )
+        p_cropped = crop_3d_by_physical_coords(
+            p_data, coords_array, min_coords, max_coords
+        )
 
-        del x_data, y_data, z_data, coords_array, u_data, v_data, w_data
+        del x_data, y_data, z_data, coords_array, u_data, v_data, w_data, p_data
         gc.collect()
 
         ### Compressing data by removing solid points tag_ibm==1
@@ -188,9 +187,9 @@ if __name__ == "__main__":
         u_compressed, compressed_topo = compress_3d_array(u_cropped, mask)
         v_compressed, _ = compress_3d_array(v_cropped, mask)
         w_compressed, _ = compress_3d_array(w_cropped, mask)
-        # p_compressed, _ = compress_3d_array(p_cropped, mask)
+        p_compressed, _ = compress_3d_array(p_cropped, mask)
 
-        del u_cropped, v_cropped, w_cropped, mask
+        del u_cropped, v_cropped, w_cropped, p_cropped, mask
         gc.collect()
 
         ### Saving compressed mesh and topology (only the first file).
@@ -204,13 +203,13 @@ if __name__ == "__main__":
             output_file.create_dataset("x", data=x_cropped, dtype="float32")
             output_file.create_dataset("y", data=y_cropped, dtype="float32")
             output_file.create_dataset("z", data=z_cropped, dtype="float32")
-            #output_file.create_dataset("tag_IBM", data=tag_ibm_cropped, dtype="float32")
+            output_file.create_dataset("tag_IBM", data=tag_ibm_cropped, dtype="float32")
             output_file.create_dataset(
                 "compressed_topology", data=compressed_topo, dtype="int"
             )
             output_file.close()
 
-        del x_cropped, y_cropped, z_cropped, compressed_topo
+        del x_cropped, y_cropped, z_cropped, tag_ibm_cropped, compressed_topo
         gc.collect()
 
         ### Saving compressed data.
@@ -223,8 +222,8 @@ if __name__ == "__main__":
         output_file.create_dataset("u_compressed", data=u_compressed, dtype="float32")
         output_file.create_dataset("v_compressed", data=v_compressed, dtype="float32")
         output_file.create_dataset("w_compressed", data=w_compressed, dtype="float32")
-        #output_file.create_dataset("p_compressed", data=p_compressed, dtype="float32")
+        output_file.create_dataset("p_compressed", data=p_compressed, dtype="float32")
         output_file.close()
 
-        del u_compressed, v_compressed, w_compressed
+        del u_compressed, v_compressed, w_compressed, p_compressed
         gc.collect()

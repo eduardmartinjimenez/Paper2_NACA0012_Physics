@@ -31,32 +31,23 @@ if rank == 0:
 
 # Output data path
 OUTPUT_DATA_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/"
-OUTPUT_DATA_NAME = "AoA5_Re50000_velocity_RMS_profiles_data_mpi.h5"
-#OUTPUT_DATA_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/Test/Mean_data/"
-#OUTPUT_DATA_NAME = "AoA5_Re10000_velocity_RMS_profiles_data_mpi.h5"
+OUTPUT_DATA_NAME = "AoA5_Re50000_velocity_RMS_profiles_data_mpi_3_all.h5"
 OUTPUT_DATA_FILE = os.path.join(OUTPUT_DATA_PATH, OUTPUT_DATA_NAME)
 
 # Paths
 GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Geometrical_data/"
 GEO_NAME = "3d_NACA0012_Re50000_AoA5_Geometrical_Data.h5"
-#GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/Test/Geometrical_data"
-#GEO_NAME = "3d_NACA0012_Test_Geometrical_Data.h5"
 GEO_FILE = os.path.join(GEO_PATH, GEO_NAME)
 
 MESH_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Geometrical_data/"
 MESH_NAME = "3d_NACA0012_Re50000_AoA5-CROP-MESH.h5"
-#MESH_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/Test/"
-#MESH_NAME = "3d_NACA0012_Re10000_AoA5-CROP-MESH.h5"
 MESH_FILE = os.path.join(MESH_PATH, MESH_NAME)
 
-SNAPSHOT_PATH_AVG = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/temporal_last_snapshot/"
-SNAPSHOT_NAME_AVG = "3d_NACA0012_Re50000_AoA5_avg_24280000-COMP-DATA.h5"
-#SNAPSHOT_PATH_AVG = "/home/jofre/Members/Eduard/Paper2/Simulations/Test/"
-#SNAPSHOT_NAME_AVG = "3d_NACA0012_Re10000_AoA5_avg_1620000-COMP-DATA.h5"
-SNAPSHOT_FILE_AVG = os.path.join(SNAPSHOT_PATH_AVG, SNAPSHOT_NAME_AVG)
+# SNAPSHOT_PATH_AVG = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/temporal_last_snapshot/"
+# SNAPSHOT_NAME_AVG = "3d_NACA0012_Re50000_AoA5_avg_24280000-COMP-DATA.h5"
+# SNAPSHOT_FILE_AVG = os.path.join(SNAPSHOT_PATH_AVG, SNAPSHOT_NAME_AVG)
 
 SNAPSHOTS_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/"
-#SNAPSHOTS_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/Test/compressed_snapshots/"
 
 # Reference parameters
 u_infty = 1.0
@@ -65,7 +56,7 @@ alpha = np.deg2rad(AOA)
 C = 1.0  # chord length
 
 # x/c locations: dense sampling (same as velocity profiles)
-x_c_locations_dense = np.arange(0.10, 1.01, 0.01)  # Every 0.01
+x_c_locations_dense = np.arange(0.10, 1.01, 0.05)  # Every 0.01
 
 # Parameters for wall-normal extraction
 wall_normal_length = 0.2
@@ -177,6 +168,7 @@ def distribute_file_list(folder_path, extensions, comm):
 if rank == 0:
     print("=" * 70)
     print("COMPUTING VELOCITY RMS FLUCTUATIONS FOR PROFILES (MPI)")
+    print("APPROACH: TEMPORAL AVERAGE FIRST, THEN SPATIAL AVERAGE")
     print("=" * 70)
 
 # Load geometrical data (all ranks)
@@ -219,24 +211,24 @@ y_suction_rot = y_int_rot[suction_mask]
 if rank == 0:
     print("Total suction-side interface points:", x_suction_rot.size)
 
-# Load mean velocity field (all ranks)
-assert_exists(SNAPSHOT_FILE_AVG, "Average snapshot file")
-fields_avg = loader.load_snapshot_avg(SNAPSHOT_FILE_AVG)
+# # Load mean velocity field (all ranks)
+# assert_exists(SNAPSHOT_FILE_AVG, "Average snapshot file")
+# fields_avg = loader.load_snapshot_avg(SNAPSHOT_FILE_AVG)
 
-u_mean = loader.reconstruct_field(fields_avg["avg_u"])
-v_mean = loader.reconstruct_field(fields_avg["avg_v"])
-w_mean = loader.reconstruct_field(fields_avg["avg_w"])
+# u_mean = loader.reconstruct_field(fields_avg["avg_u"])
+# v_mean = loader.reconstruct_field(fields_avg["avg_v"])
+# w_mean = loader.reconstruct_field(fields_avg["avg_w"])
 
-# Average in spanwise direction
-u_mean_2d = np.mean(u_mean, axis=0)
-v_mean_2d = np.mean(v_mean, axis=0)
-w_mean_2d = np.mean(w_mean, axis=0)
+# # Average in spanwise direction
+# u_mean_2d = np.mean(u_mean, axis=0)
+# v_mean_2d = np.mean(v_mean, axis=0)
+# w_mean_2d = np.mean(w_mean, axis=0)
 
-# Rotate mean velocities
-u_mean_rot, v_mean_rot = rotate_coordinates(u_mean_2d, v_mean_2d, alpha)
+# # Rotate mean velocities
+# u_mean_rot, v_mean_rot = rotate_coordinates(u_mean_2d, v_mean_2d, alpha)
 
-if rank == 0:
-    print("Loaded and rotated mean velocity fields")
+# if rank == 0:
+#     print("Loaded and rotated mean velocity fields")
 
 # Build KDTree for profile extraction (all ranks)
 x_rot_flat = x_rot.ravel()
@@ -297,17 +289,23 @@ local_files = distribute_file_list(SNAPSHOTS_DIR, "h5", comm)
 
 print(f"[Rank {rank}] Processing {len(local_files)} snapshots")
 
-# Initialize local accumulators for RMS computation
-n_profiles = len(profile_locations)
-local_u_prime_sq_sum = [np.zeros(len(prof["i_indices"])) for prof in profile_locations]
-local_v_prime_sq_sum = [np.zeros(len(prof["i_indices"])) for prof in profile_locations]
-local_w_prime_sq_sum = [np.zeros(len(prof["i_indices"])) for prof in profile_locations]
+# Initialize local accumulators for 3D squared fluctuation fields
+# Store 3D arrays of u'^2, v'^2, w'^2
+ny, nx = x_rot.shape
+nz_shape = None  # Will be determined from first snapshot
+
+local_mean_u_2d = np.zeros((ny, nx))
+local_mean_v_2d = np.zeros((ny, nx))
+local_mean_w_2d = np.zeros((ny, nx))
+local_mean_u2_2d = np.zeros((ny, nx))
+local_mean_v2_2d = np.zeros((ny, nx))
+local_mean_w2_2d = np.zeros((ny, nx))
 
 local_snapshot_count = 0
 
 # Process each snapshot assigned to this rank
 for idx, file in enumerate(local_files):
-    if (idx + 1) % 10 == 0 or idx == 0:
+    if (idx + 1) % 1 == 0 or idx == 0:
         print(f"[Rank {rank}] Processing snapshot {idx+1}/{len(local_files)}: {os.path.basename(file)}")
     
     # Load snapshot
@@ -318,36 +316,32 @@ for idx, file in enumerate(local_files):
     v = loader.reconstruct_field(fields["v"])
     w = loader.reconstruct_field(fields["w"])
     
+    # Determine shape from first snapshot
+    if nz_shape is None:
+        nz_shape = u.shape[0]
+        if rank == 0:
+            print(f"3D field shape: ({nz_shape}, {ny}, {nx})")
+
+    
     # Rotate 3D instantaneous velocities to flow-aligned frame
     u_rot, v_rot = rotate_coordinates(u, v, alpha)
+    # u_rot = u 
+    # v_rot = v
     w_rot = w  # No change in spanwise
     
-    # Compute 3D fluctuations in rotated frame
-    u_prime_rot_3d = u_rot - u_mean_rot  # Shape: (nz, ny, nx)
-    v_prime_rot_3d = v_rot - v_mean_rot
-    w_prime_rot_3d = w_rot - w_mean
     
-    # Extract fluctuations along each profile and accumulate squares
-    # Then average over spanwise direction
-    for prof_idx, prof_loc in enumerate(profile_locations):
-        i_idx = prof_loc["i_indices"]
-        j_idx = prof_loc["j_indices"]
-        
-        # Extract 3D fluctuations at profile points: shape (nz, n_profile_points)
-        u_p_3d = u_prime_rot_3d[:, j_idx, i_idx]  # Streamwise fluctuation
-        v_p_3d = v_prime_rot_3d[:, j_idx, i_idx]  # Cross-stream fluctuation
-        w_p_3d = w_prime_rot_3d[:, j_idx, i_idx]  # Spanwise fluctuation
-        
-        # Accumulate squared fluctuations, averaged over spanwise direction
-        local_u_prime_sq_sum[prof_idx] += np.mean(u_p_3d**2, axis=0)
-        local_v_prime_sq_sum[prof_idx] += np.mean(v_p_3d**2, axis=0)
-        local_w_prime_sq_sum[prof_idx] += np.mean(w_p_3d**2, axis=0)
+    # Accumulate squared fluctuations
+    local_mean_u_2d += np.mean( u_rot, axis=0 )
+    local_mean_v_2d += np.mean( v_rot, axis=0 )
+    local_mean_w_2d += np.mean( w_rot, axis=0 )
+    local_mean_u2_2d += np.mean( u_rot**2, axis=0 )
+    local_mean_v2_2d += np.mean( v_rot**2, axis=0 )
+    local_mean_w2_2d += np.mean( w_rot**2, axis=0 )
     
     local_snapshot_count += 1
     
     # Clean up
     del fields, u, v, w, u_rot, v_rot, w_rot
-    del u_prime_rot_3d, v_prime_rot_3d, w_prime_rot_3d
     gc.collect()
 
 print(f"[Rank {rank}] Completed processing {local_snapshot_count} snapshots")
@@ -360,27 +354,18 @@ if rank == 0:
     print("GATHERING RESULTS FROM ALL RANKS")
     print("=" * 70)
 
-# Gather results from all ranks to rank 0
-# We need to gather each profile's accumulated squares separately
-global_u_prime_sq_sum = []
-global_v_prime_sq_sum = []
-global_w_prime_sq_sum = []
-
-for prof_idx in range(n_profiles):
-    # Reduce each profile's accumulator
-    u_sq_global = comm.reduce(local_u_prime_sq_sum[prof_idx], op=MPI.SUM, root=0)
-    v_sq_global = comm.reduce(local_v_prime_sq_sum[prof_idx], op=MPI.SUM, root=0)
-    w_sq_global = comm.reduce(local_w_prime_sq_sum[prof_idx], op=MPI.SUM, root=0)
-    
-    if rank == 0:
-        global_u_prime_sq_sum.append(u_sq_global)
-        global_v_prime_sq_sum.append(v_sq_global)
-        global_w_prime_sq_sum.append(w_sq_global)
+# Reduce 3D fields to rank 0 using MPI
+global_mean_u_2d = comm.reduce(local_mean_u_2d, op=MPI.SUM, root=0)
+global_mean_v_2d = comm.reduce(local_mean_v_2d, op=MPI.SUM, root=0)
+global_mean_w_2d = comm.reduce(local_mean_w_2d, op=MPI.SUM, root=0)
+global_mean_u2_2d = comm.reduce(local_mean_u2_2d, op=MPI.SUM, root=0)
+global_mean_v2_2d = comm.reduce(local_mean_v2_2d, op=MPI.SUM, root=0)
+global_mean_w2_2d = comm.reduce(local_mean_w2_2d, op=MPI.SUM, root=0)
 
 # Reduce snapshot count
 global_snapshot_count = comm.reduce(local_snapshot_count, op=MPI.SUM, root=0)
 
-# Rank 0 computes RMS and saves results
+# Rank 0 computes temporal averages and extracts profiles
 if rank == 0:
     print(f"\n{'='*70}")
     print(f"COMPUTING RMS AND SAVING RESULTS")
@@ -388,13 +373,34 @@ if rank == 0:
     print(f"Total snapshots processed: {global_snapshot_count}")
     
     if global_snapshot_count > 0:
-        # Compute RMS (sqrt of mean of squares)
+        # Compute temporal averages of squared fluctuations (3D fields)
+        # u_sq_temporal_avg = global_u_prime_sq_3d / global_snapshot_count
+        # v_sq_temporal_avg = global_v_prime_sq_3d / global_snapshot_count
+        # w_sq_temporal_avg = global_w_prime_sq_3d / global_snapshot_count
+        
+        if rank == 0:
+            print(f"Temporal averages computed. 3D field shape: {global_mean_u_2d.shape}")
+        
+        # Extract profiles and compute spatial average over z
         rms_profiles = []
         
         for prof_idx, prof_loc in enumerate(profile_locations):
-            u_rms = np.sqrt(global_u_prime_sq_sum[prof_idx] / global_snapshot_count)
-            v_rms = np.sqrt(global_v_prime_sq_sum[prof_idx] / global_snapshot_count)
-            w_rms = np.sqrt(global_w_prime_sq_sum[prof_idx] / global_snapshot_count)
+            i_idx = prof_loc["i_indices"]
+            j_idx = prof_loc["j_indices"]
+            
+            # Extract 3D fields at profile points: shape (nz, n_profile_points)
+            mean_u = global_mean_u_2d[ j_idx, i_idx ]/global_snapshot_count
+            mean_v = global_mean_v_2d[ j_idx, i_idx ]/global_snapshot_count
+            mean_w = global_mean_w_2d[ j_idx, i_idx ]/global_snapshot_count
+            
+            mean_u2 = global_mean_u2_2d[ j_idx, i_idx]/global_snapshot_count
+            mean_v2 = global_mean_v2_2d[ j_idx, i_idx]/global_snapshot_count
+            mean_w2 = global_mean_w2_2d[ j_idx, i_idx]/global_snapshot_count
+
+            # Compute RMS: sqrt(⟨u^2⟩-⟨u⟩^2)
+            u_rms = np.sqrt(mean_u2 - mean_u**2)
+            v_rms = np.sqrt(mean_v2 - mean_v**2)
+            w_rms = np.sqrt(mean_w2 - mean_w**2)
             
             rms_profile = {
                 "x_c": prof_loc["x_c"],
@@ -420,6 +426,7 @@ if rank == 0:
             f.attrs["alpha"] = alpha
             f.attrs["C"] = C
             f.attrs["snapshot_count"] = global_snapshot_count
+            f.attrs["approach"] = "temporal_first"
             f.create_dataset("x_c_locations_dense", data=x_c_locations_dense)
             
             # RMS profiles

@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import h5py
 from scipy.ndimage import uniform_filter1d
+from matplotlib.ticker import FuncFormatter
 
 ### GEOMETRICAL STUFF
 GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Geometrical_data"
@@ -95,7 +96,7 @@ def plot_pressure_coefficient(proj_points, Cp_values, c=1.0):
     )
     plt.gca().invert_yaxis()  # Cp convention: lower values upwards
     plt.xlabel("x/c")
-    plt.ylabel("$C_p$")
+    plt.ylabel("$c_p$")
     plt.title("Pressure Coefficient Distribution on Airfoil Surface")
     plt.legend()
     plt.grid(True)
@@ -144,7 +145,7 @@ def plot_cp_ref_data():
     
     plt.gca().invert_yaxis()
     plt.xlabel("x/c")
-    plt.ylabel("$C_p$")
+    plt.ylabel("$c_p$")
     plt.title("Reference Cp Data – Rodríguez et al. & Lehmkuhl et al.")
     plt.legend()
     plt.grid(True)
@@ -264,7 +265,17 @@ def plot_cp_comparison(proj_points, Cp_5_values, Cp_12_values, c=1.0):
     )
     plt.gca().invert_yaxis()
     plt.xlabel("x/c")
-    plt.ylabel("$c_P$")
+    plt.ylabel("$c_p$")
+    
+    # Format tick labels to show 0 without decimals
+    def format_ticks(x, pos):
+        if x == 0:
+            return '0'
+        return f'{x:.2g}'
+    
+    plt.gca().xaxis.set_major_formatter(FuncFormatter(format_ticks))
+    plt.gca().yaxis.set_major_formatter(FuncFormatter(format_ticks))
+    
     #plt.legend(frameon=False)
     plt.grid(True)
     plt.tight_layout()
@@ -273,7 +284,7 @@ def plot_cp_comparison(proj_points, Cp_5_values, Cp_12_values, c=1.0):
 # Plot comparison
 plot_cp_comparison(proj_points, Cp_5_values, Cp_12_values, c=1.0)
 
-Cp_12_values = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/cp_data_aoa12_Re50000_8700000.npz"
+Cp_12_values_old = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/cp_data_aoa12_Re50000_8700000.npz"
 
 
 def plot_cp_comparison_2(proj_points, Cp_5_values, Cp_12_values, c=1.0):
@@ -424,9 +435,19 @@ def plot_cp_comparison_2(proj_points, Cp_5_values, Cp_12_values, c=1.0):
 
     plt.gca().invert_yaxis()
     plt.xlabel("x/c")
-    plt.ylabel("$c_P$")
+    plt.ylabel("$c_p$")
     plt.ylim(1.3, -2)  # (ymin, ymax)
-    plt.yticks(np.arange(-1.5, 1.5, 0.5))  # Ticks every 0.5
+    plt.yticks(np.arange(-2, 1.5, 0.5))  # Ticks every 0.5
+    
+    # Format tick labels to show 0 without decimals
+    def format_ticks(x, pos):
+        if x == 0:
+            return '0'
+        return f'{x:.1f}'
+    
+    plt.gca().xaxis.set_major_formatter(FuncFormatter(format_ticks))
+    plt.gca().yaxis.set_major_formatter(FuncFormatter(format_ticks))
+    
     #plt.legend(frameon=False)
     plt.grid(True, which="both", linestyle="--", linewidth=0.5)    
     plt.tight_layout()
@@ -443,5 +464,153 @@ def plot_cp_comparison_2(proj_points, Cp_5_values, Cp_12_values, c=1.0):
     plt.show()
 
 # Plot comparison
-plot_cp_comparison_2(proj_points, Cp_5_values, Cp_12_values, c=1.0)
+plot_cp_comparison_2(proj_points, Cp_5_values, Cp_12_values_old, c=1.0)
 
+
+def plot_cp_comparison_3(proj_points, Cp_5_values, Cp_12_values, c=1.0):
+    """
+    Plot simulated Cp data for AoA = 5 and AoA = 12 degrees alongside reference data.
+
+    Parameters:
+        proj_points (np.ndarray): Projected surface points (N x 3).
+        Cp_5_values (np.ndarray): Pressure coefficient at each point for AoA = 5 (N,).
+        Cp_12_values (np.ndarray): Pressure coefficient at each point for AoA = 12 (N,).
+        c (float): Chord length for normalization (default = 1.0).
+    """
+
+    # === Load reference data ===
+    base_path = "/home/jofre/Members/Eduard/Paper2/Python_scripts/Pressure_coeff/Cp_data/"
+
+    comma_to_dot = lambda s: float(s.replace(",", "."))
+
+    upper_aoa5 = np.genfromtxt(
+        os.path.join(base_path, "lehmkuhl_2013_Re5e4_aoa5_cp_upper.dat"),
+        converters={0: comma_to_dot, 1: comma_to_dot},
+    )
+    lower_aoa5 = np.genfromtxt(
+        os.path.join(base_path, "lehmkuhl_2013_Re5e4_aoa5_cp_lower.dat"),
+        converters={0: comma_to_dot, 1: comma_to_dot},
+    )
+
+    # === Process simulation data for AoA = 5 ===
+    x_proj = proj_points[:, 0]
+    y_proj = proj_points[:, 1]
+    x_over_c = x_proj / c
+
+    upper_mask = y_proj > 0
+    lower_mask = ~upper_mask
+
+    x_upper_5 = x_over_c[upper_mask]
+    Cp_upper_5 = Cp_5_values[upper_mask]
+    x_lower_5 = x_over_c[lower_mask]
+    Cp_lower_5 = Cp_5_values[lower_mask]
+    upper_sort_5 = np.argsort(x_upper_5)
+    lower_sort_5 = np.argsort(x_lower_5)
+    
+    # Apply uniform filter smoothing (AoA = 5)
+    Cp_upper_5_smooth = uniform_filter1d(Cp_upper_5[upper_sort_5], size=5, mode='nearest')
+    Cp_lower_5_smooth = uniform_filter1d(Cp_lower_5[lower_sort_5], size=5, mode='nearest')
+    
+    # === Process simulation data for AoA = 12 ===
+    x_upper_12 = x_over_c[upper_mask]
+    Cp_upper_12 = Cp_12_values[upper_mask]
+    x_lower_12 = x_over_c[lower_mask]
+    Cp_lower_12 = Cp_12_values[lower_mask]
+    upper_sort_12 = np.argsort(x_upper_12)
+    lower_sort_12 = np.argsort(x_lower_12)
+    
+    # Apply uniform filter smoothing (AoA = 12)
+    Cp_upper_12_smooth = uniform_filter1d(Cp_upper_12[upper_sort_12], size=5, mode='nearest')
+    Cp_lower_12_smooth = uniform_filter1d(Cp_lower_12[lower_sort_12], size=5, mode='nearest')
+
+
+    # === Plotting ===
+    plt.figure(figsize=(6, 4))
+    # Plot simulation curves for AoA = 5
+    # plt.plot(
+    #      x_upper_5[upper_sort_5], Cp_upper_5[upper_sort_5], "-", color="black", label="Sim. (AoA=5°)"
+    # )
+    # plt.plot(
+    #     x_lower_5[lower_sort_5], Cp_lower_5[lower_sort_5], "-", color="black"
+    # )
+    plt.plot(
+        x_upper_5[upper_sort_5], Cp_upper_5_smooth, "-", color="black", linewidth=1, label="Sim. (AoA=5°)"
+    )
+    plt.plot(
+        x_lower_5[lower_sort_5], Cp_lower_5_smooth, "-", color="black", linewidth=1
+    )
+
+    # Plot reference curves for AoA = 5
+    # plt.plot(
+    #     upper_aoa5[::2, 0], upper_aoa5[::2, 1], "o", color="black", markersize=4, linewidth=1, label="Ref. (AoA=5°)"
+    # )
+    # plt.plot(
+    #     lower_aoa5[::2, 0], lower_aoa5[::2, 1], "o", color="black", markersize=4, linewidth=1
+    # )
+    indices_5 = np.concatenate([np.arange(4), np.arange(4, len(upper_aoa5), 3)])
+    indices_5 = indices_5[indices_5 < len(upper_aoa5)]  # Filter out-of-bounds indices
+    plt.plot(
+        upper_aoa5[indices_5, 0], upper_aoa5[indices_5, 1], "o", color="black", markersize=4, linewidth=1, label="Ref. (AoA=5°)"
+    )
+
+    indices_5_lower = np.concatenate([np.arange(4), np.arange(4, len(lower_aoa5), 3)])
+    indices_5_lower = indices_5_lower[indices_5_lower < len(lower_aoa5)]
+    plt.plot(
+        lower_aoa5[indices_5_lower, 0], lower_aoa5[indices_5_lower, 1], "o", color="black", markersize=4, linewidth=1
+    )
+
+    # Plot simulation curves for AoA = 12
+    plt.plot(
+        x_upper_12[upper_sort_12], Cp_upper_12_smooth, "--", color="black", linewidth=1, label="Sim. (AoA=12°)"
+    )
+    plt.plot(
+        x_lower_12[lower_sort_12], Cp_lower_12_smooth, "--", color="black", linewidth=1
+    )
+
+    # plt.plot(
+    #      x_upper_12[upper_sort_12], Cp_12_upper[upper_sort_12], "--", color="black", label="Sim. (AoA=12°)"
+    # )
+    # plt.plot(
+    #     x_lower_12[lower_sort_12], Cp_12_lower[lower_sort_12], "--", color="black"
+    # )
+
+    # Plot reference curves for AoA = 12
+    # plt.plot(
+    #     upper_aoa12[::2, 0], upper_aoa12[::2, 1], "s", color="black", markersize=4, linewidth=1, label="Ref. (AoA=12°)"
+    # )
+    # plt.plot(
+    #     lower_aoa12[::2, 0], lower_aoa12[::2, 1], "s", color="black", markersize=4, linewidth=1
+    # )
+
+    plt.gca().invert_yaxis()
+    plt.xlabel("x/c")
+    plt.ylabel("$c_p$")
+    plt.ylim(1.3, -2)  # (ymin, ymax)
+    plt.yticks(np.arange(-2, 1.5, 0.5))  # Ticks every 0.5
+    
+    # Format tick labels to show 0 without decimals
+    def format_ticks(x, pos):
+        if x == 0:
+            return '0'
+        return f'{x:.1f}'
+    
+    plt.gca().xaxis.set_major_formatter(FuncFormatter(format_ticks))
+    plt.gca().yaxis.set_major_formatter(FuncFormatter(format_ticks))
+    
+    #plt.legend(frameon=False)
+    plt.grid(True, which="both", linestyle="--", linewidth=0.5)    
+    plt.tight_layout()
+
+
+    # Save plot
+    output_dir = "/home/jofre/Members/Eduard/Paper2/Figures/"
+    os.makedirs(output_dir, exist_ok=True)
+    
+    plt.savefig(os.path.join(output_dir, "pressure_coefficient_validation_2.eps"), format="eps", dpi=300, bbox_inches="tight")
+    plt.savefig(os.path.join(output_dir, "pressure_coefficient_validation_2.png"), format="png", dpi=300, bbox_inches="tight")
+    
+    print(f"Plots saved to {output_dir}")
+    plt.show()
+
+# Plot comparison
+plot_cp_comparison_3(proj_points, Cp_5_values, Cp_12_values, c=1.0)

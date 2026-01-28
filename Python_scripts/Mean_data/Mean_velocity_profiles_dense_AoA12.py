@@ -16,8 +16,8 @@ from data_loader_functions import CompressedSnapshotLoader
 
 
 # Output data path
-OUTPUT_DATA_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/"
-OUTPUT_DATA_NAME = "AoA5_Re50000_velocity_profiles_dense_data.h5"
+OUTPUT_DATA_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/"
+OUTPUT_DATA_NAME = "AoA12_Re50000_velocity_profiles_dense_data_2.h5"
 #OUTPUT_DATA_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/Test/Mean_data/"
 #OUTPUT_DATA_NAME = "AoA5_Re10000_velocity_profiles_data_dense.h5"
 OUTPUT_DATA_FILE = os.path.join(OUTPUT_DATA_PATH, OUTPUT_DATA_NAME)
@@ -27,45 +27,44 @@ FIGURE_OUTPUT_PATH = "/home/jofre/Members/Eduard/Paper2/Figures/"
 os.makedirs(FIGURE_OUTPUT_PATH, exist_ok=True)
 
 # RMS results
-RMS_DATA_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/"
-#RMS_DATA_NAME = "AoA5_Re50000_velocity_RMS_profiles_data_mpi.h5"
-RMS_DATA_NAME = "AoA5_Re50000_velocity_RMS_profiles_data_mpi_2.h5"
+RMS_DATA_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/"
+RMS_DATA_NAME = "AoA12_Re50000_velocity_RMS_profiles_data_mpi_2.h5"
+#RMS_DATA_NAME = "AoA12_Re50000_velocity_RMS_profiles_data_mpi_3.h5"
 #RMS_DATA_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/Test/Mean_data/"
 #RMS_DATA_NAME = "AoA5_Re10000_velocity_RMS_profiles_data.h5"
-RMS_DATA_FILE = os.path.join(RMS_DATA_PATH, RMS_DATA_NAME)
+#RMS_DATA_FILE = os.path.join(RMS_DATA_PATH, RMS_DATA_NAME)
 
-# Reference data path
-REF_DATA_PATH = "/home/jofre/Members/Eduard/Paper2/Python_scripts/Mean_data/U_mean_profile_data/"
+# Note: No reference data available for AoA=12°
 
 # Paths
-GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Geometrical_data/"
-GEO_NAME = "3d_NACA0012_Re50000_AoA5_Geometrical_Data.h5"
+GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Geometrical_data/"
+GEO_NAME = "3d_NACA0012_Re50000_AoA12_Geometrical_Data.h5"
 #GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/Test/Geometrical_data"
 #GEO_NAME = "3d_NACA0012_Test_Geometrical_Data.h5"
 GEO_FILE = os.path.join(GEO_PATH, GEO_NAME)
 
-MESH_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Geometrical_data/"
-MESH_NAME = "3d_NACA0012_Re50000_AoA5-CROP-MESH.h5"
+MESH_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Geometrical_data/"
+MESH_NAME = "3d_NACA0012_Re50000_AoA12-CROP-MESH.h5"
 #MESH_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/Test/"
 #MESH_NAME = "3d_NACA0012_Re10000_AoA5-CROP-MESH.h5"
 MESH_FILE = os.path.join(MESH_PATH, MESH_NAME)
 
-SNAPSHOT_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/temporal_last_snapshot/"
-SNAPSHOT_NAME = "3d_NACA0012_Re50000_AoA5_avg_24280000-COMP-DATA.h5"
+SNAPSHOT_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/temporal_last_snapshot/"
+SNAPSHOT_NAME = "3d_NACA0012_Re50000_AoA12_avg_19680000-COMP-DATA.h5"
 #SNAPSHOT_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/Test/"
 #SNAPSHOT_NAME = "3d_NACA0012_Re10000_AoA5_avg_1620000-COMP-DATA.h5"
 SNAPSHOT_FILE = os.path.join(SNAPSHOT_PATH, SNAPSHOT_NAME)
 
 # Reference parameters
 u_infty = 1.0
-AOA = 5  # degrees
+AOA = 12  # degrees
 alpha = np.deg2rad(AOA)
 C = 1.0  # chord length
 
 # x/c locations: dense sampling
-x_c_locations_dense = np.arange(0.10, 1.01, 0.01)  # Every 0.01
+x_c_locations_dense = np.arange(0.0, 1.01, 0.01)  # Every 0.01
 # Original locations for special plotting
-x_c_locations_original = np.array([0.15, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 0.85, 0.95])
+x_c_locations_original = np.array([0.05,0.15, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 0.85, 0.95])
 
 # Utilities
 def assert_exists(path: str, kind: str = "File") -> None:
@@ -81,104 +80,7 @@ def rotate_coordinates(x, y, angle_rad):
     return x_rot, y_rot
 
 
-def load_reference_data_file(dat_file):
-    """Load data from a single .dat file.
-    
-    Args:
-        dat_file: Path to the .dat file
-        
-    Returns:
-        Dictionary with 'x', 'y', and 'filename' keys, or None if file is empty
-    """
-    x_vals = []
-    y_vals = []
-    with open(dat_file, "r") as f:
-        for line in f:
-            parts = line.strip().split()
-            if len(parts) < 2:
-                continue
-            # European decimal commas replaced by dots
-            x_val = float(parts[0].replace(",", "."))
-            y_val = float(parts[1].replace(",", "."))
-            x_vals.append(x_val)
-            y_vals.append(y_val)
-
-    if x_vals:
-        return {
-            "x": np.array(x_vals),
-            "y": np.array(y_vals),
-            "filename": dat_file,
-        }
-    else:
-        return None
-
-
-def load_reference_profiles_by_pattern(ref_data_path, pattern, x_c_token_position=4):
-    """Generic loader for reference profile files grouped by x/c location.
-    
-    Args:
-        ref_data_path: Directory containing the .dat files
-        pattern: Glob pattern to match files (e.g., "Re5e4_AOA5_U_mean_*_Jardin_2025_2.dat")
-        x_c_token_position: Position in filename split by '_' where x/c token is located
-        
-    Returns:
-        Dictionary keyed by x/c value, with each entry containing 'x', 'y', and 'filename'
-    """
-    ref_profiles = {}
-
-    dat_files = sorted(glob.glob(os.path.join(ref_data_path, pattern)))
-    for dat_file in dat_files:
-        base = os.path.basename(dat_file)
-        # Extract the 0XX token (e.g., 015 -> 0.15)
-        try:
-            x_c_token = base.split("_")[x_c_token_position]
-            x_c = float(x_c_token) / 100
-        except Exception:
-            # Skip files that don't follow the naming convention
-            continue
-
-        data = load_reference_data_file(dat_file)
-        if data is not None:
-            ref_profiles[x_c] = data
-
-    return ref_profiles
-
-
-def load_reference_profiles(ref_data_path):
-    """Load reference mean velocity profiles from .dat files.
-    
-    Files named like Re5e4_AOA5_U_mean_0XX_Jardin_2025_2.dat where 0XX encodes x/c.
-    """
-    return load_reference_profiles_by_pattern(
-        ref_data_path, 
-        "Re5e4_AOA5_U_mean_*_Jardin_2025_2.dat"
-    )
-
-
-def load_reference_rms_profiles(ref_data_path):
-    """Load reference RMS velocity profiles from .dat files.
-    
-    Files named like Re5e4_AOA5_u_rms_0XX_Jardin_2025.dat where 0XX encodes x/c.
-    """
-    return load_reference_profiles_by_pattern(
-        ref_data_path, 
-        "Re5e4_AOA5_u_rms_*_Jardin_2025.dat"
-    )
-
-
-def load_reference_separation_reattachment(ref_data_path):
-    """Load reference separation-reattachment line from .dat file.
-    
-    File named Re5e4_AOA5_separtion-reattachment.dat contains [x/c, y/c] coordinates 
-    of the separation bubble.
-    """
-    dat_file = os.path.join(ref_data_path, "Re5e4_AOA5_separtion-reattachment.dat")
-    
-    if not os.path.exists(dat_file):
-        print(f"Warning: Separation-reattachment file not found: {dat_file}")
-        return None
-
-    return load_reference_data_file(dat_file)
+# Reference data loading functions removed - no reference data available for AoA=12°
 
 
 def save_velocity_profile_data_dense(filepath, x_rot, y_rot, u_rot, v_rot,
@@ -453,8 +355,8 @@ else:
     print("Total suction-side interface points:", x_suction_rot.size)
     
     # Parameters for wall-normal extraction
-    wall_normal_length = 0.2
-    n_points = 250
+    wall_normal_length = 0.5
+    n_points = 400
     
     # Build KDTree
     x_rot_flat = x_rot.ravel()
@@ -525,41 +427,54 @@ else:
     
     isoline_x_c = []
     isoline_y_c = []
+    eps_zero = 1e-6
     
     for profile in wall_normal_profiles_dense:
-        # Sort by y' coordinate
         sort_idx = np.argsort(profile["y_prime"])
         y_sorted = profile["y_prime"][sort_idx]
         u_sorted = profile["u_rot"][sort_idx]
         
-        # Find where u crosses zero
-        sign_changes = np.diff(np.sign(u_sorted))
-        zero_crossings = np.where(sign_changes != 0)[0]
+        signs = np.zeros_like(u_sorted, dtype=np.int8)
+        signs[u_sorted > eps_zero] = 1
+        signs[u_sorted < -eps_zero] = -1
         
-        if len(zero_crossings) > 0:
-            # Use first crossing (separation point)
-            idx_cross = zero_crossings[0]
-            
-            # Interpolate to find exact u=0 location
+        crossings_neg_to_pos = np.where((signs[:-1] == -1) & (signs[1:] == 1))[0]
+        
+        if len(crossings_neg_to_pos) > 0:
+            idx_cross = crossings_neg_to_pos[0]
             y1, y2 = y_sorted[idx_cross], y_sorted[idx_cross + 1]
             u1, u2 = u_sorted[idx_cross], u_sorted[idx_cross + 1]
-            
-            # Linear interpolation
             y_zero = y1 + (0 - u1) * (y2 - y1) / (u2 - u1)
-            
-            isoline_x_c.append(profile["x_c"])
-            isoline_y_c.append(y_zero)
+            if profile["x_c"] <= 1.0:
+                isoline_x_c.append(profile["x_c"])
+                isoline_y_c.append(y_zero)
+        else:
+            sign_changes = np.diff(signs)
+            zero_crossings = np.where(sign_changes != 0)[0]
+            if len(zero_crossings) > 0:
+                idx_cross = zero_crossings[0]
+                y1, y2 = y_sorted[idx_cross], y_sorted[idx_cross + 1]
+                u1, u2 = u_sorted[idx_cross], u_sorted[idx_cross + 1]
+                y_zero = y1 + (0 - u1) * (y2 - y1) / (u2 - u1)
+                if profile["x_c"] <= 1.0:
+                    isoline_x_c.append(profile["x_c"])
+                    isoline_y_c.append(y_zero)
     
     isoline_x_c = np.array(isoline_x_c)
     isoline_y_c = np.array(isoline_y_c)
+    cut_mask = isoline_x_c <= 1.0
+    isoline_x_c = isoline_x_c[cut_mask]
+    isoline_y_c = isoline_y_c[cut_mask]
     
-    print(f"Zero crossings found: {len(isoline_x_c)}")
+    print(f"Zero crossings found (capped at x'/C ≤ 1.0): {len(isoline_x_c)}")
     if len(isoline_x_c) > 0:
         print(f"Separation point (first u=0): x'/C = {isoline_x_c[0]:.3f}")
-        if len(isoline_x_c) > 1:
+        if len(isoline_x_c) > 1 and np.max(isoline_x_c) < 1.0:
             print(f"Reattachment point (last u=0): x'/C = {isoline_x_c[-1]:.3f}")
             bubble_length = isoline_x_c[-1] - isoline_x_c[0]
             print(f"Separation bubble length: Δ(x'/C) = {bubble_length:.3f}")
+        else:
+            print("No reattachment up to x'/C = 1.0")
     
     isoline_data = {
         "x_c": isoline_x_c,
@@ -577,27 +492,83 @@ else:
         u_infty, alpha, C, x_c_locations_dense
     )
 
-# Load RMS data (optional overlay)
-rms_data = load_velocity_rms_profiles(RMS_DATA_FILE)
-rms_by_xc = {}
-if rms_data is not None:
-    rms_by_xc = {round(p["x_c"], 6): p for p in rms_data["rms_profiles"]}
+# Recompute isoline with robust crossing logic even when cached data is used
+print("\nRecomputing zero-velocity isoline with robust logic and x'/C ≤ 1.0 cap...")
+isoline_x_c = []
+isoline_y_c = []
+eps_zero = 1e-6
 
-# Load reference data from plot-extracted files
-print("\nLoading reference velocity profile data...")
-ref_profiles = load_reference_profiles(REF_DATA_PATH)
-print(f"Reference profiles loaded: {len(ref_profiles)}")
+for profile in wall_normal_profiles_dense:
+    sort_idx = np.argsort(profile["y_prime"])
+    y_sorted = profile["y_prime"][sort_idx]
+    u_sorted = profile["u_rot"][sort_idx]
 
-print("\nLoading reference RMS profile data...")
-ref_rms_profiles = load_reference_rms_profiles(REF_DATA_PATH)
-print(f"Reference RMS profiles loaded: {len(ref_rms_profiles)}")
+    signs = np.zeros_like(u_sorted, dtype=np.int8)
+    signs[u_sorted > eps_zero] = 1
+    signs[u_sorted < -eps_zero] = -1
 
-print("\nLoading reference separation-reattachment line...")
-ref_sep_reatt = load_reference_separation_reattachment(REF_DATA_PATH)
-if ref_sep_reatt is not None:
-    print(f"Reference separation-reattachment line loaded: {len(ref_sep_reatt['x'])} points")
+    crossings_neg_to_pos = np.where((signs[:-1] == -1) & (signs[1:] == 1))[0]
+
+    if len(crossings_neg_to_pos) > 0:
+        idx_cross = crossings_neg_to_pos[0]
+        y1, y2 = y_sorted[idx_cross], y_sorted[idx_cross + 1]
+        u1, u2 = u_sorted[idx_cross], u_sorted[idx_cross + 1]
+        y_zero = y1 + (0 - u1) * (y2 - y1) / (u2 - u1)
+        if profile["x_c"] <= 1.0:
+            isoline_x_c.append(profile["x_c"])
+            isoline_y_c.append(y_zero)
+    else:
+        sign_changes = np.diff(signs)
+        zero_crossings = np.where(sign_changes != 0)[0]
+        if len(zero_crossings) > 0:
+            idx_cross = zero_crossings[0]
+            y1, y2 = y_sorted[idx_cross], y_sorted[idx_cross + 1]
+            u1, u2 = u_sorted[idx_cross], u_sorted[idx_cross + 1]
+            y_zero = y1 + (0 - u1) * (y2 - y1) / (u2 - u1)
+            if profile["x_c"] <= 1.0:
+                isoline_x_c.append(profile["x_c"])
+                isoline_y_c.append(y_zero)
+
+isoline_x_c = np.array(isoline_x_c)
+isoline_y_c = np.array(isoline_y_c)
+cut_mask = isoline_x_c <= 1.0
+isoline_x_c = isoline_x_c[cut_mask]
+isoline_y_c = isoline_y_c[cut_mask]
+
+isoline_data = {
+    "x_c": isoline_x_c,
+    "y_c": isoline_y_c,
+}
+
+# Print separation point information
+print(f"\n{'='*70}")
+print("SEPARATION POINT ANALYSIS")
+print(f"{'='*70}")
+print(f"Zero crossings found (capped at x'/C ≤ 1.0): {len(isoline_x_c)}")
+if len(isoline_x_c) > 0:
+    print(f"Separation point (first u'=0): x'/C = {isoline_x_c[0]:.4f}")
+    print(f"Separation point y-coordinate: y'/C = {isoline_y_c[0]:.6f}")
+    if len(isoline_x_c) > 1 and np.max(isoline_x_c) < 1.0:
+        print(f"Reattachment point (last u'=0): x'/C = {isoline_x_c[-1]:.4f}")
+        print(f"Reattachment point y-coordinate: y'/C = {isoline_y_c[-1]:.6f}")
+        bubble_length = isoline_x_c[-1] - isoline_x_c[0]
+        print(f"Separation bubble length: Δ(x'/C) = {bubble_length:.4f}")
+    else:
+        print("No reattachment up to x'/C = 1.0")
 else:
-    print("Reference separation-reattachment line not available")
+    print("No separation detected (no zero velocity points found)")
+print(f"{'='*70}\n")
+
+# Load RMS data (optional overlay)
+rms_data = None
+rms_by_xc = {}
+if os.path.exists(RMS_DATA_PATH):
+    rms_data = load_velocity_rms_profiles(os.path.join(RMS_DATA_PATH, RMS_DATA_NAME))
+    if rms_data is not None:
+        rms_by_xc = {round(p["x_c"], 6): p for p in rms_data["rms_profiles"]}
+        print(f"RMS data loaded: {len(rms_by_xc)} profiles")
+
+# Note: No reference data available for AoA=12°
 
 
 # =======================
@@ -747,10 +718,9 @@ print("="*70)
 #         label='u\' = 0 (Separation bubble)'
 #     )
     
-#     # Mark separation and reattachment points
+#     # Mark separation point only
 #     ax2.plot(isoline_data["x_c"][0], isoline_data["y_c"][0], 'ro', markersize=5, label='Separation')
-#     if len(isoline_data["x_c"]) > 1:
-#         ax2.plot(isoline_data["x_c"][-1], isoline_data["y_c"][-1], 'rs', markersize=5, label='Reattachment')
+#     # Note: No reattachment expected at AoA=12° within chord length
 
 # # Add velocity profiles at original locations (all black)
 # scale_factor = 0.05  # Scale for profile visualization
@@ -807,7 +777,7 @@ print("="*70)
 #     if rms_profile is not None and len(rms_profile["u_rms"]) == len(profile["u_rot"]):
 #         u_rms_sorted = (rms_profile["u_rms"] / u_infty)[sort_idx]
 
-#         # Plot u_rms profile as dash-dotted line with x-scale 5x smaller
+#         # Plot u_rms profile as dash-dotted line
 #         x_profile_rms = profile["x_start"] + u_rms_sorted * scale_factor
 #         ax2.plot(
 #             x_profile_rms,
@@ -824,7 +794,7 @@ print("="*70)
 # ax2.set_ylabel("y'", fontsize=12)
 # ax2.set_title("Separation Bubble with Velocity Profiles", fontsize=14)
 # ax2.set_xlim(-0.05, 1.1)
-# ax2.set_ylim(-0.1, 0.15)
+# ax2.set_ylim(-0.22, 0.25)
 # # ax2.legend(fontsize=10, loc='best')
 # ax2.grid(True, alpha=0.3)
 # ax2.set_aspect("equal")
@@ -833,188 +803,8 @@ print("="*70)
 # print("Saved: separation_bubble_with_profiles.png")
 # plt.show()
 
-#=======================
-# Plot 3: Separation bubble visualization on airfoil with velocity profiles and refernce data
-#=======================
-
-# fig3, ax3 = plt.subplots(figsize=(14, 8))
-
-# # Plot airfoil surface as continuous lines (same color for suction/pressure)
-# suction_order = np.argsort(x_suction_rot)
-# pressure_order = np.argsort(x_pressure_rot)
-# ax3.plot(
-#     x_suction_rot[suction_order],
-#     y_suction_rot[suction_order],
-#     '-',
-#     color="black",
-#     linewidth=0.8,
-#     alpha=0.8,
-#     label="Airfoil surface",
-# )
-# ax3.plot(
-#     x_pressure_rot[pressure_order],
-#     y_pressure_rot[pressure_order],
-#     '-',
-#     color="black",
-#     linewidth=0.8,
-#     alpha=0.8,
-# )
-
-# # Plot zero velocity isoline
-# if len(isoline_data["x_c"]) > 0:
-#     ax3.plot(
-#         isoline_data["x_c"],
-#         isoline_data["y_c"],
-#         'r-',
-#         linewidth=1.5,
-#         label='u\' = 0 (Separation bubble)'
-#     )
-    
-#     # Mark separation and reattachment points
-#     ax3.plot(isoline_data["x_c"][0], isoline_data["y_c"][0], 'ro', markersize=5, label='Separation')
-#     if len(isoline_data["x_c"]) > 1:
-#         ax3.plot(isoline_data["x_c"][-1], isoline_data["y_c"][-1], 'rs', markersize=5, label='Reattachment')
-
-# # Plot reference separation-reattachment line
-# if ref_sep_reatt is not None:
-#     ax3.plot(
-#         ref_sep_reatt["x"] - 0.003,
-#         ref_sep_reatt["y"] - 0.021,
-#         'g--',
-#         linewidth=2,
-#         alpha=0.8,
-#         label='Reference u\' = 0 (Jardin et al. 2025)'
-#     )
-
-# # Add velocity profiles at original locations (all black)
-# scale_factor = 0.05  # Scale for profile visualization
-# rms_profile_label_added = False
-
-# for x_c_target in x_c_locations_original:
-#     # Find closest profile
-#     diffs = np.abs(np.array([p["x_c"] for p in wall_normal_profiles_dense]) - x_c_target)
-#     idx = np.argmin(diffs)
-#     profile = wall_normal_profiles_dense[idx]
-
-#     # Wall-normal distance from surface
-#     eta = profile["y_prime"] - profile["y_start"]
-
-#     # Sort by wall-normal distance to keep plots monotonic
-#     sort_idx = np.argsort(eta)
-#     eta_sorted = eta[sort_idx]
-#     u_norm_sorted = (profile["u_rot"] / u_infty)[sort_idx]
-
-#     # Vertical dashed guide at each x/c location (from surface to profile top)
-#     ax3.plot(
-#         [profile["x_start"], profile["x_start"]],
-#         [profile["y_start"], profile["y_start"] + eta.max()],
-#         '--',
-#         color="black",
-#         alpha=0.6,
-#         linewidth=1.0,
-#     )
-    
-#     # Normalized velocity
-#     u_normalized = profile["u_rot"] / u_infty
-    
-#     # Position the velocity profile at the reference point
-#     # x position: x_start + scaled velocity (horizontal displacement)
-#     # y position: y_start + eta (wall-normal distance)
-#     x_profile = profile["x_start"] + u_norm_sorted * scale_factor
-#     y_profile = profile["y_start"] + eta_sorted
-    
-#     # Plot the velocity profile
-#     ax3.plot(
-#         x_profile,
-#         y_profile,
-#         '-',
-#         color="black",
-#         linewidth=1.5,
-#         alpha=0.7
-#     )
-    
-#     # Mark the reference point on the surface
-#     ax3.plot(profile["x_start"], profile["y_start"], 'o', color="black", markersize=4)
-
-#     # Overlay RMS profile (dash-dotted) if available for this profile
-#     rms_profile = rms_by_xc.get(round(profile["x_c"], 6), None)
-#     if rms_profile is not None and len(rms_profile["u_rms"]) == len(profile["u_rot"]):
-#         u_rms_sorted = (rms_profile["u_rms"] / u_infty)[sort_idx]
-
-#         # Plot u_rms profile as dash-dotted line with x-scale 5x smaller
-#         x_profile_rms = profile["x_start"] + u_rms_sorted * scale_factor 
-#         ax3.plot(
-#             x_profile_rms,
-#             y_profile,
-#             '-.',
-#             color="tab:blue",
-#             linewidth=1.1,
-#             alpha=0.9,
-#             label=("u_rms" if not rms_profile_label_added else None),
-#         )
-#         rms_profile_label_added = True
-
-# # Add reference data overlay
-# ref_label_added = False
-# ref_rms_label_added = False
-# for x_c_target in x_c_locations_original:
-#     # Find closest profile for positioning reference data
-#     diffs = np.abs(np.array([p["x_c"] for p in wall_normal_profiles_dense]) - x_c_target)
-#     idx = np.argmin(diffs)
-#     profile = wall_normal_profiles_dense[idx]
-    
-#     # Plot mean velocity reference data
-#     if x_c_target in ref_profiles:
-#         ref = ref_profiles[x_c_target]
-#         # Plot reference coordinates directly (already in x/c, y/c from the plot)
-#         # Apply offsets to align with CFD data
-#         ax3.plot(
-#             ref["x"],
-#             ref["y"],
-#             'ko-',
-#             linewidth=1.0,
-#             markersize=1,
-#             alpha=0.8,
-#             label=("Reference U_mean (Jardin et al. 2025)" if not ref_label_added else None)
-#         )
-#         ref_label_added = True
-    
-#     # Plot RMS reference data
-#     if x_c_target in ref_rms_profiles:
-#         ref_rms = ref_rms_profiles[x_c_target]
-#         # Scale the x displacement by 1/5 to match RMS profile scaling
-#         # The reference x represents x_start + u_rms*scale, so we need to compress the displacement
-#         x_start_ref = profile["x_start"]  # Use CFD profile start position
-#         # Extract the displacement from reference, scale it, and reapply
-#         ref_x_offset = (ref_rms["x"] - 0.003)
-#         ref_x_scaled = x_start_ref + (ref_x_offset - x_start_ref) / 5.0
-        
-#         ax3.plot(
-#             ref_x_scaled,
-#             (ref_rms["y"] - 0.021),
-#             'o-',
-#             color='tab:orange',
-#             linewidth=1.0,
-#             markersize=1,
-#             alpha=0.8,
-#             label=("Reference u_rms (Jardin et al. 2025)" if not ref_rms_label_added else None)
-#         )
-#         ref_rms_label_added = True
-
-# ax3.set_xlabel("x'", fontsize=12)
-# ax3.set_ylabel("y'", fontsize=12)
-# ax3.set_title("Separation Bubble with Velocity Profiles", fontsize=14)
-# ax3.set_xlim(-0.05, 1.1)
-# ax3.set_ylim(-0.1, 0.15)
-# # ax3.grid(True, alpha=0.3)
-# ax3.set_aspect("equal")
-# plt.tight_layout()
-# plt.savefig(os.path.join(OUTPUT_DATA_PATH, "separation_bubble_with_profiles_ref.png"), dpi=150)
-# print("Saved: separation_bubble_with_profiles_ref.png")
-# plt.show()
-
 # =======================
-# PLOT 4: WITH U_RMS CONTOURS
+# PLOT 4: WITH U_RMS CONTOURS (AoA=12°, no reference data)
 # =======================
 print("\nGenerating plot with u_rms contours...")
 
@@ -1029,26 +819,19 @@ X_grid, Y_grid, U_rms_grid = build_2d_grid_from_profiles(
 )
 
 if X_grid is not None:
-    fig4, ax4 = plt.subplots(figsize=(12, 2.18))
+    fig4, ax4 = plt.subplots(figsize=(12, 4.58))
     
     # Plot u_rms contours as filled contours (exclude first layer)
     levels = np.linspace(0, np.nanmax(U_rms_grid) * 1.0, 8)
     levels = levels[1:]  # Remove the first (innermost) contour level
-    # Manually set contour levels as fractions of maximum
-    #fractions = [0.1, 0.15, 0.2, 0.25, 0.3, 0.40, 0.45, 0.5]
-    #levels = np.array(fractions) * np.nanmax(U_rms_grid)
+    
     contourf = ax4.contourf(
         X_grid, Y_grid, U_rms_grid,
         levels=levels, cmap='YlOrRd', alpha=0.85
     )
-    # Add contour lines
-#     contour = ax4.contour(
-#     X_grid, Y_grid, U_rms_grid,
-#     levels=levels, colors='black', linewidths=0.2, alpha=0.3
-# )
-    # ax4.clabel(contour, inline=True, fontsize=8, fmt='%.3f')
+    
     # Add colorbar with label
-    cbar = plt.colorbar(contourf, ax=ax4, fraction=0.046, pad=0.04, shrink=1.0, aspect=20)
+    cbar = plt.colorbar(contourf, ax=ax4, fraction=0.046, pad=0.04, shrink=0.476, aspect=20)
     cbar.ax.set_title(r'$u_{rms}^{\prime}/U_{\infty}$', fontsize=14, pad=6)
     cbar.ax.tick_params(labelsize=12)
     cbar.ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'{x:.3f}'))
@@ -1089,7 +872,6 @@ if X_grid is not None:
     
     # Add velocity profiles at original locations
     scale_factor = 0.05
-    rms_profile_label_added = False
     
     for x_c_target in x_c_locations_original:
         # Find closest profile
@@ -1126,57 +908,17 @@ if X_grid is not None:
             color="black",
             alpha=0.5,
             linewidth=0.8,
-        )        
-        
-        # Overlay RMS profile (dash-dotted) if available for this profile
-        # rms_profile = rms_by_xc.get(round(profile["x_c"], 6), None)
-        # if rms_profile is not None and len(rms_profile["u_rms"]) == len(profile["u_rot"]):
-        #     u_rms_sorted = (rms_profile["u_rms"] / u_infty)[sort_idx]
-            
-        #     # Plot u_rms profile as dash-dotted line with x-scale 5x smaller
-        #     x_profile_rms = profile["x_start"] + u_rms_sorted * scale_factor
-        #     ax4.plot(
-        #         x_profile_rms,
-        #         y_profile,
-        #         '-.',
-        #         color="tab:blue",
-        #         linewidth=1.5,
-        #         alpha=1,
-        #         label=(r"$u\\'_{rms}$ profiles" if not rms_profile_label_added else None),
-        #     )
-        #     rms_profile_label_added = True
-    
-    # Add reference data overlay (circle markers only - mean velocity only)
-    ref_label_added = False
-    for x_c_target in x_c_locations_original:
-        # Find closest profile for positioning reference data
-        diffs = np.abs(np.array([p["x_c"] for p in wall_normal_profiles_dense]) - x_c_target)
-        idx = np.argmin(diffs)
-        profile = wall_normal_profiles_dense[idx]
-        
-        # Plot mean velocity reference data (circle markers only)
-        if x_c_target in ref_profiles:
-            ref = ref_profiles[x_c_target]
-            ax4.plot(
-                ref["x"],
-                ref["y"],
-                'o',
-                color='black',
-                markersize=3,
-                alpha=1,
-                label=("Reference U_mean" if not ref_label_added else None)
-            )
-            ref_label_added = True
+        )
     
     ax4.set_xlabel(r"$x/c$", fontsize=16)
     ax4.set_ylabel(r"$y/c$", fontsize=16)
     ax4.set_xlim(-0.05, 1.05)
-    ax4.set_ylim(-0.1, 0.1)
+    ax4.set_ylim(-0.22, 0.2)
     ax4.set_aspect("equal")
     plt.tight_layout()
-    plt.savefig(os.path.join(FIGURE_OUTPUT_PATH, "mean_velocity_profile_AoA5_Re5e4.eps"), format="eps", dpi=300, bbox_inches="tight")
-    plt.savefig(os.path.join(FIGURE_OUTPUT_PATH, "mean_velocity_profile_AoA5_Re5e4.png"), format="png", dpi=300, bbox_inches="tight")
-    print("Saved: mean_velocity_profile_AoA5_Re5e4.png")
+    plt.savefig(os.path.join(FIGURE_OUTPUT_PATH, "mean_velocity_profile_AoA12_Re5e4.eps"), format="eps", dpi=300, bbox_inches="tight")
+    plt.savefig(os.path.join(FIGURE_OUTPUT_PATH, "mean_velocity_profile_AoA12_Re5e4.png"), format="png", dpi=300, bbox_inches="tight")
+    print("Saved: mean_velocity_profile_AoA12_Re5e4.png")
 
     plt.show()
 else:
