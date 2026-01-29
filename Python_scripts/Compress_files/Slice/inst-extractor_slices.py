@@ -2,10 +2,10 @@ import os, glob, re
 import h5py
 import numpy as np
 import gc
-
+#hola
 # Define file path and name
 
-FILE_PATH = "/gpfs/scratch/upc108/EDU/NACA_0012_AOA12_Re50000_1716x1662x128/slices_data/slice_test/compressed_slices/"
+FILE_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Slices_data/slices_test/last_slice/"
 FILE_BASENAME = "slice_1"
 
 # REDUCED_TOPOLOGY_PATH = os.path.join(INPUT_BASE_PATH, INPUT_BASENAME+"-reduced-topology.h5")

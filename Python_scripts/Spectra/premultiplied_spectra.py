@@ -29,4 +29,4 @@ AVG_SLICE_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_R
 AVG_SLICE_NAME = "slice_1_14302400-COMP-DATA.h5"
 AVG_SLICE_FILE = os.path.join(AVG_SLICE_PATH, AVG_SLICE_NAME)
 
-# hola
+# 
