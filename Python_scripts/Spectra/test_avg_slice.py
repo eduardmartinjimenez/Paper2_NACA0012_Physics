@@ -5,8 +5,8 @@ import numpy as np
 
 
 # Define file path and name
-FILE_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Slices_data/slices_batch_1/slice_1_compr/last_slice/"
-FILE_NAME = "slice_1_output_14302400.h5"
+FILE_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Slices_data/slices_test/last_slice/"
+FILE_NAME = "slice_1_output_24299200.h5"
 FULL_PATH = os.path.join(FILE_PATH, FILE_NAME)
 
 
@@ -21,18 +21,40 @@ else:
 data_file = h5py.File(FULL_PATH, "r")
 
 ### Import 3D Data
-# x_data = data_file["x"][:, :, :]
-# y_data = data_file["y"][:, :, :]
-# z_data = data_file["z"][:, :, :]
-# tag_ibm_data = data_file["tag_IBM"][:, :, :]
-# u_data = data_file["avg_u"][:, :, :]
-# v_data = data_file["avg_v"][:, :, :]
-# w_data = data_file["avg_w"][:, :, :]
-# p_data = data_file["avg_P"][:, :, :]
-# u_data = data_file["u"][:, :, :]
-# v_data = data_file["v"][:, :, :]
-# w_data = data_file["w"][:, :, :]
-# p_data = data_file["P"][:, :, :]
+x_data = data_file["x"][:, :, :]
+y_data = data_file["y"][:, :, :]
+z_data = data_file["z"][:, :, :]
+tag_ibm_data = data_file["tag_IBM"][:, :, :]
+avg_u_data = data_file["avg_u"][:, :, :]
+avg_v_data = data_file["avg_v"][:, :, :]
+avg_w_data = data_file["avg_w"][:, :, :]
+avg_p_data = data_file["avg_P"][:, :, :]
+u_data = data_file["u"][:, :, :]
+v_data = data_file["v"][:, :, :]
+w_data = data_file["w"][:, :, :]
+p_data = data_file["P"][:, :, :]
+
+point_u = data_file["u"][4, 56]
+point_avg_u = data_file["avg_u"][4, 56]
+
+# Compare point values
+print(f"u at (4,56,27): {point_u}, avg_u at (4,56,27): {point_avg_u}")
+
+# Compare u and avg_u
+print(f"Max u: {u_data.max()}, Max avg_u: {avg_u_data.max()}")
+print(f"Min u: {u_data.min()}, Min avg_u: {avg_u_data.min()}")
+
+
+
+print(f"Max u: {w_data.max()}, Max avg_u: {avg_w_data.max()}")
+print(f"Min u: {w_data.min()}, Min avg_u: {avg_w_data.min()}")
+# Cheack if the arrays have the same shape
+print(f"Shape of u_data: {u_data.shape}, Shape of avg_u_data: {avg_u_data.shape}")
+
+# Check difference between u and avg_u
+difference = np.abs(u_data - avg_u_data)
+print(f"Max difference between u and avg_u: {difference.max()}")
+print(f"Mean difference between u and avg_u: {difference.mean()}")
 
 
 ### Import Correlation data

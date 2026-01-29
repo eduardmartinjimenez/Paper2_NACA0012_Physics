@@ -154,11 +154,60 @@ def save_xdmf(inst, data_shape):
     f.write("\n")
     f.write(f"      </Attribute>")
     f.write("\n")
+    f.write(f"      <Attribute Name='avg_u' AttributeType='Scalar' Center='Node'>")
+    f.write("\n")
+    f.write(
+        f"        <DataItem Dimensions='{shape}' NumberType='Float' Precision='8' Format='HDF'>"
+    )
+    f.write("\n")
+    f.write(f"            {data_source_file}:/avg_u")
+    f.write("\n")
+    f.write(f"        </DataItem>")
+    f.write("\n")
+    f.write(f"      </Attribute>")
+    f.write("\n")
+    f.write(f"      <Attribute Name='avg_v' AttributeType='Scalar' Center='Node'>")
+    f.write("\n")
+    f.write(
+        f"        <DataItem Dimensions='{shape}' NumberType='Float' Precision='8' Format='HDF'>"
+    )
+    f.write("\n")
+    f.write(f"            {data_source_file}:/avg_v")
+    f.write("\n")
+    f.write(f"        </DataItem>")
+    f.write("\n")
+    f.write(f"      </Attribute>")
+    f.write("\n")
+    f.write(f"      <Attribute Name='avg_w' AttributeType='Scalar' Center='Node'>")
+    f.write("\n")
+    f.write(
+        f"        <DataItem Dimensions='{shape}' NumberType='Float' Precision='8' Format='HDF'>"
+    )
+    f.write("\n")
+    f.write(f"            {data_source_file}:/avg_w")
+    f.write("\n")
+    f.write(f"        </DataItem>")
+    f.write("\n")
+    f.write(f"      </Attribute>")
+    f.write("\n")
+    f.write(f"      <Attribute Name='avg_p' AttributeType='Scalar' Center='Node'>")
+    f.write("\n")
+    f.write(
+        f"        <DataItem Dimensions='{shape}' NumberType='Float' Precision='8' Format='HDF'>"
+    )
+    f.write("\n")
+    f.write(f"            {data_source_file}:/avg_p")
+    f.write("\n")
+    f.write(f"        </DataItem>")
+    f.write("\n")
+    f.write(f"      </Attribute>")
+    f.write("\n")
     f.write(f"    </Grid>")
     f.write("\n")
     f.write(f"  </Domain>")
     f.write("\n")
     f.write(f"</Xdmf>")
+
 
     f.close()
 
@@ -208,6 +257,11 @@ if __name__ == "__main__":
         w_compressed = data_file["w_compressed"][:]
         p_compressed = data_file["p_compressed"][:]
 
+        avg_u_compressed = data_file["u_avg_compressed"][:]
+        avg_v_compressed = data_file["v_avg_compressed"][:]
+        avg_w_compressed = data_file["w_avg_compressed"][:]
+        avg_p_compressed = data_file["p_avg_compressed"][:]
+
         data_file.close()
         del data_file
         gc.collect()
@@ -216,6 +270,11 @@ if __name__ == "__main__":
         v = np.full_like(x, np.nan)
         w = np.full_like(x, np.nan)
         p = np.full_like(x, np.nan)
+        
+        avg_u = np.full_like(x, np.nan)
+        avg_v = np.full_like(x, np.nan)
+        avg_w = np.full_like(x, np.nan)
+        avg_p = np.full_like(x, np.nan)
 
         # Extracting compressed data to expanded fields
         extract_compressed_data(u, u_compressed, compressed_topo)
@@ -223,7 +282,12 @@ if __name__ == "__main__":
         extract_compressed_data(w, w_compressed, compressed_topo)
         extract_compressed_data(p, p_compressed, compressed_topo)
 
-        del u_compressed, v_compressed, w_compressed, p_compressed
+        extract_compressed_data(avg_u, avg_u_compressed, compressed_topo)
+        extract_compressed_data(avg_v, avg_v_compressed, compressed_topo)
+        extract_compressed_data(avg_w, avg_w_compressed, compressed_topo)
+        extract_compressed_data(avg_p, avg_p_compressed, compressed_topo)
+
+        del u_compressed, v_compressed, w_compressed, p_compressed, avg_u_compressed, avg_v_compressed, avg_w_compressed, avg_p_compressed
         gc.collect()
 
         # Saving expanded fields
@@ -237,8 +301,14 @@ if __name__ == "__main__":
         output_file.create_dataset("v", data=v, dtype="float32")
         output_file.create_dataset("w", data=w, dtype="float32")
         output_file.create_dataset("p", data=p, dtype="float32")
+        
+        # Create datasets with averaged values 
+        output_file.create_dataset("avg_u", data=avg_u, dtype="float32")
+        output_file.create_dataset("avg_v", data=avg_v, dtype="float32")
+        output_file.create_dataset("avg_w", data=avg_w, dtype="float32")
+        output_file.create_dataset("avg_p", data=avg_p, dtype="float32")
 
-        del u, v, w, p
+        del u, v, w, p, avg_u, avg_v, avg_w, avg_p
 
         gc.collect()
 

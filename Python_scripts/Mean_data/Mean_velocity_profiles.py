@@ -231,7 +231,7 @@ else:
     print("NO CACHED DATA - Running full computation")
     print("="*60 + "\n")
     
-    # Load geometrical data
+# Load geometrical data
 assert_exists(GEO_FILE, "Geometrical data file")
 
 with h5py.File(GEO_FILE, "r") as f:

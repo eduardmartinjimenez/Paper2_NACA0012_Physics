@@ -4,13 +4,13 @@ import numpy as np
 import gc
 
 # Define input file path and base name
-INPUT_FILE_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Slices_data/slices_batch_1/slice_9_compr/last_slice/"
-INPUT_FILE_BASENAME = "slice_9_output"
+INPUT_FILE_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Slices_data/slices_test/last_slice/"
+INPUT_FILE_BASENAME = "slice_1_output"
 
 # Define ouput folder path
-OUTPUT_FILE_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Slices_data/slices_batch_1/slice_9_compr/last_slice/"
+OUTPUT_FILE_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Slices_data/slices_test/last_slice/"
 # Rename ONLY the output files. If None, it uses INPUT_FILE_BASENAME.
-OUTPUT_FILE_BASENAME = "slice_9"
+OUTPUT_FILE_BASENAME = "slice_1"
 
 # Define crop region:
 X_MIN = -0.5
@@ -246,6 +246,7 @@ if __name__ == "__main__":
         output_file.create_dataset("v_compressed", data=v_compressed, dtype="float32")
         output_file.create_dataset("w_compressed", data=w_compressed, dtype="float32")
         output_file.create_dataset("p_compressed", data=p_compressed, dtype="float32")
+        
         output_file.create_dataset(
             "u_avg_compressed", data=u_avg_compressed, dtype="float32"
         )
