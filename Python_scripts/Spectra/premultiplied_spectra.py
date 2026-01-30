@@ -138,18 +138,29 @@ print("avg_v_data shape:", avg_v_data.shape)
 print("avg_w_data shape:", avg_w_data.shape)
 print("avg_p_data shape:", avg_p_data.shape)
 
-# Find the closest interface point in the suction side for x cordinate of the slice
-# Get unique x coordinates from the slice
-slice_x_coords = np.unique(x_data)
+# Find the closest interface point in the suction side matching the slice's x coordinate
+# Get the slice's x coordinate (assuming constant x along the slice)
+slice_x = x_data[0, 0, 0]  # All x values should be the same in the slice
+print(f"Slice x coordinate: {slice_x:.6f}")
 
-# Find the x coordinate closest to the suction side interface points
-closest_interface_point = suction_side_points[
-    np.argmin(np.abs(suction_side_points[:, 0] - slice_x_coords[len(slice_x_coords)//2]))
-]
+# Find the interface point on suction side closest to this x
+x_distances = np.abs(suction_side_points[:, 0] - slice_x)
+closest_idx = np.argmin(x_distances)
+closest_interface_point = suction_side_points[closest_idx]
+interface_y = closest_interface_point[1]  # y coordinate of the interface point
 
-print("Closest interface point:", closest_interface_point)
-print("Closest interface point x coordinate:", closest_interface_point[0])
-print("Closest interface point y coordinate:", closest_interface_point[1])
+print(f"Closest interface point: ({closest_interface_point[0]:.6f}, {interface_y:.6f})")
+print(f"Distance to slice x: {x_distances[closest_idx]:.6e}")
+
+# Find the slice y grid index closest to the interface y coordinate
+slice_y_unique = np.unique(y_data[0, :, 0])  # Get unique y values in the slice
+y_distances = np.abs(slice_y_unique - interface_y)
+j_closest = np.argmin(y_distances)
+slice_y_at_interface = slice_y_unique[j_closest]
+
+print(f"Slice y grid index closest to interface: {j_closest}")
+print(f"Slice y value at interface: {slice_y_at_interface:.6f}")
+print(f"Distance to interface y: {y_distances[j_closest]:.6e}")
 
 # Plot the slice points and highlight the closest interface point
 # plt.figure(figsize=(10, 6))
@@ -178,10 +189,15 @@ print("Closest interface point y coordinate:", closest_interface_point[1])
 # plt.show()    
 
 # Extract the normal direction at the closest interface point
-tree = cKDTree(interface_points[:, :2])
-_, idx = tree.query(closest_interface_point[:2])
-normal_at_closest_point = proj_normals[idx]
-print("Normal at closest interface point:", normal_at_closest_point)
+# Use the index we already found (closest_idx from interface_points)
+# But we need to find the index in the full interface_points array (before filtering)
+tree_full = cKDTree(interface_points[:, :2])
+_, idx_full = tree_full.query(closest_interface_point[:2])
+normal_at_closest_point = proj_normals[idx_full]
+distance_at_closest_point = proj_distances[idx_full]
+
+print(f"Normal at closest interface point: {normal_at_closest_point}")
+print(f"Wall distance at closest interface point: {distance_at_closest_point:.6e}")
 
 # Plot the normal vector at the closest interface point
 # plt.figure(figsize=(10, 6))
@@ -283,33 +299,17 @@ span_avg_u_t = np.mean(u_t, axis=0)
 print("span_avg_u_t shape:", span_avg_u_t.shape)
 
 # Compute wall shear stress at the closest interface point
-# Find grid points closest to all interface points
-grid_points_2d = np.column_stack([x_data[0].ravel(), y_data[0].ravel()])
-grid_tree = cKDTree(grid_points_2d)
-_, grid_indices = grid_tree.query(interface_points[:, :2])
-
-# Convert flat indices to 2D grid indices
-ny, nx = x_data.shape[1], x_data.shape[2]
-j_grid = grid_indices // nx
-i_grid = grid_indices % nx
-
-# Get grid indices for the closest interface point
-j_closest = j_grid[idx]
-i_closest = i_grid[idx]
-
-# Spanwise-averaged tangential velocity at the closest interface point
-u_t_closest_avg = np.mean(avg_u_t[:, j_closest, i_closest])
-
-# Wall distance at the closest interface point
-distance_closest = proj_distances[idx]
+# Get spanwise-averaged (z-direction) tangential velocity at the closest y grid location
+u_t_closest_avg = np.mean(avg_u_t[:, j_closest, :])
 
 # Wall shear stress at the closest interface point: τ_w = μ * u_t / distance
-tau_w_closest = mu_ref * u_t_closest_avg / distance_closest
+tau_w_closest = mu_ref * u_t_closest_avg / distance_at_closest_point
 
 print(f"\nWall shear stress at closest interface point:")
-print(f"  Location: ({closest_interface_point[0]:.4f}, {closest_interface_point[1]:.4f})")
+print(f"  Interface location: ({closest_interface_point[0]:.6f}, {interface_y:.6f})")
+print(f"  Slice y grid index: {j_closest}")
 print(f"  Spanwise-averaged tangential velocity: {u_t_closest_avg:.6e} m/s")
-print(f"  Wall distance: {distance_closest:.6e} m")
+print(f"  Wall distance: {distance_at_closest_point:.6e} m")
 print(f"  Wall shear stress: {tau_w_closest:.6e} Pa")
 
 
