@@ -72,30 +72,30 @@ print("proj_distances shape:", proj_distances.shape)
 print("proj_distances sample:", proj_distances[:5])
 
 # Plot interface points
-# plt.figure(figsize=(10, 6))
-# plt.scatter(interface_points[:, 0], interface_points[:, 1], c='red', s=20, alpha=0.5)
-# plt.xlabel('x')
-# plt.ylabel('y')
-# plt.title('NACA 0012 Interface Points')
-# plt.grid(True, alpha=0.3)
-# plt.axis('equal')
-# plt.tight_layout()
-# plt.show()
+plt.figure(figsize=(10, 6))
+plt.scatter(interface_points[:, 0], interface_points[:, 1], c='red', s=20, alpha=0.5)
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title('NACA 0012 Interface Points')
+plt.grid(True, alpha=0.3)
+plt.axis('equal')
+plt.tight_layout()
+plt.show()
 
 # Filter suction side interface points (y >= 0)
 suction_side_points = interface_points[interface_points[:, 1] >= 0]
 print("Suction side points shape:", suction_side_points.shape)
 
 # Plot suction side interface points
-# plt.figure(figsize=(10, 6))
-# plt.scatter(suction_side_points[:, 0], suction_side_points[:, 1], c='blue', s=20, alpha=0.5)
-# plt.xlabel('x')
-# plt.ylabel('y')
-# plt.title('NACA 0012 Suction Side Interface Points')
-# plt.grid(True, alpha=0.3)
-# plt.axis('equal')
-# plt.tight_layout()
-# plt.show()
+plt.figure(figsize=(10, 6))
+plt.scatter(suction_side_points[:, 0], suction_side_points[:, 1], c='blue', s=20, alpha=0.5)
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title('NACA 0012 Suction Side Interface Points')
+plt.grid(True, alpha=0.3)
+plt.axis('equal')
+plt.tight_layout()
+plt.show()
 
 # Load compressed slice data
 loader = CompressedSnapshotLoader(MESH_SLICE_FILE)
@@ -150,7 +150,19 @@ closest_interface_point = suction_side_points[closest_idx]
 interface_y = closest_interface_point[1]  # y coordinate of the interface point
 
 print(f"Closest interface point: ({closest_interface_point[0]:.6f}, {interface_y:.6f})")
-print(f"Distance to slice x: {x_distances[closest_idx]:.6e}")
+
+# Plot the closest interface point
+plt.figure(figsize=(10, 6))
+plt.scatter(suction_side_points[:, 0], suction_side_points[:, 1], c='blue', s=10, alpha=0.5, label='Suction Side Interface Points')
+plt.scatter(closest_interface_point[0], closest_interface_point[1], c='red', s=10, label='Closest Interface Point')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title('Closest Interface Point to Slice x Coordinate')
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.axis('equal')
+plt.tight_layout()
+plt.show()
 
 # Find the slice y grid index closest to the interface y coordinate
 slice_y_unique = np.unique(y_data[0, :, 0])  # Get unique y values in the slice
@@ -162,31 +174,19 @@ print(f"Slice y grid index closest to interface: {j_closest}")
 print(f"Slice y value at interface: {slice_y_at_interface:.6f}")
 print(f"Distance to interface y: {y_distances[j_closest]:.6e}")
 
-# Plot the slice points and highlight the closest interface point
-# plt.figure(figsize=(10, 6))
-# plt.scatter(x_data.flatten(), y_data.flatten(), c='lightgray', s=10, alpha=0.5, label='Slice Points')
-# plt.scatter(closest_interface_point[0], closest_interface_point[1], c='red', s=100, label='Closest Interface Point')
-# plt.xlabel('x')
-# plt.ylabel('y')
-# plt.title('Slice Points and Closest Interface Point')
-# plt.legend()
-# plt.grid(True, alpha=0.3)
-# plt.axis('equal')
-# plt.tight_layout()
-# plt.show()
-
-# Plot the slice over the interface points
-# plt.figure(figsize=(10, 6))
-# plt.scatter(interface_points[:, 0], interface_points[:, 1], c='lightgray', s=10, alpha=0.5, label='Interface Points')
-# plt.scatter(x_data.flatten(), y_data.flatten(), c='blue', s=5, alpha=0.5, label='Slice Points')
-# plt.xlabel('x')
-# plt.ylabel('y')
-# plt.title('Slice Points over Interface Points')
-# plt.legend()
-# plt.grid(True, alpha=0.3)
-# plt.axis('equal')
-# plt.tight_layout()
-# plt.show()    
+# Plot the slice points, the interface points, and highlight the closest interface point
+plt.figure(figsize=(10, 6))
+plt.scatter(x_data.flatten(), y_data.flatten(), c='blue', s=5, alpha=0.5, label='Slice Points')
+plt.scatter(closest_interface_point[0], closest_interface_point[1], c='red', s=20, label='Closest Interface Point')
+plt.scatter(suction_side_points[:, 0], suction_side_points[:, 1], c='blue', s=10, alpha=0.5, label='Suction Side Interface Points')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title('Slice Points and Closest Interface Point')
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.axis('equal')
+plt.tight_layout()
+plt.show()  
 
 # Extract the normal direction at the closest interface point
 # Use the index we already found (closest_idx from interface_points)
@@ -202,23 +202,6 @@ print(f"Wall distance at closest interface point: {distance_at_closest_point:.6e
 # Plot the normal vector at the closest interface point
 # plt.figure(figsize=(10, 6))
 # plt.scatter(interface_points[:, 0], interface_points[:, 1], c='lightgray', s=10, alpha=0.5, label='Interface Points')
-# plt.quiver(
-#     closest_interface_point[0], closest_interface_point[1],
-#     normal_at_closest_point[0], normal_at_closest_point[1],
-#     color='red', scale=10, width=0.005, label='Normal'
-# )
-# plt.xlabel('x')
-# plt.ylabel('y')
-# plt.title('Normal Vector at Closest Interface Point')
-# plt.legend()
-# plt.grid(True, alpha=0.3)
-# plt.axis('equal')
-# plt.tight_layout()
-# plt.show()
-
-# Plot the normal vector at the closest interface point with the slice
-# plt.figure(figsize=(10, 6))
-# plt.scatter(interface_points[:, 0], interface_points[:, 1], c='lightgray', s=10, alpha=0.5, label='Interface Points')
 # plt.scatter(x_data.flatten(), y_data.flatten(), c='blue', s=5, alpha=0.5, label='Slice Points')
 # plt.quiver(
 #     closest_interface_point[0], closest_interface_point[1],
@@ -232,7 +215,7 @@ print(f"Wall distance at closest interface point: {distance_at_closest_point:.6e
 # plt.grid(True, alpha=0.3)
 # plt.axis('equal')
 # plt.tight_layout()
-# plt.show()
+# plt.show()  
 
 # Compute tangential direction at the closest interface point
 tangent_at_closest_point = np.array([normal_at_closest_point[1], -normal_at_closest_point[0], 0.0])
@@ -243,7 +226,7 @@ print("Tangent at closest interface point:", tangent_at_closest_point)
 # dot_product = np.dot(normal_at_closest_point, tangent_at_closest_point)
 # print("Dot product (should be close to 0):", dot_product)
 
-# Plot the tangetial and normal vector at the closest interface point with the slice
+# Plot the normal vector at the closest interface point with the slice
 # plt.figure(figsize=(10, 6))
 # plt.scatter(interface_points[:, 0], interface_points[:, 1], c='lightgray', s=10, alpha=0.5, label='Interface Points')
 # plt.scatter(x_data.flatten(), y_data.flatten(), c='blue', s=5, alpha=0.5, label='Slice Points')
@@ -259,12 +242,12 @@ print("Tangent at closest interface point:", tangent_at_closest_point)
 # )
 # plt.xlabel('x')
 # plt.ylabel('y')
-# plt.title('Normal and Tangent Vectors at Closest Interface Point with Slice')
+# plt.title('Normal Vector at Closest Interface Point with Slice')
 # plt.legend()
 # plt.grid(True, alpha=0.3)
 # plt.axis('equal')
 # plt.tight_layout()
-# plt.show()
+# plt.show()  
 
 # Decompose velocity into normal and tangential components
 u_n = (u_data * normal_at_closest_point[0] +
@@ -294,23 +277,31 @@ print("avg_u_t shape:", avg_u_t.shape)
 u_t_fluct = u_t - avg_u_t
 print("u_t_fluct shape:", u_t_fluct.shape)
 
-# Spanwise average of tangential velocity
-span_avg_u_t = np.mean(u_t, axis=0)
-print("span_avg_u_t shape:", span_avg_u_t.shape)
+# Spanwise average of average tangential velocity for wall shear stress
+span_avg_avg_u_t = np.mean(avg_u_t, axis=0)
+print("span_avg_avg_u_t shape:", span_avg_avg_u_t.shape)
 
 # Compute wall shear stress at the closest interface point
-# Get spanwise-averaged (z-direction) tangential velocity at the closest y grid location
-u_t_closest_avg = np.mean(avg_u_t[:, j_closest, :])
+# Use spanwise-averaged tangential velocity at the closest y grid location
+u_t_closest_avg = span_avg_avg_u_t[j_closest, 0]
+print("Spanwise-averaged tangential velocity at closest point:", u_t_closest_avg)
 
 # Wall shear stress at the closest interface point: τ_w = μ * u_t / distance
 tau_w_closest = mu_ref * u_t_closest_avg / distance_at_closest_point
 
+# Friction velocity: u_tau = sqrt(τ_w / ρ)
+u_tau = np.sqrt(np.abs(tau_w_closest) / rho_ref)
+
+# Dimensionless wall distance: y+ = u_tau * y / nu
+y_plus = u_tau * distance_at_closest_point / nu_ref
+
 print(f"\nWall shear stress at closest interface point:")
 print(f"  Interface location: ({closest_interface_point[0]:.6f}, {interface_y:.6f})")
-print(f"  Slice y grid index: {j_closest}")
-print(f"  Spanwise-averaged tangential velocity: {u_t_closest_avg:.6e} m/s")
-print(f"  Wall distance: {distance_at_closest_point:.6e} m")
 print(f"  Wall shear stress: {tau_w_closest:.6e} Pa")
+print(f"  Friction velocity: {u_tau:.6e} m/s")
+print(f"  Dimensionless wall distance (y+): {y_plus:.6e}")
+
+
 
 
 

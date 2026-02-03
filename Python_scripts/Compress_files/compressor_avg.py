@@ -4,14 +4,14 @@ import numpy as np
 import gc
 
 # Define input file path and base name
-INPUT_FILE_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/temporal_last_snapshot/"
-INPUT_FILE_BASENAME = "3d_ibm_stl_naca0012_1916_1988_128_aoa5_Re50000"
+INPUT_FILE_PATH = "/home/jofre/Members/George/Simulations/NACA_0012_AOA5_Re10000_502x443x64/batch_6/last_snapshot/"
+INPUT_FILE_BASENAME = "3d_ibm_stl_naca0012_aoa5_Re10000"
 
 # Define ouput folder path
-OUTPUT_FILE_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/temporal_last_snapshot/"
+OUTPUT_FILE_PATH = "/home/jofre/Members/George/Simulations/NACA_0012_AOA5_Re10000_502x443x64/batch_6/last_snapshot/"
 
 # Rename ONLY the output files. If None, it uses INPUT_FILE_BASENAME.
-OUTPUT_FILE_BASENAME = "3d_NACA0012_Re50000_AoA5_avg"
+OUTPUT_FILE_BASENAME = "3d_NACA0012_Re10000_AoA5_avg"
 
 # Define crop region:
 X_MIN = -0.5

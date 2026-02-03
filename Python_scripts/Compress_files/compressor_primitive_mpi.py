@@ -18,13 +18,13 @@ if mpi_rank == 0:
     print("=" * 60)
 
 # Define input file path and base name
-INPUT_FILE_PATH = "/home/jofre/Members/George/Simulations/NACA_0012_AOA5_Re10000_502x443x64/batch_6/"
-INPUT_FILE_BASENAME = "3d_ibm_stl_naca0012_aoa5_Re10000"
+INPUT_FILE_PATH = "/home/jofre/Members/Eduard/Simulations/NACA_0012_AOA85_Re10000_502x443x64/batch_5/"
+INPUT_FILE_BASENAME = "3d_ibm_stl_naca0012_aoa85_Re10000"
 
 # Define output folder path
-OUTPUT_FILE_PATH = "/home/jofre/Members/George/Simulations/NACA_0012_AOA5_Re10000_502x443x64/batch_6/compressed_snapshots"
+OUTPUT_FILE_PATH = "/home/jofre/Members/Eduard/Simulations/NACA_0012_AOA85_Re10000_502x443x64/batch_5/compressed_snapshots"
 # Rename ONLY the output files. If None, it uses INPUT_FILE_BASENAME.
-OUTPUT_FILE_BASENAME = "3d_NACA0012_Re10000_AoA5"
+OUTPUT_FILE_BASENAME = "3d_NACA0012_Re10000_AoA85"
 
 # Define crop region:
 X_MIN = -0.5
