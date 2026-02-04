@@ -22,16 +22,20 @@ GEO_NAME = "3d_NACA0012_Re50000_AoA5_Geometrical_Data.h5"
 GEO_FILE = os.path.join(GEO_PATH, GEO_NAME)
 
 # Mesh slice path
-MESH_SLICE_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Slices_data/slices_test/"
+# MESH_SLICE_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Slices_data/slices_batch_1/slice_1_compr/"
+MESH_SLICE_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Slices_data/slices_test/last_slice/"
 MESH_SLICE_NAME = "slice_1-CROP-MESH.h5"
 MESH_SLICE_FILE = os.path.join(MESH_SLICE_PATH, MESH_SLICE_NAME)
 
 # Slices data path
+# SLICES_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Slices_data/slices_batch_1/slice_1_compr/"
 SLICES_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Slices_data/slices_test/"
 
 # Average data path
+# AVG_SLICE_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Slices_data/slices_batch_1/slice_1_compr/last_slice"
+# AVG_SLICE_NAME = "slice_1_14302400-COMP-DATA.h5"
 AVG_SLICE_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Slices_data/slices_test/last_slice/"
-AVG_SLICE_NAME = "slice_1_14302400-COMP-DATA.h5"
+AVG_SLICE_NAME =  "slice_1_14302400-COMP-DATA.h5"
 AVG_SLICE_FILE = os.path.join(AVG_SLICE_PATH, AVG_SLICE_NAME)
 
 # Reference parameters
@@ -54,7 +58,7 @@ def assert_exists(path: str, kind: str = "File") -> None:
 def get_slice_files(slices_path: str) -> list:
     """Get all snapshot slice files in directory, sorted by timestamp."""
     slice_files = []
-    for file in sorted(Path(slices_path).glob("slice_1_*-COMP-DATA.h5")):
+    for file in sorted(Path(slices_path).glob("slice_*-COMP-DATA.h5")):
         if "avg" not in file.name:  # Exclude average files
             slice_files.append(str(file))
     return slice_files
@@ -79,23 +83,27 @@ suction_side_points = interface_points[interface_points[:, 1] >= 0]
 loader = CompressedSnapshotLoader(MESH_SLICE_FILE)
 
 # Load mesh slice data
-x_data = loader.x[:, :, :]
-y_data = loader.y[:, :, :]
-z_data = loader.z[:, :, :]
+# Exclude ghost cells at spanwise boundaries
+
+x_data = loader.x[1:-1, :, :]
+y_data = loader.y[1:-1, :, :]
+z_data = loader.z[1:-1, :, :]
 
 # Data is ordered as (z, y, x)
-print(f"Full mesh shape: {x_data.shape}")
+print(f"Mesh shape: {x_data.shape}")
 
-# Exclude ghost cells at spanwise boundaries
-x_data = x_data[1:-1, :, :]
-y_data = y_data[1:-1, :, :]
-z_data = z_data[1:-1, :, :]
 
 # Spanwise domain extracted from mesh (first dimension, without ghost cells)
-L_z = np.ptp(z_data[1:-1, 0, 0])
-print(f"Spanwise domain from mesh (excluding ghost cells): {L_z:.6f} m")
+z_line = z_data[:, 0, 0]
+nz = z_line.size
+dz = abs(z_line[1] - z_line[0])
+L_z = dz * nz  # Spanwise domain length
 
-print(f"Mesh shape (without ghost cells): {x_data.shape}")
+print(f"Spanwise resolution (nz): {nz}")
+print(f"Spanwise spacing (dz): {dz:.6e} m")
+print(f"Spanwise domain (Lz): {L_z:.6e} m")
+
+print(f"Mesh shape: {x_data.shape}")
 print(f"Spanwise resolution: {z_data.shape[0]}")
 
 # Get the slice's x coordinate (all same, take any)
@@ -157,7 +165,7 @@ if AVG_SLICE_FILE and os.path.exists(AVG_SLICE_FILE):
                avg_w_data * tangent_at_closest_point[2])
     
     # Spanwise average of average tangential velocity (average over first axis = z)
-    span_avg_avg_u_t = np.mean(avg_u_t, axis=0)
+    span_avg_avg_u_t = np.nanmean(avg_u_t, axis=0)
     u_t_closest_avg = span_avg_avg_u_t[j_closest, 0]
     
     # Compute wall shear stress and friction velocity
@@ -184,18 +192,22 @@ if len(slice_files) == 0:
     sys.exit(1)
 
 # Spanwise wavenumber
-nz = z_data.shape[0]
-print(f"Spanwise resolution (nz): {nz}")
-dz = L_z / nz  # Spanwise grid spacing
-kz = 2 * np.pi * np.fft.fftfreq(nz, dz)  # Spanwise wavenumber [rad/m]
-kz_plus = kz * nu_ref / u_tau  # Inner-scaled spanwise wavenumber
+kz_full = 2.0 * np.pi * np.fft.fftfreq(nz, d=dz)   # (nz,) rad/m two-sided
+pos_mask = kz_full > 0.0    # keep only kz>0 (drop kz=0, negative)
+kz_pos = kz_full[pos_mask]  # (nk_pos,)
+kz_plus_pos = kz_pos * nu_ref / u_tau   # inner-scaled positive side
+nk_pos = kz_pos.size
+
+print(f"nz={nz}, dz={dz:.3e}, Lz={L_z:.3e}")
+print(f"Positive kz bins: {nk_pos}, kz range: {kz_pos.min():.3e} to {kz_pos.max():.3e} rad/m")
 
 # Get unique y coordinates
-y_unique = np.unique(y_data[:, :, 0][0, :])
-ny = len(y_unique)
+ny = y_data.shape[1]
+y_unique = y_data[0, :, 0]   # assuming y is constant along z and x in that slice
+print(f"Unique y locations: {ny}")
 
-# Initialize spectrum accumulator
-E_kz = np.zeros((ny, nz))  # Energy spectral density
+# PSD accumulator: one-sided (positive kz only)
+E_kz = np.zeros((ny, nk_pos), dtype=np.float64)  # Energy spectral density
 snapshot_count = 0
 
 print(f"\nProcessing {len(slice_files)} snapshots...")
@@ -205,6 +217,10 @@ print(f"Wall-normal grid points: {ny}")
 # ============================================================================
 # Main loop through snapshots
 # ============================================================================
+
+# Variance check settings (print once for debugging)
+j_test = min(10, ny - 1)     # choose a y-index not too close to the wall
+do_variance_check = True
 
 for i, slice_file in enumerate(slice_files):
     if not os.path.exists(slice_file):
@@ -233,13 +249,50 @@ for i, slice_file in enumerate(slice_files):
         # Compute fluctuations by subtracting the mean field
         u_t_fluct = u_t - span_avg_avg_u_t
         
+        if i == 0 and do_variance_check and j_test is None:
+            valid_js = [jj for jj in range(ny) if np.all(np.isfinite(u_t_fluct[:, jj, 0]))]
+            if len(valid_js) == 0:
+                raise RuntimeError("No valid y-lines found: all contain NaNs.")
+            j_test = valid_js[0]
+            print(f"[variance check] using first valid y-index: j_test={j_test}")
+
+
         # Spanwise FFT for each y location
         for j in range(ny):
-            u_t_fluct_line = u_t_fluct[:, j, 0]  # Spanwise line at location j (z direction)
-            fft_u_t = np.fft.fft(u_t_fluct_line)
-            psd = np.abs(fft_u_t) ** 2 / (nz ** 2)  # Power spectral density
-            E_kz[j, :] += psd
-        
+            u_line = u_t_fluct[:, j, 0] # real signal u'(z), length nz
+
+            # Skip invalid y locations (solid/IBM/undefined data)
+            if not np.all(np.isfinite(u_line)):
+                continue
+           
+            U_full = np.fft.fft(u_line) # two-sided FFT, length nz
+            Phi2_full = (dz / nz) * (np.abs(U_full) ** 2)   # two-sided variance density
+            
+            # Keep only kz>0 and apply one-sided correction (x2)
+            Phi1_pos = 2.0 * Phi2_full[pos_mask]    # length nk_pos
+            E_kz[j, :] += Phi1_pos
+
+            # ----------------------------------------------------------------------
+            # Variance consistency check:
+            #   var_phys = <u'^2> in physical space
+            #   var_spec = ∫ Phi(kz) dkz  (discrete sum)
+            # This should match up to small numerical differences.
+            # ----------------------------------------------------------------------
+            if do_variance_check and i == 0 and j == j_test:
+                var_phys = float(np.mean(u_line**2))
+
+                dk = float(kz_pos[1] - kz_pos[0])  # uniform spacing in kz (rad/m)
+                var_spec = float(np.sum(Phi1_pos) * dk / (2.0 * np.pi))
+
+                print("\n[variance check]")
+                print(f"  j_test = {j_test}")
+                print(f"  var_phys = <u'^2>           = {var_phys:.6e}")
+                print(f"  var_spec = ∫Phi dk          = {var_spec:.6e}")
+                print(f"  ratio var_spec/var_phys     = {var_spec/var_phys:.6f}\n")
+
+                # Disable further checks (avoid printing every time)
+                do_variance_check = False
+
         snapshot_count += 1
         
         if (i + 1) % max(1, len(slice_files) // 10) == 0:
@@ -262,17 +315,11 @@ print(f"\nProcessed {snapshot_count} snapshots successfully")
 # Compute inner-scaled premultiplied spectra
 # ============================================================================
 
-# Premultiplied spectrum: k_z^+ * Phi / u_tau^2
-# We need to convert from one-sided to two-sided spectrum and normalize
-k_plus_E = kz_plus[:, np.newaxis] * E_kz.T / (u_tau ** 2)
+# Premultiplied spectrum: kz * Phi / u_tau^2  (more standard than kz_plus * Phi)
+premult_pos = (kz_pos[np.newaxis, :] * E_kz) / (u_tau ** 2)   # (ny, nk_pos)
 
-# Only keep positive wavenumbers for plotting
-positive_kz_idx = kz > 0
-k_plus_positive = kz_plus[positive_kz_idx]
-k_plus_E_positive = k_plus_E[positive_kz_idx, :]
-
-print(f"Wavenumber range: {k_plus_positive.min():.2e} to {k_plus_positive.max():.2e}")
-print(f"Spectrum range: {np.nanmin(k_plus_E_positive):.2e} to {np.nanmax(k_plus_E_positive):.2e}")
+print(f"Wavenumber range: {kz_pos.min():.2e} to {kz_pos.max():.2e}")
+print(f"Spectrum range: {np.nanmin(premult_pos):.2e} to {np.nanmax(premult_pos):.2e}")
 
 # ============================================================================
 # Create visualization
@@ -281,46 +328,62 @@ print(f"Spectrum range: {np.nanmin(k_plus_E_positive):.2e} to {np.nanmax(k_plus_
 # Compute y+ for all wall-normal locations
 y_plus_all = u_tau * y_unique / nu_ref
 
-# Create contour plot
-fig, ax = plt.subplots(figsize=(10, 8))
+# Create contour plot with publication-quality formatting
+fig, ax = plt.subplots(figsize=(12, 8))
 
-# Use logarithmic scale for wavenumber
-X, Y = np.meshgrid(np.log10(k_plus_positive), y_plus_all)
-Z = k_plus_E_positive.T
+# Use logarithmic scale for wavelength (lambda_z^+ = 2*pi / k_z^+)
+lambda_z_plus = (2.0 * np.pi) / kz_plus_pos
+log10_lambda_z_plus = np.log10(lambda_z_plus)
+X, Y = np.meshgrid(log10_lambda_z_plus, y_plus_all)
+Z = premult_pos
 
-# Create contour plot
-levels = np.linspace(np.nanmin(Z), np.nanmax(Z), 20)
-contour = ax.contourf(X, Y, Z, levels=levels, cmap='RdYlBu_r')
-ax.contour(X, Y, Z, levels=[1.0, 3.8], colors='black', linewidths=1.5)
+# Create filled contour plot with smooth levels
+n_levels = 30
+levels = np.linspace(np.nanmin(Z), np.nanmax(Z), n_levels)
+contour_fill = ax.contourf(X, Y, Z, levels=levels, cmap='RdYlBu_r', extend='both')
 
-# Add colorbar
-cbar = plt.colorbar(contour, ax=ax)
-cbar.set_label(r'$k_z^+ \Phi_{u_t u_t}/u_\tau^2$')
+# Add contour lines for better visibility
+contour_lines = ax.contour(X, Y, Z, levels=[1.0, 3.8], colors='black', linewidths=2.0, alpha=0.7)
+ax.clabel(contour_lines, inline=True, fontsize=10, fmt='%.1f')
 
-# Set axis labels and scale
+# Add colorbar with proper formatting
+cbar = plt.colorbar(contour_fill, ax=ax, pad=0.02)
+cbar.set_label(r'$k_z\,\Phi_{u_tu_t}/u_\tau^2$', fontsize=12, labelpad=15)
+cbar.ax.tick_params(labelsize=10)
+
+# Set axis labels and scales
 ax.set_yscale('log')
-ax.set_ylabel(r'$y^+$')
-ax.set_xlabel(r'$\log_{10}(k_z^+)$')
-ax.set_title(f'Inner-scaled spanwise premultiplied PSD\n' + 
-             f'$x_{{ss}}/c = {slice_x:.2f}$, {snapshot_count} snapshots')
+ax.set_ylabel(r'$y^+$', fontsize=12)
+ax.set_xlabel(r'$\log_{10}(\lambda_z^+)$', fontsize=12)
+ax.tick_params(which='both', labelsize=11)
 
-# Add grid
-ax.grid(True, alpha=0.3)
+# Professional title
+ax.set_title(f'Inner-scaled spanwise premultiplied power spectral density\n' + 
+             f'$x_{{ss}}/c = {slice_x:.3f}$, $N_{{snapshots}} = {snapshot_count}$',
+             fontsize=13, pad=15)
+
+# Improve grid visibility
+ax.grid(True, which='both', alpha=0.3, linestyle='--', linewidth=0.5)
+ax.grid(True, which='major', alpha=0.5, linestyle='-', linewidth=0.7)
+
+# Set reasonable axis limits
+ax.set_xlim(log10_lambda_z_plus.min(), log10_lambda_z_plus.max())
+ax.set_ylim(y_plus_all.min(), y_plus_all.max())
 
 plt.tight_layout()
-plt.savefig(os.path.join(SLICES_PATH, "premultiplied_spectra.png"), dpi=300, bbox_inches='tight')
-print(f"\nFigure saved to: {os.path.join(SLICES_PATH, 'premultiplied_spectra.png')}")
+# plt.savefig(os.path.join(SLICES_PATH, "premultiplied_spectra.png"), dpi=300, bbox_inches='tight')
+# print(f"\nFigure saved to: {os.path.join(SLICES_PATH, 'premultiplied_spectra.png')}")
 plt.show()
 
 # ============================================================================
 # Save results
 # ============================================================================
 
-output_file = os.path.join(SLICES_PATH, "premultiplied_spectra_data.h5")
+output_file = os.path.join(SLICES_PATH, "premultiplied_spectra_data_3.h5")
 with h5py.File(output_file, "w") as f:
-    f.create_dataset("kz_plus", data=k_plus_positive)
+    f.create_dataset("kz_plus", data=kz_plus_pos)
     f.create_dataset("y_plus", data=y_plus_all)
-    f.create_dataset("premultiplied_psd", data=k_plus_E_positive.T)
+    f.create_dataset("premultiplied_psd", data=premult_pos)
     f.attrs["slice_x"] = slice_x
     f.attrs["u_tau"] = u_tau
     f.attrs["snapshot_count"] = snapshot_count
