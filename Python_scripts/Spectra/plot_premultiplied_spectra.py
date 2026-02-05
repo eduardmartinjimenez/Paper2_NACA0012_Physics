@@ -59,6 +59,7 @@ for fname in data_files:
         "kz_plus": kz_plus,
         "y_plus": y_plus,
         "premult_psd": premult_psd,
+        "lambda_z_plus": lambda_z_plus,
         "log10_lambda_z_plus": log10_lambda_z_plus,
         "slice_x": slice_x,
         "u_tau": u_tau,
@@ -67,7 +68,7 @@ for fname in data_files:
     })
 
 # ============================================================================
-# Create visualization for all locations
+# Create individual plots for each location (independent scales)
 # ============================================================================
 
 # Sort by chord location and limit to 5 plots
@@ -75,47 +76,95 @@ datasets = sorted(datasets, key=lambda d: d["slice_x"])
 if len(datasets) > 5:
     datasets = datasets[:5]
 
-n_plots = len(datasets)
-fig, axes = plt.subplots(1, n_plots, figsize=(3.2 * n_plots, 3.2), sharey=True)
-
-if n_plots == 1:
-    axes = [axes]
-
-print(f"\nGlobal spectrum range: {global_min:.2e} to {global_max:.2e}")
-n_levels = 30
-levels = np.linspace(global_min, global_max, n_levels)
-
-for ax, data in zip(axes, datasets):
-    X, Y = np.meshgrid(data["log10_lambda_z_plus"], data["y_plus"])
+print("\nCreating individual plots with independent scales...")
+for data in datasets:
+    fig, ax = plt.subplots(figsize=(8, 8))
+    
+    X, Y = np.meshgrid(data["lambda_z_plus"], data["y_plus"])
     Z = data["premult_psd"]
-
-    contour_fill = ax.contourf(X, Y, Z, levels=levels, cmap='RdYlBu_r', extend='both')
-
+    
+    # Use individual min/max for each plot
+    local_min = np.nanmin(Z)
+    local_max = np.nanmax(Z)
+    local_levels = np.linspace(local_min, local_max, 30)
+    
+    contour_fill = ax.contourf(X, Y, Z, levels=local_levels, cmap='RdYlBu_r', extend='both')
+    
+    cbar = plt.colorbar(contour_fill, ax=ax, pad=0.02)
+    cbar.set_label(r'$k_z\,\Phi_{u_tu_t}/u_\tau^2$', fontsize=12, labelpad=15)
+    cbar.ax.tick_params(labelsize=10)
+    
+    ax.set_xscale('log')
     ax.set_yscale('log')
-    ax.set_ylabel(r'$y^+$', fontsize=11)
-    ax.tick_params(which='both', labelsize=10)
-
-    ax.set_title(
-        f'$x_{{ss}}/c = {data["slice_x"]:.3f}$, $N_{{snapshots}} = {data["snapshot_count"]}$',
-        fontsize=11,
-        pad=8,
-    )
-
+    ax.set_ylabel(r'$y^+$', fontsize=12)
+    ax.set_xlabel(r'$\lambda_z^+$', fontsize=12)
+    ax.tick_params(which='both', labelsize=11)
+    
+    ax.set_title(f'Inner-scaled spanwise premultiplied power spectral density\n' + 
+                 f'$x_{{ss}}/c = {data["slice_x"]:.3f}$, $N_{{snapshots}} = {data["snapshot_count"]}$',
+                 fontsize=13, pad=15)
+    
     ax.grid(True, which='both', alpha=0.3, linestyle='--', linewidth=0.5)
     ax.grid(True, which='major', alpha=0.5, linestyle='-', linewidth=0.7)
-
+    
     ax.set_ylim(data["y_plus"].min(), data["y_plus"].max())
     ax.set_box_aspect(1)
+    
+    plt.tight_layout()
+    
+    # Save individual plot
+    output_individual = os.path.join(DATA_DIR, f"premultiplied_spectra_x{data['slice_x']:.3f}.png")
+    # plt.savefig(output_individual, dpi=300, bbox_inches='tight')
+    # print(f"  Saved: {output_individual}")
+    plt.show()
 
-for ax in axes:
-    ax.set_xlabel(r'$\log_{10}(\lambda_z^+)$', fontsize=11)
+# ============================================================================
+# Create combined visualization for all locations (global scale)
+# ============================================================================
 
-cbar = fig.colorbar(contour_fill, ax=axes, pad=0.02)
-cbar.set_label(r'$k_z\,\Phi_{u_tu_t}/u_\tau^2$', fontsize=12, labelpad=15)
-cbar.ax.tick_params(labelsize=10)
+# print("\nCreating combined plot with global scale...")
 
-fig.suptitle('Inner-scaled spanwise premultiplied power spectral density', fontsize=13, y=0.995)
-plt.tight_layout()
-# plt.savefig(OUTPUT_FILE, dpi=300, bbox_inches='tight')
-# print(f"\nFigure saved to: {OUTPUT_FILE}")
-plt.show()
+# n_plots = len(datasets)
+# fig, axes = plt.subplots(1, n_plots, figsize=(3.2 * n_plots, 3.2), sharey=True)
+
+# if n_plots == 1:
+#     axes = [axes]
+
+# print(f"\nGlobal spectrum range: {global_min:.2e} to {global_max:.2e}")
+# n_levels = 30
+# levels = np.linspace(global_min, global_max, n_levels)
+
+# for ax, data in zip(axes, datasets):
+#     X, Y = np.meshgrid(data["log10_lambda_z_plus"], data["y_plus"])
+#     Z = data["premult_psd"]
+
+#     contour_fill = ax.contourf(X, Y, Z, levels=levels, cmap='RdYlBu_r', extend='both')
+
+#     ax.set_yscale('log')
+#     ax.set_ylabel(r'$y^+$', fontsize=11)
+#     ax.tick_params(which='both', labelsize=10)
+
+#     ax.set_title(
+#         f'$x_{{ss}}/c = {data["slice_x"]:.3f}$, $N_{{snapshots}} = {data["snapshot_count"]}$',
+#         fontsize=11,
+#         pad=8,
+#     )
+
+#     ax.grid(True, which='both', alpha=0.3, linestyle='--', linewidth=0.5)
+#     ax.grid(True, which='major', alpha=0.5, linestyle='-', linewidth=0.7)
+
+#     ax.set_ylim(data["y_plus"].min(), data["y_plus"].max())
+#     ax.set_box_aspect(1)
+
+# for ax in axes:
+#     ax.set_xlabel(r'$\log_{10}(\lambda_z^+)$', fontsize=11)
+
+# cbar = fig.colorbar(contour_fill, ax=axes, pad=0.02)
+# cbar.set_label(r'$k_z\,\Phi_{u_tu_t}/u_\tau^2$', fontsize=12, labelpad=15)
+# cbar.ax.tick_params(labelsize=10)
+
+# fig.suptitle('Inner-scaled spanwise premultiplied power spectral density', fontsize=13, y=0.995)
+# plt.tight_layout()
+# # plt.savefig(OUTPUT_FILE, dpi=300, bbox_inches='tight')
+# # print(f"\nFigure saved to: {OUTPUT_FILE}")
+# plt.show()

@@ -18,7 +18,7 @@ from scipy.spatial import cKDTree
 
 # Save results
 SAVE_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/Premultiplied_spectra/"
-SAVE_NAME = "premultiplied_spectra_data_test_4.h5"
+SAVE_NAME = "premultiplied_spectra_data_test_Pablo.h5"
 SAVE_PATH = os.path.join(SAVE_DIR, SAVE_NAME)
 
 # Geometrical data file
@@ -97,7 +97,7 @@ print(f"Mesh shape: {x_data.shape}")
 # Spanwise domain parameters
 z_line = z_data[:, 0, 0]
 nz = z_line.size
-dz = abs(z_line[1] - z_line[0])
+dz = z_line[1] - z_line[0]
 L_z = dz * nz  # Spanwise domain length
 
 print(f"Spanwise domain: nz={nz}, dz={dz:.6e} m, Lz={L_z:.6e} m")
@@ -115,7 +115,7 @@ interface_y = closest_interface_point[1]
 print(f"Closest interface point: ({closest_interface_point[0]:.6f}, {interface_y:.6f})")
 
 # Find the slice y grid index closest to the interface y coordinate
-slice_y_unique = np.unique(y_data[:, :, 0][0, :])  # Extract y values along wall-normal direction
+slice_y_unique = np.unique(y_data[:, :, 0][0, :])
 y_distances = np.abs(slice_y_unique - interface_y)
 j_closest = np.argmin(y_distances)
 slice_y_at_interface = slice_y_unique[j_closest]
@@ -150,34 +150,34 @@ print(f"Wall distance at closest interface point: {distance_at_closest_point:.6e
 if AVG_SLICE_FILE and os.path.exists(AVG_SLICE_FILE):
     print(f"\nLoading average file: {AVG_SLICE_FILE}")
     avg_fields = loader.load_snapshot_avg(AVG_SLICE_FILE)
-    
+
     # Reconstruct average fields
     avg_u_data = loader.reconstruct_field(avg_fields["avg_u"])
     avg_v_data = loader.reconstruct_field(avg_fields["avg_v"])
     avg_w_data = loader.reconstruct_field(avg_fields["avg_w"])
-    
+
     # Exclude ghost cells from average data
     avg_u_data = avg_u_data[1:-1, :, :]
     avg_v_data = avg_v_data[1:-1, :, :]
     avg_w_data = avg_w_data[1:-1, :, :]
-    
+
     # Decompose average velocity into tangential component
     avg_u_t = (avg_u_data * tangent_at_closest_point[0] +
                avg_v_data * tangent_at_closest_point[1] +
                avg_w_data * tangent_at_closest_point[2])
-    
+
     # Spanwise average of average tangential velocity (average over first axis = z)
     span_avg_avg_u_t = np.nanmean(avg_u_t, axis=0)
     u_t_closest_avg = span_avg_avg_u_t[j_closest, 0]
-    
+
     # Crop to fluid region only
     span_avg_avg_u_t_fluid = span_avg_avg_u_t[j_start_fluid:, :]
-    
+
     # Compute wall shear stress and friction velocity
     tau_w_closest = mu_ref * u_t_closest_avg / distance_at_closest_point
     u_tau = np.sqrt(np.abs(tau_w_closest) / rho_ref)
     y_plus_interface = u_tau * distance_at_closest_point / nu_ref
-    
+
     print(f"Wall shear stress: {tau_w_closest:.6e} Pa")
     print(f"Friction velocity: {u_tau:.6e} m/s")
     print(f"y+ at interface: {y_plus_interface:.6e}")
@@ -223,68 +223,51 @@ print(f"Wall-normal fluid grid points: {ny}")
 # Main loop through snapshots
 # ============================================================================
 
-# Variance check settings (print once for debugging)
-j_test = min(10, ny - 1)     # choose a y-index not too close to the wall (in fluid region)
-do_variance_check = True
-
 for i, slice_file in enumerate(slice_files):
     if not os.path.exists(slice_file):
         print(f"File not found: {slice_file}")
         continue
-    
+
     try:
         # Load snapshot data
         fields = loader.load_snapshot(slice_file)
-        
+
         # Reconstruct fields
         u_data = loader.reconstruct_field(fields["u"])
         v_data = loader.reconstruct_field(fields["v"])
         w_data = loader.reconstruct_field(fields["w"])
-        
+
         # Exclude ghost cells from snapshot data
         u_data = u_data[1:-1, :, :]
         v_data = v_data[1:-1, :, :]
         w_data = w_data[1:-1, :, :]
-        
+
         # Decompose velocity into tangential component
         u_t = (u_data * tangent_at_closest_point[0] +
                v_data * tangent_at_closest_point[1] +
                w_data * tangent_at_closest_point[2])
-        
+
         # Extract only fluid region
         u_t_fluid = u_t[:, j_start_fluid:, :]
-        
+
         # Compute fluctuations by subtracting the mean field
         u_t_fluct = u_t_fluid - span_avg_avg_u_t_fluid
-        
-        # Spanwise FFT for each y location in fluid region
+
+        # FFT (colleague normalization): Euu = 0.5*|U|^2/N
         for j in range(ny):
-            u_line = u_t_fluct[:, j, 0] # real signal u'(z), length nz
-           
-            U_full = np.fft.fft(u_line) # two-sided FFT, length nz
-            Phi2_full = (dz / nz) * (np.abs(U_full) ** 2)   # two-sided variance density
-            
+            u_line = u_t_fluct[:, j, 0]  # real signal u'(z), length nz
+            U_full = np.fft.fft(u_line)  # two-sided FFT, length nz
+            Euu_full = 0.5 * (np.abs(U_full) ** 2) / nz
+
             # Keep only kz>0 and apply one-sided correction (x2)
-            Phi1_pos = 2.0 * Phi2_full[pos_mask]    # length nk_pos
-            E_kz[j, :] += Phi1_pos
-
-            # Variance consistency check (only on first snapshot)
-            if do_variance_check and i == 0 and j == j_test:
-                var_phys = float(np.mean(u_line**2))
-                var_spec = float(np.sum(Phi1_pos) / L_z)
-
-                print(f"\n[Variance check at j={j_test}]")
-                print(f"  Physical space: {var_phys:.6e}")
-                print(f"  Spectral space: {var_spec:.6e}")
-                print(f"  Ratio: {var_spec/var_phys:.6f}\n")
-
-                do_variance_check = False
+            Euu_pos = 2.0 * Euu_full[pos_mask]  # length nk_pos
+            E_kz[j, :] += Euu_pos
 
         snapshot_count += 1
-        
+
         if (i + 1) % max(1, len(slice_files) // 10) == 0:
             print(f"  Processed {i + 1}/{len(slice_files)} snapshots")
-    
+
     except Exception as e:
         print(f"Error processing {slice_file}: {e}")
         continue
@@ -299,11 +282,14 @@ E_kz /= snapshot_count
 print(f"\nProcessed {snapshot_count} snapshots successfully")
 
 # ============================================================================
-# Compute inner-scaled premultiplied spectra
+# Compute inner-scaled premultiplied spectra (colleague normalization)
 # ============================================================================
 
-# Premultiplied spectrum: kz * Phi / u_tau^2  (more standard than kz_plus * Phi)
-premult_pos = (kz_pos[np.newaxis, :] * E_kz) / (u_tau ** 2)   # (ny, nk_pos)
+# k+ = k * nu / u_tau
+kz_plus_pos = kz_pos * nu_ref / u_tau
+
+# Premultiplied spectrum: k+ * Euu / u_tau^2
+premult_pos = (kz_plus_pos[np.newaxis, :] * E_kz) / (u_tau ** 2)
 
 print(f"Wavenumber range: {kz_pos.min():.2e} to {kz_pos.max():.2e}")
 print(f"Spectrum range: {np.nanmin(premult_pos):.2e} to {np.nanmax(premult_pos):.2e}")
@@ -332,7 +318,7 @@ contour_fill = ax.contourf(X, Y, Z, levels=local_levels, cmap='RdYlBu_r', extend
 
 # Add colorbar with proper formatting
 cbar = plt.colorbar(contour_fill, ax=ax, pad=0.02)
-cbar.set_label(r'$k_z\,\Phi_{u_tu_t}/u_\tau^2$', fontsize=12, labelpad=15)
+cbar.set_label(r'$k_z^+\,E_{uu}/u_\tau^2$', fontsize=12, labelpad=15)
 cbar.ax.tick_params(labelsize=10)
 
 # Set axis labels and scales
@@ -343,7 +329,7 @@ ax.set_xlabel(r'$\lambda_z^+$', fontsize=12)
 ax.tick_params(which='both', labelsize=11)
 
 # Professional title
-ax.set_title(f'Inner-scaled spanwise premultiplied power spectral density\n' + 
+ax.set_title(f'Inner-scaled spanwise premultiplied power spectral density (colleague norm.)\n' + 
              f'$x_{{ss}}/c = {slice_x:.3f}$, $N_{{snapshots}} = {snapshot_count}$',
              fontsize=13, pad=15)
 
@@ -356,22 +342,22 @@ ax.set_ylim(y_plus_all.min(), y_plus_all.max())
 ax.set_box_aspect(1)
 
 plt.tight_layout()
-# plt.savefig(os.path.join(SLICES_PATH, "premultiplied_spectra.png"), dpi=300, bbox_inches='tight')
-# print(f"\nFigure saved to: {os.path.join(SLICES_PATH, 'premultiplied_spectra.png')}")
 plt.show()
 
 # ============================================================================
 # Save results
 # ============================================================================
 
-output_file = os.path.join(SAVE_DIR, SAVE_NAME)
-with h5py.File(output_file, "w") as f:
+output_dir = SAVE_DIR
+os.makedirs(output_dir, exist_ok=True)
+
+with h5py.File(SAVE_PATH, "w") as f:
     f.create_dataset("kz_plus", data=kz_plus_pos)
-    f.create_dataset("y_plus", data=y_plus_all)
+    f.create_dataset("y_plus", data=u_tau * y_unique / nu_ref)
     f.create_dataset("premultiplied_psd", data=premult_pos)
     f.attrs["slice_x"] = slice_x
     f.attrs["u_tau"] = u_tau
     f.attrs["snapshot_count"] = snapshot_count
     f.attrs["spanwise_domain"] = L_z
 
-print(f"Data saved to: {output_file}")
+print(f"Data saved to: {SAVE_PATH}")
