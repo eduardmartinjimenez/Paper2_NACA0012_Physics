@@ -4,13 +4,13 @@ import numpy as np
 import gc
 
 # Define input file path and base name
-INPUT_FILE_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Slices_data/slices_batch_2/slice_9_batch_2/last_slice/"
+INPUT_FILE_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA12_Re50000_1716x1662x128/Slice_data/slices_batch_3/slice_9/last_slice/"
 INPUT_FILE_BASENAME = "slice_9_output"
 
 # Define ouput folder path
-OUTPUT_FILE_PATH =  "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Slices_data/slices_batch_2/slice_9_batch_2/last_slice/"
+OUTPUT_FILE_PATH =  "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA12_Re50000_1716x1662x128/Slice_data/slices_batch_3/slice_9/last_slice/"
 # Rename ONLY the output files. If None, it uses INPUT_FILE_BASENAME.
-OUTPUT_FILE_BASENAME = "slice_9"
+OUTPUT_FILE_BASENAME = "slice_9_avg"
 
 # Define crop region:
 X_MIN = -0.5

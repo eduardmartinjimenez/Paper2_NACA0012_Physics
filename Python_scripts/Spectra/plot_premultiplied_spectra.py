@@ -22,7 +22,7 @@ if not os.path.isdir(DATA_DIR):
 
 data_files = sorted(
     f for f in os.listdir(DATA_DIR)
-    if f.endswith(".h5") and "premultiplied_spectra_data" in f
+    if f.endswith(".h5") and "premultiplied_spectra_data_all" in f
 )
 
 if len(data_files) == 0:

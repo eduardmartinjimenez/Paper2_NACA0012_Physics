@@ -17,29 +17,29 @@ from scipy.spatial import cKDTree
 # ============================================================================
 
 # Save results
-SAVE_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Premultiplied_spectra/"
-SAVE_NAME = "premultiplied_spectra_data_all_2_3.h5"
+SAVE_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/Premultiplied_spectra/"
+SAVE_NAME = "premultiplied_spectra_data_all_2_9.h5"
 SAVE_PATH = os.path.join(SAVE_DIR, SAVE_NAME)
 
 # Geometrical data file
-GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Geometrical_data/"
-GEO_NAME = "3d_NACA0012_Re50000_AoA12_Geometrical_Data.h5"
+GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Geometrical_data/"
+GEO_NAME = "3d_NACA0012_Re50000_AoA5_Geometrical_Data.h5"
 GEO_FILE = os.path.join(GEO_PATH, GEO_NAME)
 
 # Mesh slice path
-MESH_SLICE_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA12_Re50000_1716x1662x128/Slice_data/Slice_data/slice_3/"
-MESH_SLICE_NAME = "slice_3-CROP-MESH.h5"
+MESH_SLICE_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA5_Re50000_1716x1662x128/Slice_data/slice_9/"
+MESH_SLICE_NAME = "slice_9-CROP-MESH.h5"
 # MESH_SLICE_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Slices_data/slices_test/last_slice/"
 # MESH_SLICE_NAME = "slice_1-CROP-MESH.h5"
 MESH_SLICE_FILE = os.path.join(MESH_SLICE_PATH, MESH_SLICE_NAME)
 
 # Slices data path
-SLICES_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA12_Re50000_1716x1662x128/Slice_data/Slice_data/slice_3/"
+SLICES_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA5_Re50000_1716x1662x128/Slice_data/slice_9/"
 # SLICES_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Slices_data/slices_test/"
 
 # Average data path
-AVG_SLICE_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA12_Re50000_1716x1662x128/Slice_data/Slice_data/slice_3/last_slice/"
-AVG_SLICE_NAME = "slice_3_avg_26517600-COMP-DATA.h5"
+AVG_SLICE_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA5_Re50000_1716x1662x128/Slice_data/slice_9/last_slice/"
+AVG_SLICE_NAME = "slice_9_24299200-COMP-DATA.h5"
 # AVG_SLICE_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Slices_data/slices_test/last_slice/"
 # AVG_SLICE_NAME =  "slice_1_14302400-COMP-DATA.h5"
 AVG_SLICE_FILE = os.path.join(AVG_SLICE_PATH, AVG_SLICE_NAME)
@@ -258,11 +258,15 @@ for i, slice_file in enumerate(slice_files):
         # FFT (normalization): Euu = 0.5*|U|^2/N
         for j in range(ny):
             u_line = u_t_fluct[:, j, 0]  # real signal u'(z), length nz
-            U_full = np.fft.fft(u_line) / nz  # two-sided FFT, length nz
-            Euu_full = 0.5 * (np.abs(U_full) ** 2)
+            # U_full = np.fft.fft(u_line) / nz  # two-sided FFT, length nz
+            # Euu_full = 0.5 * (np.abs(U_full) ** 2)
+
+            U_full = np.fft.fft(u_line)
+            Euu_full = (dz / nz) * (np.abs(U_full) ** 2)  # two-sided variance density
 
             # Keep only kz>0 and apply one-sided correction (x2)
             Euu_pos = 2.0 * Euu_full[pos_mask]  # length nk_pos
+            
             E_kz[j, :] += Euu_pos
 
         snapshot_count += 1
