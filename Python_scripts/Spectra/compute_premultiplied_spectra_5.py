@@ -12,6 +12,9 @@ if module_path not in sys.path:
 from data_loader_functions import CompressedSnapshotLoader
 from scipy.spatial import cKDTree
 
+#            U_full = np.fft.fft(u_line) / nz  
+#            Euu_full = 0.5 * (np.abs(U_full) ** 2)
+
 # ============================================================================
 # Configuration
 # ============================================================================
