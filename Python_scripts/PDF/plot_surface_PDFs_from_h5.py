@@ -9,13 +9,13 @@ import matplotlib.pyplot as plt
 # ============================================================================
 
 # Path to the saved surface data HDF5 file
-SURFACE_DATA_FILE = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/PDF_analysis/surface_data_slices.h5"
+SURFACE_DATA_FILE = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/PDF_analysis/surface_data_slices.h5"
 
 # Output directory
-OUTPUT_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/PDF_analysis/"
+OUTPUT_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/PDF_analysis/"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-# Number of bins for histogram (PDF)
+# Number of bins for histogram (PDF)S
 N_BINS = 250
 
 # ============================================================================

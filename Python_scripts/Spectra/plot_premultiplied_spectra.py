@@ -251,95 +251,95 @@ x_max = finite_lambda.max()
 # Create 2x5 grid plot (AOA5 top row, AOA12 bottom row)
 # ============================================================================
 
-# print("\nCreating 2x5 grid plot with AOA5 (top) and AOA12 (bottom)...")
+print("\nCreating 2x5 grid plot with AOA5 (top) and AOA12 (bottom)...")
 
-# # Sort both datasets by chord location and limit to 5 plots
-# datasets_aoa5_sorted = sorted(datasets_aoa5, key=lambda d: d["slice_x"])
-# datasets_aoa12_sorted = sorted(datasets_aoa12, key=lambda d: d["slice_x"])
+# Sort both datasets by chord location and limit to 5 plots
+datasets_aoa5_sorted = sorted(datasets_aoa5, key=lambda d: d["slice_x"])
+datasets_aoa12_sorted = sorted(datasets_aoa12, key=lambda d: d["slice_x"])
 
-# if len(datasets_aoa5_sorted) > 5:
-#     datasets_aoa5_sorted = datasets_aoa5_sorted[:5]
-# if len(datasets_aoa12_sorted) > 5:
-#     datasets_aoa12_sorted = datasets_aoa12_sorted[:5]
+if len(datasets_aoa5_sorted) > 5:
+    datasets_aoa5_sorted = datasets_aoa5_sorted[:5]
+if len(datasets_aoa12_sorted) > 5:
+    datasets_aoa12_sorted = datasets_aoa12_sorted[:5]
 
-# n_cols = max(len(datasets_aoa5_sorted), len(datasets_aoa12_sorted))
-# fig, axes = plt.subplots(2, n_cols, figsize=(3.2 * n_cols, 6.4), sharey=True)
+n_cols = max(len(datasets_aoa5_sorted), len(datasets_aoa12_sorted))
+fig, axes = plt.subplots(2, n_cols, figsize=(3.2 * n_cols, 6.4), sharey=True)
 
-# # Plot AOA5 (first row)
-# for col, data in enumerate(datasets_aoa5_sorted):
-#     ax = axes[0, col]
-#     X, Y = np.meshgrid(data["lambda_z_plus"], data["y_plus"])
-#     Z = data["premult_psd"]
+# Plot AOA5 (first row)
+for col, data in enumerate(datasets_aoa5_sorted):
+    ax = axes[0, col]
+    X, Y = np.meshgrid(data["lambda_z_plus"], data["y_plus"])
+    Z = data["premult_psd"]
 
-#     local_min = np.nanmin(Z)
-#     local_max = np.nanmax(Z)
-#     local_levels = np.linspace(local_min, local_max, 30)
+    local_min = np.nanmin(Z)
+    local_max = np.nanmax(Z)
+    local_levels = np.linspace(local_min, local_max, 30)
 
-#     contour_fill = ax.contourf(X, Y, Z, levels=local_levels, cmap='RdYlBu_r', extend='both')
+    contour_fill = ax.contourf(X, Y, Z, levels=local_levels, cmap='RdYlBu_r', extend='both')
 
-#     cbar = plt.colorbar(contour_fill, ax=ax, pad=0.02)
-#     cbar.set_label(r'$k_z\,\Phi_{u_tu_t}/u_\tau^2$', fontsize=9, labelpad=10)
-#     cbar.ax.tick_params(labelsize=8)
+    cbar = plt.colorbar(contour_fill, ax=ax, pad=0.02)
+    cbar.set_label(r'$k_z\,\Phi_{u_tu_t}/u_\tau^2$', fontsize=9, labelpad=10)
+    cbar.ax.tick_params(labelsize=8)
 
-#     ax.set_xscale('log')
-#     ax.set_yscale('log')
-#     ax.set_xlim(x_min, x_max)
-#     ax.set_xlabel(r'$\lambda_z^+$', fontsize=10)
-#     if col == 0:
-#         ax.set_ylabel(r'$y^+$ (AOA5)', fontsize=10)
-#     ax.tick_params(which='both', labelsize=9)
+    ax.set_xscale('log')
+    ax.set_yscale('log')
+    ax.set_xlim(x_min, x_max)
+    ax.set_xlabel(r'$\lambda_z^+$', fontsize=10)
+    if col == 0:
+        ax.set_ylabel(r'$y^+$ (AOA5)', fontsize=10)
+    ax.tick_params(which='both', labelsize=9)
 
-#     ax.set_title(
-#         f'$x_{{ss}}/c = {data["slice_x"]:.3f}$',
-#         fontsize=10,
-#         pad=6,
-#     )
+    ax.set_title(
+        f'$x_{{ss}}/c = {data["slice_x"]:.3f}$',
+        fontsize=10,
+        pad=6,
+    )
 
-#     ax.grid(True, which='both', alpha=0.3, linestyle='--', linewidth=0.5)
-#     ax.grid(True, which='major', alpha=0.5, linestyle='-', linewidth=0.7)
+    ax.grid(True, which='both', alpha=0.3, linestyle='--', linewidth=0.5)
+    ax.grid(True, which='major', alpha=0.5, linestyle='-', linewidth=0.7)
 
-#     ax.set_ylim(0.5, 1000)
-#     ax.set_box_aspect(1)
+    ax.set_ylim(0.5, 1000)
+    ax.set_box_aspect(1)
 
-# # Plot AOA12 (second row)
-# for col, data in enumerate(datasets_aoa12_sorted):
-#     ax = axes[1, col]
-#     X, Y = np.meshgrid(data["lambda_z_plus"], data["y_plus"])
-#     Z = data["premult_psd"]
+# Plot AOA12 (second row)
+for col, data in enumerate(datasets_aoa12_sorted):
+    ax = axes[1, col]
+    X, Y = np.meshgrid(data["lambda_z_plus"], data["y_plus"])
+    Z = data["premult_psd"]
 
-#     local_min = np.nanmin(Z)
-#     local_max = np.nanmax(Z)
-#     local_levels = np.linspace(local_min, local_max, 30)
+    local_min = np.nanmin(Z)
+    local_max = np.nanmax(Z)
+    local_levels = np.linspace(local_min, local_max, 30)
 
-#     contour_fill = ax.contourf(X, Y, Z, levels=local_levels, cmap='RdYlBu_r', extend='both')
+    contour_fill = ax.contourf(X, Y, Z, levels=local_levels, cmap='RdYlBu_r', extend='both')
 
-#     cbar = plt.colorbar(contour_fill, ax=ax, pad=0.02)
-#     cbar.set_label(r'$k_z\,\Phi_{u_tu_t}/u_\tau^2$', fontsize=9, labelpad=10)
-#     cbar.ax.tick_params(labelsize=8)
+    cbar = plt.colorbar(contour_fill, ax=ax, pad=0.02)
+    cbar.set_label(r'$k_z\,\Phi_{u_tu_t}/u_\tau^2$', fontsize=9, labelpad=10)
+    cbar.ax.tick_params(labelsize=8)
 
-#     ax.set_xscale('log')
-#     ax.set_yscale('log')
-#     ax.set_xlim(x_min, x_max)
-#     ax.set_xlabel(r'$\lambda_z^+$', fontsize=10)
-#     if col == 0:
-#         ax.set_ylabel(r'$y^+$ (AOA12)', fontsize=10)
-#     ax.tick_params(which='both', labelsize=9)
+    ax.set_xscale('log')
+    ax.set_yscale('log')
+    ax.set_xlim(x_min, x_max)
+    ax.set_xlabel(r'$\lambda_z^+$', fontsize=10)
+    if col == 0:
+        ax.set_ylabel(r'$y^+$ (AOA12)', fontsize=10)
+    ax.tick_params(which='both', labelsize=9)
 
-#     ax.set_title(
-#         f'$x_{{ss}}/c = {data["slice_x"]:.3f}$',
-#         fontsize=10,
-#         pad=6,
-#     )
+    ax.set_title(
+        f'$x_{{ss}}/c = {data["slice_x"]:.3f}$',
+        fontsize=10,
+        pad=6,
+    )
 
-#     ax.grid(True, which='both', alpha=0.3, linestyle='--', linewidth=0.5)
-#     ax.grid(True, which='major', alpha=0.5, linestyle='-', linewidth=0.7)
+    ax.grid(True, which='both', alpha=0.3, linestyle='--', linewidth=0.5)
+    ax.grid(True, which='major', alpha=0.5, linestyle='-', linewidth=0.7)
 
-#     ax.set_ylim(0.5, 1000)
-#     ax.set_box_aspect(1)
+    ax.set_ylim(0.5, 1000)
+    ax.set_box_aspect(1)
 
-# fig.suptitle('Inner-scaled spanwise premultiplied power spectral density (AOA5 vs AOA12)', fontsize=12, y=0.99)
-# plt.tight_layout()
-# plt.show()
+fig.suptitle('Inner-scaled spanwise premultiplied power spectral density (AOA5 vs AOA12)', fontsize=12, y=0.99)
+plt.tight_layout()
+plt.show()
 
 # ============================================================================
 # Create 2x3 grid plot (AOA5 row 1, AOA12 row 2 - selected chord locations)
