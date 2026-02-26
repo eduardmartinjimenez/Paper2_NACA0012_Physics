@@ -123,4 +123,3 @@ class CompressedSnapshotLoader:
         zi, yi, xi = self.topo[:, 0], self.topo[:, 1], self.topo[:, 2]
         field_full[zi, yi, xi] = compressed_field
         return field_full
-

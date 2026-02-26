@@ -4,11 +4,11 @@ import numpy as np
 import gc
 
 # Define input file path and base name
-INPUT_FILE_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Snapshots/batch_30658504/last_snapshot/"
+INPUT_FILE_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA12_Re50000_1716x1662x128/Steady_state/batch_35113101/last_snapshot/"
 INPUT_FILE_BASENAME = "3d_ibm_stl_naca0012_1716_1662_128_aoa12_Re50000"
 
 # Define ouput folder path
-OUTPUT_FILE_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Snapshots/batch_30658504/last_snapshot"
+OUTPUT_FILE_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/last_snapshot/"
 
 # Rename ONLY the output files. If None, it uses INPUT_FILE_BASENAME.
 OUTPUT_FILE_BASENAME = "3d_NACA0012_Re50000_AoA12_avg"
