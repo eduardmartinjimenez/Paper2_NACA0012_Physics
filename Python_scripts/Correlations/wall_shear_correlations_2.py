@@ -57,7 +57,7 @@ AOA_rad = np.deg2rad(AOA)
 c = 1.0  # chord length
 
 # Chord locations for correlation analysis (x/c values)
-X_C_LOCATIONS = [0.3, 0.5, 0.7]
+X_C_LOCATIONS = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 
 # ============================================================================
 # Define PF/NF classification parameters
@@ -68,7 +68,7 @@ print("=" * 70)
 
 # Threshold factor (alpha): set to 0.0 for simple sign-based classification
 # Can increase to e.g. 0.3 to filter weak events (as in Cheng2020)
-ALPHA = 0.5
+ALPHA = 2
 
 print(f"  Classification threshold: alpha = {ALPHA}")
 print(f"  PF: tau'_w > {ALPHA}*tau_rms")
@@ -206,11 +206,11 @@ tau_w_2d_sum = None
 tau_w_2_2d_sum = None
 n_snapshots = 0
 
-print(f"Loading {N_total_snapshots} surface snapshots to compute mean...")
+print(f"Loading {N_total_surf} surface snapshots to compute mean...")
 
 for idx, surface_file in enumerate(all_surface_files):
     if (idx + 1) % 20 == 0 or idx == 0:
-        print(f"  Loading surface snapshot {idx+1}/{N_total_snapshots}...", flush=True)
+        print(f"  Loading surface snapshot {idx+1}/{N_total_surf}...", flush=True)
     
     try:
         with h5py.File(surface_file, "r") as f:
@@ -240,6 +240,9 @@ for idx, surface_file in enumerate(all_surface_files):
 
 if n_snapshots == 0:
     raise RuntimeError("No valid snapshots loaded; check surface files and datasets.")
+
+# Ensure we don't exceed available snapshot files
+n_snapshots = min(n_snapshots, N_total_snapshots)
 
 # Compute 2D time-averaged means
 tau_w_mean = tau_w_2d_sum / n_snapshots  # (N_surf,)
@@ -793,7 +796,7 @@ for x_c_target, results in correlation_results.items():
     iy_min = crop_info['iy_min']
     iy_max = crop_info['iy_max']
 
-    output_filename = f"wall_shear_correlation_xc_{x_c_target:.3f}_alpha_{ALPHA:.1f}_all_fft_2.h5"
+    output_filename = f"wall_shear_correlation_xc_{x_c_target:.3f}_alpha_{ALPHA:.1f}_all_fft.h5"
     output_path = os.path.join(OUTPUT_DIR, output_filename)
 
     print(f"\n  Saving x/c = {x_c_target:.2f} to {output_filename}")

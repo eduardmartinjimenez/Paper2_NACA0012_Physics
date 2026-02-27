@@ -1,22 +1,20 @@
 import os
-import sys
 import h5py
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import cm
 
 # ============================================================================
 # Configuration
 # ============================================================================
 # Result file from correlation analysis
-RESULT_FILE = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/wall_shear_correlation_xc_0.500_alpha_0.5_all_fft_2.h5"
+RESULT_FILE = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/wall_shear_correlation_xc_0.700_alpha_0.5_all_fft_2.h5"
 
 # Output directory
 OUTPUT_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/Figures/"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # Output base path (directory + base filename without suffix/extension)
-OUTPUT_BASE = os.path.join(OUTPUT_DIR, "correlation_2d_all_fft_05_alpha05_2")
+OUTPUT_BASE = os.path.join(OUTPUT_DIR, "correlation_2d_all_fft2_07_alpha05_2")
 
 # ============================================================================
 # Load results
@@ -43,43 +41,43 @@ with h5py.File(RESULT_FILE, 'r') as f:
     N_all = f.attrs['N_all']
 
 Nz, Ny, Nx = R_all.shape
-z_mid = Nz // 2
+
+# The z-axis represents spanwise SEPARATION Dz, not physical z-coordinate.
+# Index 0 = Dz=0 (same plane as reference event, strongest correlation)
+# Index Nz//2 = maximum separation (weakest correlation)
+dz_slice = 0
 
 print(f"Loaded correlation results:")
 print(f"  Shape: (Nz={Nz}, Ny={Ny}, Nx={Nx})")
 print(f"  Reference point: x/c = {x_c_actual:.4f}, y = {y_actual:.4f}")
 print(f"  Samples: N_all={N_all}, N_PF={N_PF}, N_NF={N_NF}")
-print(f"  Using z-slice at z_mid = {z_mid}")
+print(f"  Using z-slice at Dz = {dz_slice} (in-plane correlation)")
 
 # ============================================================================
-# Extract 2D slices at z_mid
+# Extract 2D slices at Dz=0 (in-plane, same spanwise location as reference)
 # ============================================================================
-R_PF_2d = R_PF[z_mid, :, :]   # (Ny, Nx)
-R_NF_2d = R_NF[z_mid, :, :]   # (Ny, Nx)
-R_all_2d = R_all[z_mid, :, :] # (Ny, Nx)
-u_rms_2d = u_rms[z_mid, :, :] # (Ny, Nx)
+R_PF_2d = R_PF[dz_slice, :, :]   # (Ny, Nx)
+R_NF_2d = R_NF[dz_slice, :, :]   # (Ny, Nx)
+R_all_2d = R_all[dz_slice, :, :] # (Ny, Nx)
+u_rms_2d = u_rms[dz_slice, :, :] # (Ny, Nx)
 
-x_2d = x[z_mid, :, :]  # (Ny, Nx)
-y_2d = y[z_mid, :, :]  # (Ny, Nx)
-z_2d = z[z_mid, :, :]  # (Ny, Nx)
+x_2d = x[dz_slice, :, :]  # (Ny, Nx)
+y_2d = y[dz_slice, :, :]  # (Ny, Nx)
 
 print(f"\n2D slice shapes: {R_PF_2d.shape}")
 
 # ============================================================================
 # FIGURE 1: Three-panel comparison (PF, NF, All)
 # ============================================================================
-# WHAT WE'RE PLOTTING:
-# - R_PF: Correlation coefficient during POSITIVE WALL SHEAR STRESS (ejection) events
-#         Shows which regions have velocity correlated with upward wall shear
-# - R_NF: Correlation coefficient during NEGATIVE WALL SHEAR STRESS (sweep) events
-#         Shows which regions have velocity correlated with downward wall shear
-# - R_all: Overall correlation coefficient across all events
-#          Shows the general relationship without event conditioning
-# 
+# WHAT WE'RE PLOTTING (at Dz=0, same spanwise plane as reference):
+# - R_PF: Correlation conditioned on positive tau'_w events (tau'_w > alpha * tau_rms)
+# - R_NF: Correlation conditioned on negative tau'_w events (tau'_w < -alpha * tau_rms)
+# - R_all: Unconditional correlation across all events
+#
 # MAP INTERPRETATION:
-# - RED regions: positive correlation (high velocity when high wall shear)
-# - BLUE regions: negative correlation (low velocity when high wall shear)
-# - WHITE regions: no correlation (velocity independent of wall shear)
+# - RED regions: positive correlation (u' and tau'_w fluctuate in phase)
+# - BLUE regions: negative correlation (u' and tau'_w fluctuate out of phase)
+# - WHITE regions: no correlation
 
 fig, axes = plt.subplots(1, 3, figsize=(18, 5))
 
@@ -87,7 +85,7 @@ fig, axes = plt.subplots(1, 3, figsize=(18, 5))
 vmin = -0.5
 vmax = 0.5
 
-titles = ['PF Correlation\n(Ejection Events)', 'NF Correlation\n(Sweep Events)', 'All Correlation\n(Unconditioned)']
+titles = ['PF Correlation\n($\\tau\'_w > \\alpha \\cdot \\tau_{rms}$)', 'NF Correlation\n($\\tau\'_w < -\\alpha \\cdot \\tau_{rms}$)', 'Unconditional Correlation']
 data_list = [R_PF_2d, R_NF_2d, R_all_2d]
 
 for ax, title, data in zip(axes, titles, data_list):
@@ -116,14 +114,14 @@ for ax, title, data in zip(axes, titles, data_list):
 axes[0].legend(loc='upper left', fontsize=11)
 
 # Overall title
-fig.suptitle(f'Wall Shear - Streamwise Velocity Correlation at z_mid={z_mid}\n' + 
-             f'Reference point tau\'_w at: x/c={x_c_actual:.3f}, y={y_actual:.4f}',
+fig.suptitle(f'Wall Shear - Streamwise Velocity Correlation at $\\Delta z = 0$\n' +
+             f'Reference point: x/c={x_c_actual:.3f}, y={y_actual:.4f}',
              fontsize=14, fontweight='bold', y=1.02)
 
 plt.tight_layout()
 
 # Save figure
-output_path = f"{OUTPUT_BASE}_slice_z{z_mid:03d}.png"
+output_path = f"{OUTPUT_BASE}_slice_Dz0.png"
 plt.savefig(output_path, dpi=150, bbox_inches='tight')
 print(f"\nSaved FIGURE 1 (three-panel comparison) to: {output_path}")
 
@@ -153,7 +151,7 @@ ax.plot(x_c_actual, y_actual, 'g*', markersize=25, markeredgecolor='white',
 # Labels and title
 ax.set_xlabel('x/c (streamwise distance from reference)', fontsize=13, fontweight='bold')
 ax.set_ylabel('y/c (wall-normal distance from reference)', fontsize=13, fontweight='bold')
-ax.set_title(f'Overall Correlation Coefficient - z_mid={z_mid}\n' +
+ax.set_title(f'Unconditional Correlation Coefficient at $\\Delta z = 0$\n' +
              'Contours show local extrema of correlation strength',
              fontsize=14, fontweight='bold')
 ax.grid(True, alpha=0.2)
@@ -165,7 +163,7 @@ cbar = plt.colorbar(im, ax=ax, label='Correlation Coefficient R')
 cbar.ax.tick_params(labelsize=11)
 
 # Add metadata text
-textstr = f'Total samples: {N_all}\nPF (ejection): {N_PF}\nNF (sweep): {N_NF}'
+textstr = f'Total samples: {N_all}\nPF: {N_PF}\nNF: {N_NF}'
 ax.text(0.98, 0.02, textstr, transform=ax.transAxes, fontsize=11,
         verticalalignment='bottom', horizontalalignment='right',
         bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.8))
@@ -173,7 +171,7 @@ ax.text(0.98, 0.02, textstr, transform=ax.transAxes, fontsize=11,
 plt.tight_layout()
 
 # Save figure
-output_path = f"{OUTPUT_BASE}_all_detailed_z{z_mid:03d}.png"
+output_path = f"{OUTPUT_BASE}_all_detailed_Dz0.png"
 plt.savefig(output_path, dpi=150, bbox_inches='tight')
 print(f"Saved FIGURE 2 (detailed R_all) to: {output_path}")
 
@@ -217,13 +215,13 @@ axes[1].grid(True, alpha=0.2)
 axes[1].legend(loc='upper left', fontsize=11)
 cbar2 = plt.colorbar(im2, ax=axes[1], label='Correlation R')
 
-fig.suptitle(f'Velocity Field Context vs Correlation at z_mid={z_mid}\n' +
+fig.suptitle(f'Velocity Field Context vs Correlation at $\\Delta z = 0$\n' +
              'Left: Where is flow most turbulent? Right: Where is strongest correlation with wall shear?',
              fontsize=14, fontweight='bold')
 plt.tight_layout()
 
 # Save figure
-output_path = f"{OUTPUT_BASE}_vs_urms_z{z_mid:03d}.png"
+output_path = f"{OUTPUT_BASE}_vs_urms_Dz0.png"
 plt.savefig(output_path, dpi=150, bbox_inches='tight')
 print(f"Saved FIGURE 3 (velocity RMS vs correlation) to: {output_path}")
 
@@ -237,33 +235,28 @@ print("\n" + "="*70)
 print("EXPLANATION OF PLOTS")
 print("="*70)
 print("""
-FIGURE 1: Three-panel comparison
-  - LEFT (PF): Shows correlation during EJECTION events (high positive wall shear)
-    → Red regions = velocity increases when wall shear increases (coherent structure)
-    → Blue regions = velocity decreases when wall shear increases (opposing flow)
-  
-  - MIDDLE (NF): Shows correlation during SWEEP events (high negative wall shear)
-    → Red regions = velocity increases when wall shear decreases (coherent structure)
-    → Blue regions = velocity decreases when wall shear decreases
-  
-  - RIGHT (R_all): Shows overall correlation across ALL events
-    → Unconditioned by event type
-    → Reveals general relationship between wall shear and velocity
+FIGURE 1: Three-panel comparison (at Dz=0, in-plane)
+  - LEFT (PF): Correlation conditioned on positive tau'_w fluctuations
+    -> Red regions = u' and tau'_w fluctuate in phase
+    -> Blue regions = u' and tau'_w fluctuate out of phase
 
-FIGURE 2: Detailed correlation with contours
+  - MIDDLE (NF): Correlation conditioned on negative tau'_w fluctuations
+    -> Red regions = u' and tau'_w fluctuate in phase
+    -> Blue regions = u' and tau'_w fluctuate out of phase
+
+  - RIGHT (All): Unconditional correlation across ALL events
+    -> Reveals general relationship between wall shear and velocity
+
+FIGURE 2: Detailed unconditional correlation with contours
   - Enhanced view of R_all with contour lines showing local extrema
-  - Helps identify gradients and feature structures
   - Contour labels show correlation strength at specific locations
 
 FIGURE 3: Velocity RMS vs Correlation
   - LEFT: Magnitude of velocity fluctuations (u'_rms)
-    → High values = turbulent regions with large velocity swings
-  - RIGHT: Same correlation as before for direct comparison
-  - Visual inspection shows if correlation is stronger in energetic regions
+    -> High values = turbulent regions with large velocity swings
+  - RIGHT: Correlation coefficient for direct comparison
 
-KEY OBSERVATIONS:
-- Positive correlation means wall shear and velocity fluctuations are in-phase
-- Regions near reference point show strongest correlation
-- Correlation typically decays with distance from reference point
-- Event-conditioned (PF/NF) may show different patterns than unconditioned (All)
+NOTE: All 2D maps are shown at Dz=0 (same spanwise plane as the
+reference point where tau'_w is measured). The z-axis of the stored
+correlation data represents spanwise SEPARATION, not physical z.
 """)
