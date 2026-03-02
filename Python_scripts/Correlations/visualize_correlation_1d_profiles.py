@@ -11,11 +11,11 @@ OUTPUT_DIR = os.path.join(BASE_RESULTS_DIR, "Figures")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # Chord locations and corresponding result files
-X_C_LOCATIONS = [0.3, 0.5, 0.7]
-ALPHA = 0.5
+X_C_LOCATIONS = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]  # x/c locations to plot
+ALPHA = 2.0
 
 RESULT_FILES = {
-    x_c: os.path.join(BASE_RESULTS_DIR, f"wall_shear_correlation_xc_{x_c:.3f}_alpha_{ALPHA:.1f}_all_fft_2.h5")
+    x_c: os.path.join(BASE_RESULTS_DIR, f"wall_shear_correlation_xc_{x_c:.3f}_alpha_{ALPHA:.1f}_all_fft.h5")
     for x_c in X_C_LOCATIONS
 }
 
