@@ -7,14 +7,14 @@ import matplotlib.pyplot as plt
 # Configuration
 # ============================================================================
 # Result file from correlation analysis
-RESULT_FILE = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/wall_shear_correlation_xc_0.700_alpha_0.5_all_fft_2.h5"
+RESULT_FILE = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/wall_shear_correlation_xc_0.900_alpha_2.0_all_fft.h5"
 
 # Output directory
 OUTPUT_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/Figures/"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # Output base path (directory + base filename without suffix/extension)
-OUTPUT_BASE = os.path.join(OUTPUT_DIR, "correlation_2d_all_fft2_07_alpha05_2")
+OUTPUT_BASE = os.path.join(OUTPUT_DIR, "correlation_2d_all_fft2_09_alpha2")
 
 # ============================================================================
 # Load results

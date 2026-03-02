@@ -52,7 +52,7 @@ x_1d = x[0, 0, :]       # (Nx,)
 y_1d = y[0, :, 0]       # (Ny,)
 
 # z-axis represents spanwise SEPARATION Dz.
-# Physical z-coordinates are stored; compute Dz = z - z[0]
+# Physical z-coordinates are stored; compute Dz = z - zpip install scikit-image[0]
 dz_1d = z[:, 0, 0] - z[0, 0, 0]   # (Nz,)
 
 # Due to periodicity, Dz > Lz/2 wraps around to negative separation.
