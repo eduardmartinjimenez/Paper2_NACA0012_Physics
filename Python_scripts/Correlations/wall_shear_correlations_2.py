@@ -68,7 +68,7 @@ print("=" * 70)
 
 # Threshold factor (alpha): set to 0.0 for simple sign-based classification
 # Can increase to e.g. 0.3 to filter weak events (as in Cheng2020)
-ALPHA = 2
+ALPHA = 1.0
 
 print(f"  Classification threshold: alpha = {ALPHA}")
 print(f"  PF: tau'_w > {ALPHA}*tau_rms")
@@ -374,7 +374,7 @@ print(f"  Full domain: x=[{x_min_domain:.3f}, {x_max_domain:.3f}], y=[{y_min_dom
 dx_upstream = 0.25
 dx_downstream = 0.25
 dy_down = 0.05
-dy_up = 0.2
+dy_up = 0.5
 
 # Get 2D grid for index finding
 x_2d = x_data[0, :, :]  # (Ny, Nx)

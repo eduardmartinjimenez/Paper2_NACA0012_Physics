@@ -7,14 +7,14 @@ import matplotlib.pyplot as plt
 # Configuration
 # ============================================================================
 # Result file from correlation analysis
-RESULT_FILE = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/wall_shear_correlation_xc_0.700_alpha_0.5_all_fft_2.h5"
+RESULT_FILE = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/wall_shear_correlation_xc_0.900_alpha_1.0_all_fft.h5"
 
 # Output directory
 OUTPUT_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/Figures/"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # Output base path (directory + base filename without suffix/extension)
-OUTPUT_BASE = os.path.join(OUTPUT_DIR, "correlation_2d_all_fft2_07_alpha05_2")
+OUTPUT_BASE = os.path.join(OUTPUT_DIR, "correlation_2d_all_fft_05_alpha15_2")
 
 # ============================================================================
 # Load results
@@ -121,9 +121,9 @@ fig.suptitle(f'Wall Shear - Streamwise Velocity Correlation at $\\Delta z = 0$\n
 plt.tight_layout()
 
 # Save figure
-output_path = f"{OUTPUT_BASE}_slice_Dz0.png"
-plt.savefig(output_path, dpi=150, bbox_inches='tight')
-print(f"\nSaved FIGURE 1 (three-panel comparison) to: {output_path}")
+# output_path = f"{OUTPUT_BASE}_slice_Dz0.png"
+# plt.savefig(output_path, dpi=150, bbox_inches='tight')
+# print(f"\nSaved FIGURE 1 (three-panel comparison) to: {output_path}")
 
 # ============================================================================
 # FIGURE 2: Detailed R_all with contour labels
@@ -171,9 +171,9 @@ ax.text(0.98, 0.02, textstr, transform=ax.transAxes, fontsize=11,
 plt.tight_layout()
 
 # Save figure
-output_path = f"{OUTPUT_BASE}_all_detailed_Dz0.png"
-plt.savefig(output_path, dpi=150, bbox_inches='tight')
-print(f"Saved FIGURE 2 (detailed R_all) to: {output_path}")
+# output_path = f"{OUTPUT_BASE}_all_detailed_Dz0.png"
+# plt.savefig(output_path, dpi=150, bbox_inches='tight')
+# print(f"Saved FIGURE 2 (detailed R_all) to: {output_path}")
 
 # ============================================================================
 # FIGURE 3: Velocity RMS vs Correlation
@@ -221,9 +221,9 @@ fig.suptitle(f'Velocity Field Context vs Correlation at $\\Delta z = 0$\n' +
 plt.tight_layout()
 
 # Save figure
-output_path = f"{OUTPUT_BASE}_vs_urms_Dz0.png"
-plt.savefig(output_path, dpi=150, bbox_inches='tight')
-print(f"Saved FIGURE 3 (velocity RMS vs correlation) to: {output_path}")
+# output_path = f"{OUTPUT_BASE}_vs_urms_Dz0.png"
+# plt.savefig(output_path, dpi=150, bbox_inches='tight')
+# print(f"Saved FIGURE 3 (velocity RMS vs correlation) to: {output_path}")
 
 plt.show()
 
