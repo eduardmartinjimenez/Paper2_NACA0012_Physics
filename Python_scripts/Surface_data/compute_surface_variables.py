@@ -16,21 +16,21 @@ from data_loader_functions import CompressedSnapshotLoader
 # ============================================================================
 
 # Save results directory (one .h5 file per snapshot)
-SAVE_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Snapshots/batch_35113101/Surface_data/"
+SAVE_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/batch_35801606/Surface_data/"
 os.makedirs(SAVE_DIR, exist_ok=True)
 
 # Geometrical data file
-GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Geometrical_data/"
-GEO_NAME = "3d_NACA0012_Re50000_AoA12_Geometrical_Data.h5"
+GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Geometrical_data/"
+GEO_NAME = "3d_NACA0012_Re50000_AoA5_Geometrical_Data.h5"
 GEO_FILE = os.path.join(GEO_PATH, GEO_NAME)
 
 # Mesh data file
-MESH_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Geometrical_data/"
-MESH_NAME = "3d_NACA0012_Re50000_AoA12-CROP-MESH.h5"
+MESH_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Geometrical_data/"
+MESH_NAME = "3d_NACA0012_Re50000_AoA5-CROP-MESH.h5"
 MESH_FILE = os.path.join(MESH_PATH, MESH_NAME)
 
 # Snapshot data directory
-SNAPSHOTS_DIR = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA12_Re50000_1716x1662x128/Steady_state/batch_35113101/"
+SNAPSHOTS_DIR = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA5_Re50000_1716x1662x128/Steady_state/batch_35801606/"
 
 # Reference parameters
 rho_ref = 1.0   # Reference density [kg/m3]

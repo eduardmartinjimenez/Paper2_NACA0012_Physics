@@ -18,32 +18,32 @@ from data_loader_functions import CompressedSnapshotLoader
 
 # Data directories
 # Base directory containing all SURFACE DATA batch folders
-BASE_SURFACE_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Snapshots/"
+BASE_SURFACE_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/"
 # BASE_SURFACE_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/Test/"
 # Base directory containing all SNAPSHOTS DATA batch folders
-BASE_SNAPSHOT_DIR = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA12_Re50000_1716x1662x128/Steady_state/"
+BASE_SNAPSHOT_DIR = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA5_Re50000_1716x1662x128/Steady_state/"
 # BASE_SNAPSHOT_DIR = "/home/jofre/disc2/Members/Eduard/Test/Steady_state/"
 
 # Pattern to match batch directories
 BATCH_PATTERN = "batch_*"
 
 # Mesh data file
-MESH_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Geometrical_data/"
-MESH_NAME = "3d_NACA0012_Re50000_AoA12-CROP-MESH.h5"
+MESH_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Geometrical_data/"
+MESH_NAME = "3d_NACA0012_Re50000_AoA5-CROP-MESH.h5"
 MESH_FILE = os.path.join(MESH_PATH, MESH_NAME)
 
 # Averaged last snapshot file (for mean fields)
-LAST_SNAPSHOT_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/last_snapshot/"
-LAST_SNAPSHOT_NAME = "3d_NACA0012_Re50000_AoA12_avg_26500000-COMP-DATA.h5"
+LAST_SNAPSHOT_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/last_snapshot/"
+LAST_SNAPSHOT_NAME = "3d_NACA0012_Re50000_AoA5_avg_25340000-COMP-DATA.h5"
 LAST_SNAPSHOT_FILE = os.path.join(LAST_SNAPSHOT_PATH, LAST_SNAPSHOT_NAME)
 
 # Geometrical data file
-GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Geometrical_data/"
-GEO_NAME = "3d_NACA0012_Re50000_AoA12_Geometrical_Data.h5"
+GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Geometrical_data/"
+GEO_NAME = "3d_NACA0012_Re50000_AoA5_Geometrical_Data.h5"
 GEO_FILE = os.path.join(GEO_PATH, GEO_NAME)
 
 # Output directory
-OUTPUT_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/"
+OUTPUT_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
@@ -52,7 +52,7 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 # ============================================================================
 # Reference parameters
 u_infty = 1.0
-AOA = 12  # degrees
+AOA = 5  # degrees
 AOA_rad = np.deg2rad(AOA)
 c = 1.0  # chord length
 
@@ -374,7 +374,11 @@ print(f"  Full domain: x=[{x_min_domain:.3f}, {x_max_domain:.3f}], y=[{y_min_dom
 dx_upstream = 0.25
 dx_downstream = 0.25
 dy_down = 0.05
-dy_up = 0.5
+dy_up = 0.3
+# dx_upstream = 1
+# dx_downstream = 2
+# dy_down = 0.05
+# dy_up = 1
 
 # Get 2D grid for index finding
 x_2d = x_data[0, :, :]  # (Ny, Nx)
@@ -418,60 +422,60 @@ for x_c_target, point_info in point_indices.items():
     print(f"    Indices: ix=[{ix_min}:{ix_max}], iy=[{iy_min}:{iy_max}]")
     print(f"    Shape: (Nz={Nz_phys}, Ny={crop_windows[x_c_target]['Ny_crop']}, Nx={crop_windows[x_c_target]['Nx_crop']})")
 
-# # Visualization of the domain and reference point
-# print("\n  Creating visualization of correlation domain...")
+# Visualization of the domain and reference point
+print("\n  Creating visualization of correlation domain...")
 
-# fig, ax = plt.subplots(figsize=(12, 8))
+fig, ax = plt.subplots(figsize=(12, 8))
 
-# # Plot interface points (airfoil surface)
-# ax.scatter(x_interface[upper_mask], y_interface[upper_mask],
-#            c='blue', s=2, alpha=0.5, label='Upper surface')
-# ax.scatter(x_interface[lower_mask], y_interface[lower_mask],
-#            c='red', s=2, alpha=0.5, label='Lower surface')
+# Plot interface points (airfoil surface)
+ax.scatter(x_interface[upper_mask], y_interface[upper_mask],
+           c='blue', s=2, alpha=0.5, label='Upper surface')
+ax.scatter(x_interface[lower_mask], y_interface[lower_mask],
+           c='red', s=2, alpha=0.5, label='Lower surface')
 
-# # Highlight reference point
-# ax.scatter(x_ref, y_ref, c='green', s=200, marker='*',
-#            edgecolors='black', linewidths=2, label=f'Reference point (x/c={x_ref:.3f})', zorder=5)
+# Highlight reference point
+ax.scatter(x_ref, y_ref, c='green', s=200, marker='*',
+           edgecolors='black', linewidths=2, label=f'Reference point (x/c={x_ref:.3f})', zorder=5)
 
-# # Draw correlation window as rectangle
-# rect = patches.Rectangle((x_min_crop, y_min_crop),
-#                           x_max_crop - x_min_crop,
-#                           y_max_crop - y_min_crop,
-#                           linewidth=3, edgecolor='green', facecolor='green',
-#                           alpha=0.2, label='Correlation window')
-# ax.add_patch(rect)
+# Draw correlation window as rectangle
+rect = patches.Rectangle((x_min_crop, y_min_crop),
+                          x_max_crop - x_min_crop,
+                          y_max_crop - y_min_crop,
+                          linewidth=3, edgecolor='green', facecolor='green',
+                          alpha=0.2, label='Correlation window')
+ax.add_patch(rect)
 
-# # Draw reference lines
-# ax.axvline(x_ref, color='green', linestyle='--', linewidth=1, alpha=0.5)
-# ax.axhline(y_ref, color='green', linestyle='--', linewidth=1, alpha=0.5)
+# Draw reference lines
+ax.axvline(x_ref, color='green', linestyle='--', linewidth=1, alpha=0.5)
+ax.axhline(y_ref, color='green', linestyle='--', linewidth=1, alpha=0.5)
 
-# # Annotations
-# ax.annotate(f'Δx: [{-dx_upstream:.2f}, +{dx_downstream:.2f}]',
-#             xy=(x_ref, y_max_crop), xytext=(x_ref, y_max_crop + 0.05),
-#             ha='center', fontsize=10, color='green',
-#             bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor='green'))
+# Annotations
+ax.annotate(f'Δx: [{-dx_upstream:.2f}, +{dx_downstream:.2f}]',
+            xy=(x_ref, y_max_crop), xytext=(x_ref, y_max_crop + 0.05),
+            ha='center', fontsize=10, color='green',
+            bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor='green'))
 
-# ax.annotate(f'Δy: [{-dy_down:.2f}, +{dy_up:.2f}]',
-#             xy=(x_max_crop, y_ref), xytext=(x_max_crop + 0.05, y_ref),
-#             va='center', fontsize=10, color='green',
-#             bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor='green'))
+ax.annotate(f'Δy: [{-dy_down:.2f}, +{dy_up:.2f}]',
+            xy=(x_max_crop, y_ref), xytext=(x_max_crop + 0.05, y_ref),
+            va='center', fontsize=10, color='green',
+            bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor='green'))
 
-# # Labels and formatting
-# ax.set_xlabel('x/c', fontsize=14)
-# ax.set_ylabel('y/c', fontsize=14)
-# ax.set_title(f'Correlation Domain for x/c = {x_c_ref:.2f}', fontsize=16, fontweight='bold')
-# ax.legend(loc='upper right', fontsize=11)
-# ax.grid(True, alpha=0.3)
-# ax.set_aspect('equal', adjustable='box')
+# Labels and formatting
+ax.set_xlabel('x/c', fontsize=14)
+ax.set_ylabel('y/c', fontsize=14)
+ax.set_title(f'Correlation Domain for x/c = {x_c_target:.2f}', fontsize=16, fontweight='bold')
+ax.legend(loc='upper right', fontsize=11)
+ax.grid(True, alpha=0.3)
+ax.set_aspect('equal', adjustable='box')
 
-# # Set axis limits to show context
-# ax.set_xlim(min(x_min_crop - 0.1, x_min_domain), max(x_max_crop + 0.1, x_max_domain))
-# ax.set_ylim(min(y_min_crop - 0.05, y_min_domain), max(y_max_crop + 0.05, y_max_domain))
+# Set axis limits to show context
+ax.set_xlim(min(x_min_crop - 0.1, x_min_domain), max(x_max_crop + 0.1, x_max_domain))
+ax.set_ylim(min(y_min_crop - 0.05, y_min_domain), max(y_max_crop + 0.05, y_max_domain))
 
-# # Save figure
-# plot_path = os.path.join(OUTPUT_DIR, f'correlation_domain_xc_{x_c_ref:.3f}.png')
-# plt.tight_layout()
-# plt.show()
+# Save figure
+plot_path = os.path.join(OUTPUT_DIR, f'correlation_domain_xc_{x_c_target:.3f}.png')
+plt.tight_layout()
+plt.show()
 
 
 # ============================================================================

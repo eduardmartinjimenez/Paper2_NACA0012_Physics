@@ -6,11 +6,13 @@ import matplotlib.pyplot as plt
 # ============================================================================
 # Configuration
 # ============================================================================
-BASE_RESULTS_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/"
+BASE_RESULTS_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/test_1"
 OUTPUT_DIR = os.path.join(BASE_RESULTS_DIR, "Figures")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-X_C_LOCATIONS = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+# X_C_LOCATIONS = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+X_C_LOCATIONS = [0.5]
+
 ALPHA = 1.0
 
 # Angle of attack: simulation frame has chord along x-axis and inflow rotated
@@ -141,6 +143,37 @@ if len(profiles) == 0:
 
 x_c_sorted = sorted(profiles.keys())
 colors = plt.cm.viridis(np.linspace(0, 1, len(profiles)))
+
+# ============================================================================
+# Plot 0: Visualization of extraction column in rotated frame
+# ============================================================================
+print("Creating extraction column visualization...")
+
+fig0, ax = plt.subplots(1, 1, figsize=(10, 8))
+
+for (x_c, data), color in zip([(xc, profiles[xc]) for xc in x_c_sorted], colors):
+    # Plot the 2D grid and highlight the extraction column
+    x_2d = data['x_ref_rot']  # scalar reference point
+    y_2d = data['y_prime']     # 1D profile along column
+    
+    # Create pseudo 2D scatter showing the column
+    x_column = np.full_like(y_2d, x_2d)
+    ax.scatter(x_column, y_2d, s=30, color=color, alpha=0.6, 
+               label=f'$x/c = {x_c:.1f}$ (extraction column)', edgecolors='black', linewidth=0.5)
+
+ax.axhline(0, color='red', linewidth=2.0, linestyle='--', alpha=0.7, label='Wall surface')
+ax.axvline(0, color='grey', linewidth=0.5, linestyle='-', alpha=0.5)
+ax.set_xlabel("$x'$ (streamwise, chord units)", fontsize=13)
+ax.set_ylabel("$y'$ (wall-normal, chord units)", fontsize=13)
+ax.set_title('Extraction columns in rotated frame ($\\Delta z = 0$ slice)', 
+             fontsize=14, fontweight='bold')
+ax.legend(fontsize=11, loc='best')
+ax.grid(True, alpha=0.3)
+plt.tight_layout()
+output_path = os.path.join(OUTPUT_DIR, f"extraction_columns_visualization_alpha_{ALPHA:.1f}.png")
+plt.savefig(output_path, dpi=150, bbox_inches='tight')
+print(f"  Saved: {output_path}")
+plt.show()
 
 # ============================================================================
 # Plot 1: Wall-normal profiles R vs (y' - y'_wall)  [chord units]

@@ -6,12 +6,16 @@ import matplotlib.pyplot as plt
 # ============================================================================
 # Configuration
 # ============================================================================
-BASE_RESULTS_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/"
+BASE_RESULTS_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/test_3"
+# BASE_RESULTS_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/test_1"
+
 OUTPUT_DIR = os.path.join(BASE_RESULTS_DIR, "Figures")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-# X_C_LOCATIONS = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
-X_C_LOCATIONS = [0.3, 0.5, 0.7, 0.9]
+X_C_LOCATIONS = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+# X_C_LOCATIONS = [0.3, 0.5, 0.7, 0.9]
+# X_C_LOCATIONS = [0.5, 0.6, 0.8]
+
 
 ALPHA = 1.0
 
@@ -26,9 +30,9 @@ RESULT_FILES = {
 #   - Symmetric global max:      CLIM_MODE = 'auto_sym'   (+-max|R| across all files)
 #   - Absolute global range:     CLIM_MODE = 'auto'       (min/max across all files)
 #   - Fixed percentile clipping: CLIM_MODE = 'percentile', PMIN = 2, PMAX = 98
-CLIM_MODE = 'auto'
-VMIN = -0.5
-VMAX = 0.5
+CLIM_MODE = 'manual'
+VMIN = 0
+VMAX = 1
 PMIN, PMAX = 2, 98   # only used when CLIM_MODE = 'percentile'
 NLEVELS = 25
 

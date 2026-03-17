@@ -14,30 +14,30 @@ from data_loader_functions import CompressedSnapshotLoader
 
 
 # Output data path
-#OUTPUT_DATA_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/"
-#OUTPUT_DATA_NAME = "AoA5_Re50000_velocity_profiles_data.h5"
-OUTPUT_DATA_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/Test/Mean_data/"
-OUTPUT_DATA_NAME = "AoA5_Re10000_velocity_profiles_data.h5"
+OUTPUT_DATA_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/"
+OUTPUT_DATA_NAME = "AoA5_Re50000_velocity_profiles_data.h5"
+# OUTPUT_DATA_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/Test/Mean_data/"
+# OUTPUT_DATA_NAME = "AoA5_Re10000_velocity_profiles_data.h5"
 OUTPUT_DATA_FILE = os.path.join(OUTPUT_DATA_PATH, OUTPUT_DATA_NAME)
 
 # Paths
-# GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Geometrical_data/"
-# GEO_NAME = "3d_NACA0012_Re50000_AoA5_Geometrical_Data.h5"
-GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/Test/Geometrical_data"
-GEO_NAME = "3d_NACA0012_Test_Geometrical_Data.h5"
+GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Geometrical_data/"
+GEO_NAME = "3d_NACA0012_Re50000_AoA5_Geometrical_Data.h5"
+# GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/Test/Geometrical_data"
+# GEO_NAME = "3d_NACA0012_Test_Geometrical_Data.h5"
 GEO_FILE = os.path.join(GEO_PATH, GEO_NAME)
 
-# MESH_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Geometrical_data/"
-# MESH_NAME = "3d_NACA0012_Re50000_AoA5-CROP-MESH.h5"
-MESH_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/Test/"
-MESH_NAME = "3d_NACA0012_Re10000_AoA5-CROP-MESH.h5"
+MESH_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Geometrical_data/"
+MESH_NAME = "3d_NACA0012_Re50000_AoA5-CROP-MESH.h5"
+# MESH_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/Test/"
+# MESH_NAME = "3d_NACA0012_Re10000_AoA5-CROP-MESH.h5"
 MESH_FILE = os.path.join(MESH_PATH, MESH_NAME)
 
 
-# SNAPSHOT_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/temporal_last_snapshot/"
-# SNAPSHOT_NAME = "3d_NACA0012_Re50000_AoA5_avg_24280000-COMP-DATA.h5"
-SNAPSHOT_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/Test/"
-SNAPSHOT_NAME = "3d_NACA0012_Re10000_AoA5_avg_1620000-COMP-DATA.h5"
+SNAPSHOT_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/temporal_last_snapshot/"
+SNAPSHOT_NAME = "3d_NACA0012_Re50000_AoA5_avg_24280000-COMP-DATA.h5"
+# SNAPSHOT_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/Test/"
+# SNAPSHOT_NAME = "3d_NACA0012_Re10000_AoA5_avg_1620000-COMP-DATA.h5"
 SNAPSHOT_FILE = os.path.join(SNAPSHOT_PATH, SNAPSHOT_NAME)
 
 # Reference parameters
@@ -48,7 +48,9 @@ C = 1.0  # chord length
 
 
 # x/c locations
-x_c_locations = [0.15, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 0.85, 0.95]
+# x_c_locations = [0.15, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 0.85, 0.95]
+x_c_locations = [0.5]
+
 
 # Utilities
 def assert_exists(path: str, kind: str = "File") -> None:

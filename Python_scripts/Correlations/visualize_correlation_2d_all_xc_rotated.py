@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 # ============================================================================
 # Configuration
 # ============================================================================
-BASE_RESULTS_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/"
+BASE_RESULTS_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/test_2"
 OUTPUT_DIR = os.path.join(BASE_RESULTS_DIR, "Figures")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 

@@ -6,12 +6,14 @@ import matplotlib.pyplot as plt
 # ============================================================================
 # Configuration
 # ============================================================================
-BASE_RESULTS_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/"
+BASE_RESULTS_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/test_2"
 OUTPUT_DIR = os.path.join(BASE_RESULTS_DIR, "Figures")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # Chord locations and corresponding result files
-X_C_LOCATIONS = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]  # x/c locations to plot
+# X_C_LOCATIONS = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]  # x/c locations to plot
+X_C_LOCATIONS = [0.3, 0.5, 0.7, 0.9]
+
 ALPHA = 1.0
 
 # Fluid / simulation reference parameters (dimensionless simulation units)
@@ -203,6 +205,17 @@ fig3, axes3 = plt.subplots(1, 3, figsize=(18, 6), sharey=True)
 colors = plt.cm.viridis(np.linspace(0, 1, len(profiles)))
 x_c_sorted = sorted(profiles.keys())
 
+# Reference friction velocity (mean across all x/c) used to label the y/c secondary axis
+u_tau_ref = np.mean([
+    np.sqrt(np.abs(profiles[xc]['tau_w_mean']) / rho_ref) for xc in x_c_sorted
+])
+
+def _yplus_to_yc(yp):
+    return yp * nu_ref / u_tau_ref
+
+def _yc_to_yplus(yc):
+    return yc * u_tau_ref / nu_ref
+
 # Define correlation types to plot
 corr_types = [
     ('R_PF', 'PF', 0),
@@ -212,18 +225,18 @@ corr_types = [
 
 for corr_key, corr_label, ax_idx in corr_types:
     ax = axes3[ax_idx]
-    
+
     for (x_c, data), color in zip(
         [(xc, profiles[xc]) for xc in x_c_sorted],
         colors
     ):
         # Friction velocity from mean wall shear stress
         u_tau = np.sqrt(np.abs(data['tau_w_mean']) / rho_ref)
-        
+
         # Wall-normal distance in wall units
         y_rel = data['y'] - data['y_ref']
         y_plus = y_rel * u_tau / nu_ref
-        
+
         # Plot this x/c location for this correlation type
         ax.plot(
             y_plus,
@@ -235,7 +248,7 @@ for corr_key, corr_label, ax_idx in corr_types:
             markersize=4,
             alpha=0.8
         )
-    
+
     ax.axhline(0, color='grey', linewidth=0.5, linestyle='-', alpha=0.5)
     ax.set_xlabel('$y^+$', fontsize=13)
     ax.set_ylabel('Correlation coefficient $R$', fontsize=13)
@@ -243,7 +256,12 @@ for corr_key, corr_label, ax_idx in corr_types:
     ax.set_xscale('log')
     ax.set_xlim(left=0.1)
     ax.grid(True, alpha=0.3, which='both')
-    
+
+    # Secondary x-axis at the top showing y/c units
+    # Conversion uses mean u_tau as reference; individual curves may differ slightly
+    secax = ax.secondary_xaxis('top', functions=(_yplus_to_yc, _yc_to_yplus))
+    secax.set_xlabel('$y/c$', fontsize=13)
+
     # Only add legend to the first subplot to avoid clutter
     if ax_idx == 0:
         ax.legend(fontsize=10, loc='best', ncol=2)

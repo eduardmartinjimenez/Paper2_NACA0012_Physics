@@ -10,7 +10,7 @@ import matplotlib.ticker as ticker
 
 CORR_DIR = (
     "/home/jofre/Members/Eduard/Paper2/Simulations/"
-    "NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/"
+    "NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/test_1"
 )
 OUTPUT_DIR = (
     "/home/jofre/Members/Eduard/Paper2/Simulations/"
