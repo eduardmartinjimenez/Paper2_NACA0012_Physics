@@ -43,7 +43,7 @@ GEO_NAME = "3d_NACA0012_Re50000_AoA5_Geometrical_Data.h5"
 GEO_FILE = os.path.join(GEO_PATH, GEO_NAME)
 
 # Output directory
-OUTPUT_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/"
+OUTPUT_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/Wall_pressure_correlations/"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
@@ -58,6 +58,7 @@ c = 1.0  # chord length
 
 # Chord locations for correlation analysis (x/c values)
 X_C_LOCATIONS = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+# X_C_LOCATIONS = [0.5]
 
 # ============================================================================
 # Define PF/NF classification parameters
@@ -71,19 +72,20 @@ print("=" * 70)
 ALPHA = 1.0
 
 print(f"  Classification threshold: alpha = {ALPHA}")
-print(f"  PF: tau'_w > {ALPHA}*tau_rms")
-print(f"  NF: tau'_w < -{ALPHA}*tau_rms")
+print(f"  PF: p'_total > {ALPHA}*p_total_rms  (positive pressure fluctuation)")
+print(f"  NF: p'_total < -{ALPHA}*p_total_rms  (negative pressure fluctuation)")
 
 
 # ============================================================================
 # Load geometrical data
 # ============================================================================
 print("=" * 70)
-print("CORRELATION ANALYSIS OF WALL SHEAR STRESS FLUCTUATIONS")
+print("CORRELATION ANALYSIS OF WALL PRESSURE FLUCTUATIONS")
 print("=" * 70)
 print(f"\nAnalysis configuration:")
 print(f"  Chord locations (x/c): {X_C_LOCATIONS}")
 print(f"  Suction side (upper surface): closest point selected")
+print(f"  Using total pressure: Ptotal = p_surface + p_bulk")
 
 print("\n" + "=" * 70)
 print("LOADING GEOMETRICAL DATA")
@@ -196,14 +198,14 @@ if N_total_snapshots == 0:
 
 
 # ============================================================================
-# Load all surface data snapshots and compute meann <tau_w> (for fluctuations)
+# Load all surface data snapshots and compute mean <Ptotal> (for fluctuations)
 # ============================================================================
 print("\n" + "=" * 70)
-print("COMPUTING <TAU_W> FROM ALL SURFACE DATA SNAPSHOTS")
+print("COMPUTING <PTOTAL> FROM ALL SURFACE DATA SNAPSHOTS")
 print("=" * 70)
 
-tau_w_2d_sum = None
-tau_w_2_2d_sum = None
+ptotal_2d_sum = None
+ptotal_2_2d_sum = None
 n_snapshots = 0
 
 print(f"Loading {N_total_surf} surface snapshots to compute mean...")
@@ -211,29 +213,33 @@ print(f"Loading {N_total_surf} surface snapshots to compute mean...")
 for idx, surface_file in enumerate(all_surface_files):
     if (idx + 1) % 20 == 0 or idx == 0:
         print(f"  Loading surface snapshot {idx+1}/{N_total_surf}...", flush=True)
-    
+
     try:
         with h5py.File(surface_file, "r") as f:
 
-            tau_w = f["tau_w"][:]    # (Nz_phys, N_surf)
-            
-            tau_w_2 = tau_w * tau_w
-            
-            # Spanwise average for each snapshot
-            tau_w_2d = np.mean(tau_w, axis=0)       # (N_surf,)
-            tau_w_2_2d = np.mean(tau_w_2, axis=0)       # (N_surf,)
-            
+            p_w = f["p_w"][:]    # (Nz_phys, N_surf)
+            p_bulk = f.attrs["p_bulk"]  # Scalar value
 
-            if tau_w_2d_sum is None:
-                tau_w_2d_sum = tau_w_2d.copy()
-                tau_w_2_2d_sum = tau_w_2_2d.copy()
-                Nz_phys = tau_w.shape[0]  # Store for later
+            # Compute total pressure
+            ptotal = p_w + p_bulk  # (Nz_phys, N_surf)
+
+            ptotal_2 = ptotal * ptotal
+
+            # Spanwise average for each snapshot
+            ptotal_2d = np.mean(ptotal, axis=0)       # (N_surf,)
+            ptotal_2_2d = np.mean(ptotal_2, axis=0)       # (N_surf,)
+
+
+            if ptotal_2d_sum is None:
+                ptotal_2d_sum = ptotal_2d.copy()
+                ptotal_2_2d_sum = ptotal_2_2d.copy()
+                Nz_phys = ptotal.shape[0]  # Store for later
             else:
-                tau_w_2d_sum += tau_w_2d
-                tau_w_2_2d_sum += tau_w_2_2d
-            
+                ptotal_2d_sum += ptotal_2d
+                ptotal_2_2d_sum += ptotal_2_2d
+
             n_snapshots += 1
-            
+
     except Exception as e:
         print(f"  [WARNING] Error loading {surface_file}: {e}")
         continue
@@ -245,11 +251,11 @@ if n_snapshots == 0:
 n_snapshots = min(n_snapshots, N_total_snapshots)
 
 # Compute 2D time-averaged means
-tau_w_mean = tau_w_2d_sum / n_snapshots  # (N_surf,)
-tau_w_2_mean = tau_w_2_2d_sum / n_snapshots  # (N_surf,)
+ptotal_mean = ptotal_2d_sum / n_snapshots  # (N_surf,)
+ptotal_2_mean = ptotal_2_2d_sum / n_snapshots  # (N_surf,)
 
 print(f"  Successfully loaded {n_snapshots} surface snapshots")
-print(f"  2D mean shape: (N_surf={len(tau_w_mean)})")
+print(f"  2D mean shape: (N_surf={len(ptotal_mean)})")
 print(f"  Spanwise planes in each snapshot: Nz={Nz_phys}")
 
 
@@ -264,7 +270,7 @@ surface_data = {}
 
 for x_c_target in point_indices.keys():
     surface_data[x_c_target] = {
-        'tau_prime_w': []
+        'p_total_prime': []
     }
 
 print(f"Processing {n_snapshots} snapshots for surface data...")
@@ -272,21 +278,25 @@ print(f"Processing {n_snapshots} snapshots for surface data...")
 for idx, surface_file in enumerate(all_surface_files[:n_snapshots]):
     if (idx + 1) % 20 == 0 or idx == 0:
         print(f"  Processing snapshot {idx+1}/{n_snapshots}...", flush=True)
-    
+
     try:
         with h5py.File(surface_file, "r") as f:
-            tau_w = f["tau_w"][:]  # (Nz_phys, N_surf)
-        
+            p_w = f["p_w"][:]  # (Nz_phys, N_surf)
+            p_bulk = f.attrs["p_bulk"]  # Scalar value
+
+        # Compute total pressure
+        ptotal = p_w + p_bulk  # (Nz_phys, N_surf)
+
         # Extract at each chord location
         for x_c_target, point_info in point_indices.items():
             idx_point = point_info['indices'][0]  # Single point
-            
+
             # Extract surface values at all z-locations for this point
-            tau_at_xc = tau_w[:, idx_point]  # (Nz_phys,)
+            ptotal_at_xc = ptotal[:, idx_point]  # (Nz_phys,)
 
             # compute fluctuations
-            tau_at_xc_fluct = tau_at_xc - tau_w_mean[idx_point]
-            surface_data[x_c_target]['tau_prime_w'].extend(tau_at_xc_fluct) # contains n_snapshots * Nz_phys scalar values for each x/c location
+            ptotal_at_xc_fluct = ptotal_at_xc - ptotal_mean[idx_point]
+            surface_data[x_c_target]['p_total_prime'].extend(ptotal_at_xc_fluct) # contains n_snapshots * Nz_phys scalar values for each x/c location
     except Exception as e:
         print(f"  [WARNING] Error processing {surface_file}: {e}")
         continue
@@ -336,25 +346,25 @@ print("avg_w_data shape:", avg_w_data.shape)
 
 
 # ============================================================================
-# Compute tau_w_rms at chosen points
+# Compute p_total_rms at chosen points
 # ============================================================================
 print("\n" + "=" * 70)
-print("COMPUTING TAU_W_RMS AT REFERENCE POINTS")
+print("COMPUTING P_TOTAL_RMS AT REFERENCE POINTS")
 print("=" * 70)
 
-tau_rms_dict = {}
+p_total_rms_dict = {}
 for x_c_target, point_info in point_indices.items():
     idx_point = point_info['indices'][0]
 
-    # tau_rms = sqrt( <tau_w^2> - <tau_w>^2 )
-    tau_rms = np.sqrt(tau_w_2_mean[idx_point] - tau_w_mean[idx_point]**2)
-    tau_rms_dict[x_c_target] = tau_rms
+    # p_total_rms = sqrt( <p_total^2> - <p_total>^2 )
+    p_total_rms = np.sqrt(ptotal_2_mean[idx_point] - ptotal_mean[idx_point]**2)
+    p_total_rms_dict[x_c_target] = p_total_rms
 
-    tau_mean_val = tau_w_mean[idx_point]
+    ptotal_mean_val = ptotal_mean[idx_point]
 
     print(f"  x/c = {x_c_target:.2f}:")
-    print(f"    tau_w_mean = {tau_mean_val:.6e}")
-    print(f"    tau_w_rms  = {tau_rms:.6e}")
+    print(f"    p_total_mean = {ptotal_mean_val:.6e}")
+    print(f"    p_total_rms  = {p_total_rms:.6e}")
 
 
 # ============================================================================
@@ -375,10 +385,12 @@ print(f"  Full domain: x=[{x_min_domain:.3f}, {x_max_domain:.3f}], y=[{y_min_dom
 # dx_downstream = 0.25
 # dy_down = 0.05
 # dy_up = 0.3
+
 # dx_upstream = 1
 # dx_downstream = 2
 # dy_down = 0.05
-# dy_up = 0.5
+# dy_up = 1
+
 dx_upstream = 0.5
 dx_downstream = 1
 dy_down = 0.05
@@ -512,9 +524,9 @@ for x_c_target in point_indices.keys():
         'N_PF': 0,
         'N_NF': 0,
         'N_all': 0,
-        'tau_prime_PF_sq_sum': 0.0,  # For computing tau_rms_PF
-        'tau_prime_NF_sq_sum': 0.0,  # For computing tau_rms_NF
-        'tau_prime_all_sq_sum': 0.0,  # For computing unconditional tau_rms
+        'p_total_prime_PF_sq_sum': 0.0,  # For computing p_total_rms_PF
+        'p_total_prime_NF_sq_sum': 0.0,  # For computing p_total_rms_NF
+        'p_total_prime_all_sq_sum': 0.0,  # For computing unconditional p_total_rms
     }
 
     print(f"  x/c = {x_c_target:.2f}: shape (Nz={Nz_crop}, Ny={Ny_crop}, Nx={Nx_crop})")
@@ -574,17 +586,17 @@ for snap_idx in range(n_snapshots):
             # Replace NaN values with 0 to prevent propagation in accumulation
             u_prime = np.where(valid_mask, u_prime, 0.0)
 
-            tau_rms = tau_rms_dict[x_c_target]
-            threshold = ALPHA * tau_rms
+            p_total_rms = p_total_rms_dict[x_c_target]
+            threshold = ALPHA * p_total_rms
 
-            # Extract tau'_w for this snapshot at all z-planes
-            tau_prime_current = np.array(surface_data[x_c_target]['tau_prime_w'][
+            # Extract p'_total for this snapshot at all z-planes
+            p_total_prime_current = np.array(surface_data[x_c_target]['p_total_prime'][
                 snap_idx * Nz_phys : (snap_idx + 1) * Nz_phys
             ])  # (Nz_phys,)
 
             # Classify EACH z-plane independently as PF, NF, or neither
-            PF_mask = tau_prime_current > threshold    # (Nz_phys,)
-            NF_mask = tau_prime_current < -threshold   # (Nz_phys,)
+            PF_mask = p_total_prime_current > threshold    # (Nz_phys,)
+            NF_mask = p_total_prime_current < -threshold   # (Nz_phys,)
             qualifying_mask = PF_mask | NF_mask
 
             N_PF_snap = int(np.sum(PF_mask))
@@ -594,9 +606,9 @@ for snap_idx in range(n_snapshots):
             # FFT-based circular cross-correlation along z (exploits periodicity)
             #
             # For each z-plane k:
-            #   tau'[k] * u'[(k + Dz) % Nz, y, x]
+            #   p'_total[k] * u'[(k + Dz) % Nz, y, x]
             # Summed over k:
-            #   C[Dz, y, x] = IFFT( conj(FFT(tau)) * FFT(u') )  along z
+            #   C[Dz, y, x] = IFFT( conj(FFT(p_total)) * FFT(u') )  along z
             #
             # For u'^2 normalization, the indicator function selects planes:
             #   U2[Dz, y, x] = IFFT( conj(FFT(indicator)) * FFT(u'^2) )
@@ -606,8 +618,8 @@ for snap_idx in range(n_snapshots):
             u2_fft = np.fft.rfft(u_prime**2, axis=0)     # (Nz//2+1, Ny, Nx)
 
             # --- ALL samples (unconditional correlation) ---
-            tau_all_fft = np.fft.rfft(tau_prime_current)               # (Nz//2+1,)
-            Num_all = np.fft.irfft(np.conj(tau_all_fft[:, None, None]) * u_fft,
+            p_all_fft = np.fft.rfft(p_total_prime_current)               # (Nz//2+1,)
+            Num_all = np.fft.irfft(np.conj(p_all_fft[:, None, None]) * u_fft,
                                    n=Nz_phys, axis=0)
 
             # u'^2 with all-ones indicator (result is constant in Dz)
@@ -618,7 +630,7 @@ for snap_idx in range(n_snapshots):
             correlation_data[x_c_target]['Numerator_all'] += Num_all
             correlation_data[x_c_target]['u_prime_sq'] += U2_all
             correlation_data[x_c_target]['N_all'] += Nz_phys
-            correlation_data[x_c_target]['tau_prime_all_sq_sum'] += float(np.sum(tau_prime_current**2))
+            correlation_data[x_c_target]['p_total_prime_all_sq_sum'] += float(np.sum(p_total_prime_current**2))
 
             # --- Conditional (PF/NF) ---
             if N_PF_snap + N_NF_snap == 0:
@@ -626,12 +638,12 @@ for snap_idx in range(n_snapshots):
 
             # --- PF planes only ---
             if N_PF_snap > 0:
-                tau_PF = np.where(PF_mask, tau_prime_current, 0.0)
-                tau_PF_fft = np.fft.rfft(tau_PF)
+                p_PF = np.where(PF_mask, p_total_prime_current, 0.0)
+                p_PF_fft = np.fft.rfft(p_PF)
                 indicator_PF = PF_mask.astype(np.float64)
                 indicator_PF_fft = np.fft.rfft(indicator_PF)
 
-                Num_PF = np.fft.irfft(np.conj(tau_PF_fft[:, None, None]) * u_fft,
+                Num_PF = np.fft.irfft(np.conj(p_PF_fft[:, None, None]) * u_fft,
                                       n=Nz_phys, axis=0)
                 U2_PF = np.fft.irfft(np.conj(indicator_PF_fft[:, None, None]) * u2_fft,
                                      n=Nz_phys, axis=0)
@@ -639,16 +651,16 @@ for snap_idx in range(n_snapshots):
                 correlation_data[x_c_target]['Numerator_PF'] += Num_PF
                 correlation_data[x_c_target]['u_prime_sq_PF'] += U2_PF
                 correlation_data[x_c_target]['N_PF'] += N_PF_snap
-                correlation_data[x_c_target]['tau_prime_PF_sq_sum'] += float(np.sum(tau_prime_current[PF_mask]**2))
+                correlation_data[x_c_target]['p_total_prime_PF_sq_sum'] += float(np.sum(p_total_prime_current[PF_mask]**2))
 
             # --- NF planes only ---
             if N_NF_snap > 0:
-                tau_NF = np.where(NF_mask, tau_prime_current, 0.0)
-                tau_NF_fft = np.fft.rfft(tau_NF)
+                p_NF = np.where(NF_mask, p_total_prime_current, 0.0)
+                p_NF_fft = np.fft.rfft(p_NF)
                 indicator_NF = NF_mask.astype(np.float64)
                 indicator_NF_fft = np.fft.rfft(indicator_NF)
 
-                Num_NF = np.fft.irfft(np.conj(tau_NF_fft[:, None, None]) * u_fft,
+                Num_NF = np.fft.irfft(np.conj(p_NF_fft[:, None, None]) * u_fft,
                                       n=Nz_phys, axis=0)
                 U2_NF = np.fft.irfft(np.conj(indicator_NF_fft[:, None, None]) * u2_fft,
                                      n=Nz_phys, axis=0)
@@ -656,7 +668,7 @@ for snap_idx in range(n_snapshots):
                 correlation_data[x_c_target]['Numerator_NF'] += Num_NF
                 correlation_data[x_c_target]['u_prime_sq_NF'] += U2_NF
                 correlation_data[x_c_target]['N_NF'] += N_NF_snap
-                correlation_data[x_c_target]['tau_prime_NF_sq_sum'] += float(np.sum(tau_prime_current[NF_mask]**2))
+                correlation_data[x_c_target]['p_total_prime_NF_sq_sum'] += float(np.sum(p_total_prime_current[NF_mask]**2))
 
         # Periodic progress tracking
         if (snap_idx + 1) % 10 == 0:
@@ -710,45 +722,45 @@ for x_c_target, corr_data in correlation_data.items():
     # Avoid division by zero in u_rms
     u_rms_safe = np.where(u_rms > 1e-12, u_rms, 1e-12)
 
-    # Compute conditional tau_rms for PF and NF
+    # Compute conditional p_total_rms for PF and NF
     if N_PF > 0:
-        tau_rms_PF = np.sqrt(corr_data['tau_prime_PF_sq_sum'] / N_PF)
+        p_total_rms_PF = np.sqrt(corr_data['p_total_prime_PF_sq_sum'] / N_PF)
     else:
-        tau_rms_PF = 1.0  # Avoid division by zero
+        p_total_rms_PF = 1.0  # Avoid division by zero
         print(f"    [WARNING] No PF samples found!")
 
     if N_NF > 0:
-        tau_rms_NF = np.sqrt(corr_data['tau_prime_NF_sq_sum'] / N_NF)
+        p_total_rms_NF = np.sqrt(corr_data['p_total_prime_NF_sq_sum'] / N_NF)
     else:
-        tau_rms_NF = 1.0
+        p_total_rms_NF = 1.0
         print(f"    [WARNING] No NF samples found!")
 
-    print(f"    tau_rms_PF = {tau_rms_PF:.6e}")
-    print(f"    tau_rms_NF = {tau_rms_NF:.6e}")
+    print(f"    p_total_rms_PF = {p_total_rms_PF:.6e}")
+    print(f"    p_total_rms_NF = {p_total_rms_NF:.6e}")
 
     # Replace NaN in numerators with 0
     Numerator_all = np.where(np.isnan(corr_data['Numerator_all']), 0.0, corr_data['Numerator_all'])
     Numerator_PF = np.where(np.isnan(corr_data['Numerator_PF']), 0.0, corr_data['Numerator_PF'])
     Numerator_NF = np.where(np.isnan(corr_data['Numerator_NF']), 0.0, corr_data['Numerator_NF'])
 
-    # Compute unconditional tau_rms (from all samples)
-    tau_rms_all = np.sqrt(corr_data['tau_prime_all_sq_sum'] / N_all)
+    # Compute unconditional p_total_rms (from all samples)
+    p_total_rms_all = np.sqrt(corr_data['p_total_prime_all_sq_sum'] / N_all)
 
     # Unconditioned correlation (uses all samples)
-    R_all = Numerator_all / (N_all * tau_rms_all * u_rms_safe)
+    R_all = Numerator_all / (N_all * p_total_rms_all * u_rms_safe)
 
     # Conditional correlations (each uses its own matched u_rms)
     if N_PF > 0:
         u_rms_PF = np.sqrt(corr_data['u_prime_sq_PF'] / N_PF)
         u_rms_PF = np.where(np.isnan(u_rms_PF) | (u_rms_PF < 1e-12), 1e-12, u_rms_PF)
-        R_PF = Numerator_PF / (N_PF * tau_rms_PF * u_rms_PF)
+        R_PF = Numerator_PF / (N_PF * p_total_rms_PF * u_rms_PF)
     else:
         R_PF = np.zeros_like(R_all)
 
     if N_NF > 0:
         u_rms_NF = np.sqrt(corr_data['u_prime_sq_NF'] / N_NF)
         u_rms_NF = np.where(np.isnan(u_rms_NF) | (u_rms_NF < 1e-12), 1e-12, u_rms_NF)
-        R_NF = Numerator_NF / (N_NF * tau_rms_NF * u_rms_NF)
+        R_NF = Numerator_NF / (N_NF * p_total_rms_NF * u_rms_NF)
     else:
         R_NF = np.zeros_like(R_all)
 
@@ -763,8 +775,8 @@ for x_c_target, corr_data in correlation_data.items():
         'R_PF': R_PF,
         'R_NF': R_NF,
         'u_rms': u_rms,
-        'tau_rms_PF': tau_rms_PF,
-        'tau_rms_NF': tau_rms_NF,
+        'p_total_rms_PF': p_total_rms_PF,
+        'p_total_rms_NF': p_total_rms_NF,
         'N_PF': N_PF,
         'N_NF': N_NF,
         'N_all': N_all,
@@ -804,7 +816,7 @@ for x_c_target, results in correlation_results.items():
     iy_min = crop_info['iy_min']
     iy_max = crop_info['iy_max']
 
-    output_filename = f"wall_shear_correlation_xc_{x_c_target:.3f}_alpha_{ALPHA:.1f}_all_fft.h5"
+    output_filename = f"wall_pressure_correlation_xc_{x_c_target:.3f}_alpha_{ALPHA:.1f}_all_fft.h5"
     output_path = os.path.join(OUTPUT_DIR, output_filename)
 
     print(f"\n  Saving x/c = {x_c_target:.2f} to {output_filename}")
@@ -815,10 +827,10 @@ for x_c_target, results in correlation_results.items():
         f.attrs['x_c_actual'] = point_info['x_c_actual']
         f.attrs['y_actual'] = point_info['y']
         f.attrs['idx_point'] = idx_point
-        f.attrs['tau_w_mean'] = tau_w_mean[idx_point]
-        f.attrs['tau_w_rms'] = tau_rms_dict[x_c_target]
-        f.attrs['tau_rms_PF'] = results['tau_rms_PF']
-        f.attrs['tau_rms_NF'] = results['tau_rms_NF']
+        f.attrs['p_total_mean'] = ptotal_mean[idx_point]
+        f.attrs['p_total_rms'] = p_total_rms_dict[x_c_target]
+        f.attrs['p_total_rms_PF'] = results['p_total_rms_PF']
+        f.attrs['p_total_rms_NF'] = results['p_total_rms_NF']
         f.attrs['alpha'] = ALPHA
         f.attrs['N_snapshots'] = n_snapshots
         f.attrs['N_PF'] = results['N_PF']

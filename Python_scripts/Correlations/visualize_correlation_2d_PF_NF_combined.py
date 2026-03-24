@@ -6,12 +6,14 @@ import matplotlib.pyplot as plt
 # ============================================================================
 # Configuration
 # ============================================================================
-BASE_RESULTS_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/test_3"
-# BASE_RESULTS_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/"
+# BASE_RESULTS_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/test_3"
+BASE_RESULTS_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/test_1"
+# BASE_RESULTS_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Wall_pressure_correlations/"
 OUTPUT_DIR = os.path.join(BASE_RESULTS_DIR, "Figures")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 X_C_LOCATIONS = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+# X_C_LOCATIONS = [0.5]
 
 ALPHA = 1.0
 
@@ -19,6 +21,10 @@ RESULT_FILES = {
     x_c: os.path.join(BASE_RESULTS_DIR, f"wall_shear_correlation_xc_{x_c:.3f}_alpha_{ALPHA:.1f}_all_fft.h5")
     for x_c in X_C_LOCATIONS
 }
+# RESULT_FILES = {
+#     x_c: os.path.join(BASE_RESULTS_DIR, f"wall_pressure_correlation_xc_{x_c:.3f}_alpha_{ALPHA:.1f}_all_fft.h5")
+#     for x_c in X_C_LOCATIONS
+# }
 
 NLEVELS = 25
 
