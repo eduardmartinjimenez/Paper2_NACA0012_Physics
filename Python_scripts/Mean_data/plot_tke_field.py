@@ -9,14 +9,28 @@ from matplotlib.colors import LogNorm
 # ============================================================================
 # Configuration
 # ============================================================================
+# # Path to TKE data
+# TKE_DATA_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/"
+# TKE_DATA_NAME = "tke_turbulent_kinetic_energy.h5"
+# TKE_DATA_FILE = os.path.join(TKE_DATA_PATH, TKE_DATA_NAME)
+
+# # Mesh/Geometry data
+# GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Geometrical_data"
+# GEO_NAME = "3d_NACA0012_Re50000_AoA12_Geometrical_Data.h5"
+# GEO_FILE = os.path.join(GEO_PATH, GEO_NAME)
+
+# # Output directory for figures
+# FIGURES_OUTPUT_DIR = os.path.join(TKE_DATA_PATH, "Figures_TKE")
+# os.makedirs(FIGURES_OUTPUT_DIR, exist_ok=True)
+
 # Path to TKE data
-TKE_DATA_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/"
+TKE_DATA_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/"
 TKE_DATA_NAME = "tke_turbulent_kinetic_energy.h5"
 TKE_DATA_FILE = os.path.join(TKE_DATA_PATH, TKE_DATA_NAME)
 
 # Mesh/Geometry data
-GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Geometrical_data"
-GEO_NAME = "3d_NACA0012_Re50000_AoA12_Geometrical_Data.h5"
+GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Geometrical_data"
+GEO_NAME = "3d_NACA0012_Re50000_AoA5_Geometrical_Data.h5"
 GEO_FILE = os.path.join(GEO_PATH, GEO_NAME)
 
 # Output directory for figures
