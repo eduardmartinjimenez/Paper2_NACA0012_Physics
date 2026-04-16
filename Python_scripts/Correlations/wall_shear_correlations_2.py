@@ -5,6 +5,7 @@ import numpy as np
 from glob import glob
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+import time
 
 module_path = "/home/jofre/Members/Eduard/Paper2/Python_scripts/Data_loader"
 if module_path not in sys.path:
@@ -18,32 +19,32 @@ from data_loader_functions import CompressedSnapshotLoader
 
 # Data directories
 # Base directory containing all SURFACE DATA batch folders
-BASE_SURFACE_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Snapshots/"
+BASE_SURFACE_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Snapshots/"
 # BASE_SURFACE_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/Test/"
 # Base directory containing all SNAPSHOTS DATA batch folders
-BASE_SNAPSHOT_DIR = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA5_Re50000_1716x1662x128/Steady_state/"
+BASE_SNAPSHOT_DIR = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA12_Re50000_1716x1662x128/Steady_state/"
 # BASE_SNAPSHOT_DIR = "/home/jofre/disc2/Members/Eduard/Test/Steady_state/"
 
 # Pattern to match batch directories
-BATCH_PATTERN = "batch_*"
+BATCH_PATTERN = "batch_3065*"
 
 # Mesh data file
-MESH_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Geometrical_data/"
-MESH_NAME = "3d_NACA0012_Re50000_AoA5-CROP-MESH.h5"
+MESH_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Geometrical_data/"
+MESH_NAME = "3d_NACA0012_Re50000_AoA12-CROP-MESH.h5"
 MESH_FILE = os.path.join(MESH_PATH, MESH_NAME)
 
 # Averaged last snapshot file (for mean fields)
-LAST_SNAPSHOT_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/last_snapshot/"
-LAST_SNAPSHOT_NAME = "3d_NACA0012_Re50000_AoA5_avg_25340000-COMP-DATA.h5"
+LAST_SNAPSHOT_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/last_snapshot/"
+LAST_SNAPSHOT_NAME = "3d_NACA0012_Re50000_AoA12_avg_26500000-COMP-DATA.h5"
 LAST_SNAPSHOT_FILE = os.path.join(LAST_SNAPSHOT_PATH, LAST_SNAPSHOT_NAME)
 
 # Geometrical data file
-GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Geometrical_data/"
-GEO_NAME = "3d_NACA0012_Re50000_AoA5_Geometrical_Data.h5"
+GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Geometrical_data/"
+GEO_NAME = "3d_NACA0012_Re50000_AoA12_Geometrical_Data.h5"
 GEO_FILE = os.path.join(GEO_PATH, GEO_NAME)
 
 # Output directory
-OUTPUT_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/"
+OUTPUT_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Wall_shear_correlations/"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
@@ -52,12 +53,13 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 # ============================================================================
 # Reference parameters
 u_infty = 1.0
-AOA = 5  # degrees
+AOA = 12  # degrees
 AOA_rad = np.deg2rad(AOA)
 c = 1.0  # chord length
 
 # Chord locations for correlation analysis (x/c values)
-X_C_LOCATIONS = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+# X_C_LOCATIONS = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+X_C_LOCATIONS = [0.5]
 
 # ============================================================================
 # Define PF/NF classification parameters
@@ -379,10 +381,14 @@ print(f"  Full domain: x=[{x_min_domain:.3f}, {x_max_domain:.3f}], y=[{y_min_dom
 # dx_downstream = 2
 # dy_down = 0.05
 # dy_up = 0.5
-dx_upstream = 0.5
-dx_downstream = 1
+# dx_upstream = 0.5
+# dx_downstream = 1
+# dy_down = 0.05
+# dy_up = 0.5
+dx_upstream = 0.15
+dx_downstream = 0.25
 dy_down = 0.05
-dy_up = 0.5
+dy_up = 0.25
 
 # Get 2D grid for index finding
 x_2d = x_data[0, :, :]  # (Ny, Nx)
@@ -477,7 +483,7 @@ ax.set_xlim(min(x_min_crop - 0.1, x_min_domain), max(x_max_crop + 0.1, x_max_dom
 ax.set_ylim(min(y_min_crop - 0.05, y_min_domain), max(y_max_crop + 0.05, y_max_domain))
 
 # Save figure
-plot_path = os.path.join(OUTPUT_DIR, f'correlation_domain_xc_{x_c_target:.3f}.png')
+# plot_path = os.path.join(OUTPUT_DIR, f'correlation_domain_xc_{x_c_target:.3f}_test.png')
 plt.tight_layout()
 plt.show()
 
@@ -535,6 +541,10 @@ print(f"  Snapshot files and surface files must align in order!")
 print(f"  Exploiting spanwise periodicity: using all {Nz_phys} z-planes as reference points")
 print(f"  -> z-axis of the result represents relative separation Dz (Dz=0 at index 0)")
 
+# Timing for snapshot loading
+total_load_time = 0.0
+start_total = time.time()
+
 for snap_idx in range(n_snapshots):
     if (snap_idx + 1) % 10 == 0 or snap_idx == 0:
         print(f"\n  Snapshot {snap_idx+1}/{n_snapshots}...", flush=True)
@@ -543,9 +553,12 @@ for snap_idx in range(n_snapshots):
 
     try:
         # Load instantaneous velocity fields
+        load_start = time.time()
         fields_inst = loader.load_snapshot(snapshot_file)
         u_inst_full = loader.reconstruct_field(fields_inst["u"])  # (Nz, Ny, Nx)
         v_inst_full = loader.reconstruct_field(fields_inst["v"])  # (Nz, Ny, Nx)
+        load_end = time.time()
+        total_load_time += (load_end - load_start)
 
         # Compute streamwise velocity (aligned with angle of attack)
         # V_streamwise = u*cos(AOA) + v*sin(AOA)
@@ -671,8 +684,16 @@ for snap_idx in range(n_snapshots):
         traceback.print_exc()
         continue
 
+end_total = time.time()
+total_time = end_total - start_total
+
 print("\n" + "=" * 70)
-print("CORRELATION ACCUMULATION COMPLETE")
+print("TIMING SUMMARY")
+print("=" * 70)
+print(f"  Total time for all snapshots: {total_time:.2f} seconds ({total_time/60:.2f} minutes)")
+print(f"  Time spent loading snapshots: {total_load_time:.2f} seconds ({total_load_time/60:.2f} minutes)")
+print(f"  Average time per snapshot: {total_time/n_snapshots:.2f} seconds")
+print(f"  Average loading time per snapshot: {total_load_time/n_snapshots:.2f} seconds")
 print("=" * 70)
 
 
@@ -804,7 +825,7 @@ for x_c_target, results in correlation_results.items():
     iy_min = crop_info['iy_min']
     iy_max = crop_info['iy_max']
 
-    output_filename = f"wall_shear_correlation_xc_{x_c_target:.3f}_alpha_{ALPHA:.1f}_all_fft.h5"
+    output_filename = f"wall_shear_correlation_xc_{x_c_target:.3f}_alpha_{ALPHA:.1f}_test.h5"
     output_path = os.path.join(OUTPUT_DIR, output_filename)
 
     print(f"\n  Saving x/c = {x_c_target:.2f} to {output_filename}")

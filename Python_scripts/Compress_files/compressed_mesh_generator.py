@@ -4,14 +4,14 @@ import numpy as np
 import gc
 
 # Define input file path and base name
-INPUT_FILE_PATH = "/home/jofre/Members/George/Simulations/3d_ibm_stl_naca0012_Mesh_7/Snapshots/"
-INPUT_FILE_NAME = "3d_ibm_stl_naca0012_aoa5_Re10000_1090000.h5"
+INPUT_FILE_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA85_Re50000_1716x1662x128/"
+INPUT_FILE_NAME = "3d_ibm_stl_naca0012_1716_1662_128_aoa85_Re50000_4480000.h5"
 
 # Define ouput folder path
-OUTPUT_FILE_PATH = "/home/jofre/Members/George/Simulations/3d_ibm_stl_naca0012_Mesh_7/Snapshots/compressed_snapshots/"
+OUTPUT_FILE_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA85_Re50000_1716x1662x128/"
 
 # Rename ONLY the output files. If None, it uses INPUT_FILE_BASENAME.
-OUTPUT_MESH_NAME = "3d_NACA0012_Re10000_AoA5"
+OUTPUT_MESH_NAME = "3d_NACA0012_Re50000_AoA85"
 
 # Define crop region:
 X_MIN = -0.5
