@@ -40,9 +40,9 @@ from data_loader_functions import CompressedSnapshotLoader
 ### AOA 12º
 
 # Slice data paths
-MESH_SLICE_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA12_Re50000_1716x1662x128/Slice_data/slice_9/"
-MESH_SLICE_NAME = "slice_9-CROP-MESH.h5"
-SLICES_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA12_Re50000_1716x1662x128/Slice_data/slice_9/"
+MESH_SLICE_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA12_Re50000_1716x1662x128/Slice_data/slice_5/"
+MESH_SLICE_NAME = "slice_5-CROP-MESH.h5"
+SLICES_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA12_Re50000_1716x1662x128/Slice_data/slice_5/"
 
 # Geometric data (for visualization only)
 GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Geometrical_data/"
@@ -93,7 +93,7 @@ AOA_rad = np.radians(AOA_deg)
 dt_iteration = 2.0e-06  # Physical time per iteration [s]
 
 # Probe locations: absolute y-coordinates in domain
-Y_LOCATIONS = [0.03, 0.06, 0.09]  # Specify actual y-coordinate values
+Y_LOCATIONS = [0.057, 0.08, 0.13, 0.22]  # Specify actual y-coordinate values
 
 
 
