@@ -13,7 +13,7 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # X_C_LOCATIONS = [0.5]
 # X_C_LOCATIONS = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
-X_C_LOCATIONS = [0.3, 0.5, 0.7, 0.9]
+X_C_LOCATIONS = [0.5, 0.7, 0.9]
 
 
 ALPHA = 1.0
@@ -30,7 +30,7 @@ c_ref   = 1.0
 nu_ref  = u_infty * c_ref / Re_c
 
 # Wall-normal sampling parameters (same style as Mean_velocity_profiles.py)
-WALL_NORMAL_LENGTH = 0.4   # length in chord units above the surface
+WALL_NORMAL_LENGTH = 0.25   # length in chord units above the surface
 N_SAMPLE_POINTS    = 500   # query points along the vertical line
 
 RESULT_FILES = {

@@ -18,11 +18,11 @@ if mpi_rank == 0:
     print("=" * 60)
 
 # Define input file path and base name
-INPUT_FILE_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA85_Re10000_502x443x64/batch_6/"
+INPUT_FILE_PATH = "/home/jofre/Members/Eduard/Simulations/NACA_0012_AOA85_Re10000_502x443x64/batch_7/"
 INPUT_FILE_BASENAME = "3d_ibm_stl_naca0012_aoa85_Re10000"
 
 # Define output folder path
-OUTPUT_FILE_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA85_Re10000_502x443x64/batch_6/compressed_snapshots"
+OUTPUT_FILE_PATH = "/home/jofre/Members/Eduard/Simulations/NACA_0012_AOA85_Re10000_502x443x64/batch_7/compressed_snapshots/"
 # Rename ONLY the output files. If None, it uses INPUT_FILE_BASENAME.
 OUTPUT_FILE_BASENAME = "3d_NACA0012_Re10000_AoA85"
 

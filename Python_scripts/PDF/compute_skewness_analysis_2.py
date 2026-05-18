@@ -19,17 +19,18 @@ rc('font', family='serif')
 # CONFIGURATION
 # ============================================================================
 
-# Base directory for simulations
-BASE_SIM_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations"
+# Path to the saved surface data HDF5 files
+SURFACE_DATA_AOA5_FILE = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/PDF_analysis/surface_data_slices_AoA5_Re50000.h5"
+SURFACE_DATA_AOA12_FILE = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/PDF_analysis/surface_data_slices_AoA12_Re50000.h5"
 
 # Cases to analyze
 CASES = {
     "AOA5": {
-        "dir": "NACA_0012_AOA5_Re50000_1716x1662x128",
+        "file": SURFACE_DATA_AOA5_FILE,
         "label": "AOA = 5°"
     },
     "AOA12": {
-        "dir": "NACA_0012_AOA12_Re50000_1716x1662x128",
+        "file": SURFACE_DATA_AOA12_FILE,
         "label": "AOA = 12°"
     }
 }
@@ -50,10 +51,9 @@ for case_name, case_info in CASES.items():
     print(f"PROCESSING CASE: {case_name} ({case_info['label']})")
     print(f"{'=' * 80}")
 
-    # Construct paths
-    case_dir = os.path.join(BASE_SIM_DIR, case_info['dir'])
-    pdf_analysis_dir = os.path.join(case_dir, "Mean_data", "PDF_analysis")
-    surface_data_file = os.path.join(pdf_analysis_dir, "surface_data_slices.h5")
+    # Get surface data file path
+    surface_data_file = case_info['file']
+    pdf_analysis_dir = os.path.dirname(surface_data_file)
 
     if not os.path.exists(surface_data_file):
         print(f"[WARNING] File not found: {surface_data_file}")

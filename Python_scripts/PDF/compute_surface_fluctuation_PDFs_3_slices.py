@@ -17,6 +17,24 @@ from data_loader_functions import CompressedSnapshotLoader
 # Configuration
 # ============================================================================
 
+# # Base directory containing all slice folders
+# SLICES_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA5_Re50000_1716x1662x128/Slice_data/"
+
+# # Pattern to match all slice location directories
+# SLICE_PATTERN = "slice_*"
+
+# # Pattern to match slice snapshots
+# SNAPSHOT_PATTERN = "slice_*-COMP-DATA.h5"
+
+# # Geometrical data file
+# GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Geometrical_data/"
+# GEO_NAME = "3d_NACA0012_Re50000_AoA5_Geometrical_Data.h5"
+# GEO_FILE = os.path.join(GEO_PATH, GEO_NAME)
+
+# # Output directory
+# OUTPUT_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/PDF_analysis/"
+# os.makedirs(OUTPUT_DIR, exist_ok=True)
+
 # Base directory containing all slice folders
 SLICES_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA5_Re50000_1716x1662x128/Slice_data/"
 
@@ -318,7 +336,8 @@ print("\n" + "=" * 70)
 print("SAVING SURFACE DATA TO HDF5")
 print("=" * 70)
 
-surface_data_file = os.path.join(OUTPUT_DIR, "surface_data_slices.h5")
+# surface_data_file = os.path.join(OUTPUT_DIR, "surface_data_slices.h5")
+surface_data_file = os.path.join(OUTPUT_DIR, "surface_data_slices_AoA5_Re50000.h5")
 
 with h5py.File(surface_data_file, "w") as f:
     for slice_name, data in surface_data.items():

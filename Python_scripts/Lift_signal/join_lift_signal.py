@@ -65,9 +65,9 @@ def main():
     """Main function with argument parsing."""
     
     # Default file paths
-    default_file1 = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA5_Re50000_1716x1662x128/Transient/lift_coef_temporal_signal_aoa5_Re50000_merged_8.csv"
-    default_file2 = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA5_Re50000_1716x1662x128/Steady_state/batch_32343687/lift_coef_temporal_signal_aoa5_Re50000.csv"
-    default_output = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA5_Re50000_1716x1662x128/Transient/lift_coef_temporal_signal_aoa5_Re50000_merged_9.csv"
+    default_file1 = "/home/jofre/Members/Eduard/Simulations/NACA_0012_AOA85_Re10000_502x443x64/join_lift/lift_coef_temporal_signal_aoa85_Re10000_5.csv"
+    default_file2 = "/home/jofre/Members/Eduard/Simulations/NACA_0012_AOA85_Re10000_502x443x64/batch_7/lift_coef_temporal_signal_aoa85_Re10000.csv"
+    default_output = "/home/jofre/Members/Eduard/Simulations/NACA_0012_AOA85_Re10000_502x443x64/join_lift/lift_coef_temporal_signal_aoa85_Re10000_6.csv"
     
     parser = argparse.ArgumentParser(description='Merge two lift signal CSV files')
     parser.add_argument('--file1', type=str, default=default_file1,

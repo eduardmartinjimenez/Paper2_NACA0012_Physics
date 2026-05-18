@@ -35,7 +35,7 @@ from scipy import signal
 
 # AoA 12º
 
-# # Correlation data path (for visualization)
+# # # Correlation data path (for visualization)
 # CORR_FILE = (
 #     "/home/jofre/Members/Eduard/Paper2/Simulations/"
 #     "NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/"
@@ -66,17 +66,7 @@ from scipy import signal
 # # PROBE_Y_COORDS = [0.039, 0.045, 0.055, 0.065, 0.075, 0.085, 0.10, 0.12, 0.14, 0.16, 0.18]  # x/c = 0.7
 # PROBE_Y_COORDS = [0.02, 0.025, 0.035, 0.045, 0.055, 0.065, 0.085, 0.105, 0.125, 0.145, 0.165]  # x/c = 0.9
 
-
-# # Output directory
-# OUTPUT_DIR = None
-
-# # Physical parameters
-# rho_ref = 1.0           # Reference density [kg/m³]
-# u_infty = 1.0           # Free-stream velocity [m/s]
-# c = 1.0                 # Airfoil chord [m]
-# Re_c = 50000            # Reynolds number
-# AOA_deg = 12.0          # Angle of attack [degrees]
-# AOA_rad = np.radians(AOA_deg)
+# AOA_deg = 12.0 # Angle of attack [degrees]
 
 
 # AoA 5º
@@ -86,13 +76,13 @@ CORR_FILE = (
     "/home/jofre/Members/Eduard/Paper2/Simulations/"
     "NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/"
     "Wall_pressure_correlations/test_2/"
-    "wall_pressure_correlation_unconditional_xc_0.300.h5"
+    "wall_pressure_correlation_unconditional_xc_0.900.h5"
 )
 
 # Slice data paths (for signal extraction across full spanwise domain)
-MESH_SLICE_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA5_Re50000_1716x1662x128/Slice_data/slice_3/"
-MESH_SLICE_NAME = "slice_3-CROP-MESH.h5"
-SLICES_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA5_Re50000_1716x1662x128/Slice_data/slice_3/"
+MESH_SLICE_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA5_Re50000_1716x1662x128/Slice_data/slice_9/"
+MESH_SLICE_NAME = "slice_9-CROP-MESH.h5"
+SLICES_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA5_Re50000_1716x1662x128/Slice_data/slice_9/"
 
 # Geometric data
 GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Geometrical_data/"
@@ -106,17 +96,20 @@ MESH_SLICE_FILE = os.path.join(MESH_SLICE_PATH, MESH_SLICE_NAME)
 TIMESERIES_CACHE_PATH = None
 
 # Probe y-coordinates (same as multi_probe_spectral_analysis.py)
-PROBE_Y_COORDS = [0.057, 0.08, 0.13, 0.22]
 # PROBE_Y_COORDS = [0.054, 0.057, 0.06, 0.065, 0.07, 0.075, 0.08]  # x/c = 0.5
 # PROBE_Y_COORDS = [0.038, 0.042, 0.046, 0.05, 0.055, 0.06,  0.065, 0.07]  # x/c = 0.7
-# PROBE_Y_COORDS = [0.0165, 0.0205, 0.025, 0.03, 0.035, 0.04, 0.05, 0.06, 0.07, 0.08]  # x/c = 0.9
+PROBE_Y_COORDS = [0.0165, 0.0205, 0.025, 0.03, 0.035, 0.04, 0.05, 0.06, 0.07, 0.08]  # x/c = 0.9
 
+AOA_deg = 5.0          # Angle of attack [degrees]
+
+# ============================================================================
 # Physical parameters
+# ============================================================================
+
 rho_ref = 1.0           # Reference density [kg/m³]
 u_infty = 1.0           # Free-stream velocity [m/s]
 c = 1.0                 # Airfoil chord [m]
 Re_c = 50000            # Reynolds number
-AOA_deg = 5.0          # Angle of attack [degrees]
 AOA_rad = np.radians(AOA_deg)
 
 dt_iteration = 2.0e-06  # Physical time per iteration [s]

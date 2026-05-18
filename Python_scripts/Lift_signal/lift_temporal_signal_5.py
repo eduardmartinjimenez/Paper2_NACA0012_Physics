@@ -11,8 +11,8 @@ from lift_temporal_signal_plots import (
 
 # Setup
 # FILE_PATH = "/home/grashof/Documents/Simulations/Allocation/NACA_0012_1148_1042_128_aoa5_Re50000_Ma01/"
-FILE_PATH = "/home/jofre/Members/Eduard/Paper2/Dataset_test/NACA_0012_AOA5_Re10000_502x443x64/Lift_signal/"
-#FILE_PATH = "/gpfs/scratch/upc108/EDU/NACA_0012_AOA5_Re50000_1716x1662x128/"
+# FILE_PATH = "/home/jofre/Members/Eduard/Paper2/Dataset_test/NACA_0012_AOA5_Re10000_502x443x64/Lift_signal/"
+FILE_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA5_Re50000_1716x1662x128/Transient/"
 FILE_NAME = "lift_coef_temporal_signal_aoa5_Re50000_merged_9.csv"
 FULL_PATH = os.path.join(FILE_PATH, FILE_NAME)
 

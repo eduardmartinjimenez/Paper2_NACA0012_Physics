@@ -29,34 +29,34 @@ import matplotlib.pyplot as plt
 # Configuration
 # ============================================================================
 
-# ========== ACTIVE CONFIGURATION: AOA 12 ==========
-# Results directory containing all unconditional correlation files
-RESULTS_DIR = (
-    "/home/jofre/Members/Eduard/Paper2/Simulations/"
-    "NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/"
-    "Wall_shear_correlations/test_5/"
-)
+# # ========== ACTIVE CONFIGURATION: AOA 12 ==========
+# # Results directory containing all unconditional correlation files
+# RESULTS_DIR = (
+#     "/home/jofre/Members/Eduard/Paper2/Simulations/"
+#     "NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/"
+#     "Wall_shear_correlations/test_5/"
+# )
 
-# Output directory for saving figures
-OUTPUT_DIR = os.path.join(RESULTS_DIR, "Figures")
+# # Output directory for saving figures
+# OUTPUT_DIR = os.path.join(RESULTS_DIR, "Figures")
 
-# Visualization window offsets (relative to reference coordinates)
-# Format: OFFSET = [left/bottom_extent, right/top_extent]
-# xlim = [x_ref - left_extent, x_ref + right_extent]
-# ylim = [y_ref - bottom_extent, y_ref + top_extent]
-VIZ_XLIM_OFFSET = [0.25, 0.25]   # Symmetric x-window
-VIZ_YLIM_OFFSET = [0.02, 0.25]   # Asymmetric y-window (more extent above reference)
+# # Visualization window offsets (relative to reference coordinates)
+# # Format: OFFSET = [left/bottom_extent, right/top_extent]
+# # xlim = [x_ref - left_extent, x_ref + right_extent]
+# # ylim = [y_ref - bottom_extent, y_ref + top_extent]
+# VIZ_XLIM_OFFSET = [0.25, 0.25]   # Symmetric x-window
+# VIZ_YLIM_OFFSET = [0.02, 0.25]   # Asymmetric y-window (more extent above reference)
 
 # ========== ALTERNATIVE CONFIGURATION: AOA 5 (COMMENTED OUT) ==========
 # To switch to AOA 5, uncomment the block below and comment out the AOA 12 block above
-# RESULTS_DIR = (
-#     "/home/jofre/Members/Eduard/Paper2/Simulations/"
-#     "NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/"
-#     "Wall_shear_correlations/test_2/"
-# )
-# OUTPUT_DIR = os.path.join(RESULTS_DIR, "Figures")
-# VIZ_XLIM_OFFSET = [0.06, 0.06]
-# VIZ_YLIM_OFFSET = [0.01, 0.05]
+RESULTS_DIR = (
+    "/home/jofre/Members/Eduard/Paper2/Simulations/"
+    "NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/"
+    "Wall_shear_correlations/test_2/"
+)
+OUTPUT_DIR = os.path.join(RESULTS_DIR, "Figures")
+VIZ_XLIM_OFFSET = [0.06, 0.06]
+VIZ_YLIM_OFFSET = [0.01, 0.05]
 
 # ============================================================================
 # Create Output Directory
