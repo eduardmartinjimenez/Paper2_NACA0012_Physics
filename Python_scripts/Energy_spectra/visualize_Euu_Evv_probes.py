@@ -25,41 +25,41 @@ from matplotlib.ticker import LogLocator, LogFormatterSciNotation
 # Configuration
 # ============================================================================
 
-# Paths
-ENERGY_SPECTRA_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Energy_spectra"
-GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Geometrical_data/"
-GEO_NAME = "3d_NACA0012_Re50000_AoA12_Geometrical_Data.h5"
-GEO_FILE = os.path.join(GEO_PATH, GEO_NAME)
-
-# TKE data path
-TKE_DATA_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/"
-TKE_DATA_NAME = "tke_turbulent_kinetic_energy.h5"
-TKE_DATA_FILE = os.path.join(TKE_DATA_PATH, TKE_DATA_NAME)
-
-# Output directory
-OUTPUT_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Energy_spectra/Probe_visualizations"
-os.makedirs(OUTPUT_DIR, exist_ok=True)
-
-# Physical parameters
-AOA_deg = 12.0
-
 # # Paths
-# ENERGY_SPECTRA_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/Energy_spectra"
-# GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Geometrical_data/"
-# GEO_NAME = "3d_NACA0012_Re50000_AoA5_Geometrical_Data.h5"
+# ENERGY_SPECTRA_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Energy_spectra/"
+# GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Geometrical_data/"
+# GEO_NAME = "3d_NACA0012_Re50000_AoA12_Geometrical_Data.h5"
 # GEO_FILE = os.path.join(GEO_PATH, GEO_NAME)
 
 # # TKE data path
-# TKE_DATA_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/"
+# TKE_DATA_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/"
 # TKE_DATA_NAME = "tke_turbulent_kinetic_energy.h5"
 # TKE_DATA_FILE = os.path.join(TKE_DATA_PATH, TKE_DATA_NAME)
 
 # # Output directory
-# OUTPUT_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/Energy_spectra/Probe_visualizations"
+# OUTPUT_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Energy_spectra/Probe_visualizations"
 # os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # # Physical parameters
-# AOA_deg = 5.0
+# AOA_deg = 12.0
+
+# Paths
+ENERGY_SPECTRA_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/Energy_spectra"
+GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Geometrical_data/"
+GEO_NAME = "3d_NACA0012_Re50000_AoA5_Geometrical_Data.h5"
+GEO_FILE = os.path.join(GEO_PATH, GEO_NAME)
+
+# TKE data path
+TKE_DATA_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/"
+TKE_DATA_NAME = "tke_turbulent_kinetic_energy.h5"
+TKE_DATA_FILE = os.path.join(TKE_DATA_PATH, TKE_DATA_NAME)
+
+# Output directory
+OUTPUT_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/Energy_spectra/Probe_visualizations"
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+# Physical parameters
+AOA_deg = 5.0
 
 # ============================================================================
 # UTILITY FUNCTIONS
@@ -75,7 +75,7 @@ def discover_energy_spectra_files(directory: str) -> dict:
     files_dict = {}
 
     # for file_path in Path(directory).glob("energy_spectra_data_*.h5"):
-    for file_path in Path(directory).glob("energy_spectra_data_*_stride_01.h5"):
+    for file_path in Path(directory).glob("energy_spectra_data_*.h5"):
 
         filename = file_path.name
         match = re.search(r'energy_spectra_data_(slice_\d+)', filename)
@@ -689,7 +689,6 @@ ax.set_aspect('equal')
 ax.margins(0.1)
 
 plt.tight_layout()
-plt.show()
 
 # ============================================================================
 # CREATE STACKED ENERGY SPECTRA VISUALIZATION - SECOND PLOT (ALL PROBES Euu & Evv)

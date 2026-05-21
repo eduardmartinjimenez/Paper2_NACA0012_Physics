@@ -1,13 +1,13 @@
 """
-Wall-normal decay profiles of unconditional wall-shear/velocity correlation.
+Wall-normal decay profiles of unconditional wall-pressure/velocity correlation.
 
 This script extracts wall-normal profiles from the in-plane Delta z = 0 maps of
 new unconditional correlation datasets:
 
-    R_tau_u = R(tau'_w, u')
+    R_p_u = R(p'_w, u')
 
 For each selected reference chordwise location, the script:
-1. Loads wall_shear_correlation_unconditional_xc_*.h5.
+1. Loads wall_pressure_correlation_unconditional_xc_*.h5.
 2. Extracts the Delta z = 0 plane.
 3. Rotates the 2D mesh into an AoA-aligned frame.
 4. Builds a KDTree on the rotated in-plane mesh.
@@ -23,13 +23,15 @@ Notes
   the current unconditional correlation computation based on circular FFT.
 - If your file naming changes, edit build_result_file_candidates(). The function
   currently accepts both:
-      wall_shear_correlation_unconditional_xc_0.500.h5
-      wall_shear_correlation_unconditional_xc0.500.h5
+      wall_pressure_correlation_unconditional_xc_0.500.h5
+      wall_pressure_correlation_unconditional_xc0.500.h5
 """
 
 import os
 import h5py
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from scipy.spatial import cKDTree
 from scipy.ndimage import gaussian_filter1d
@@ -52,18 +54,28 @@ CASES = {
         "BASE_RESULTS_DIR": (
             "/home/jofre/Members/Eduard/Paper2/Simulations/"
             "NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/"
+            "Wall_pressure_correlations/test_2"
+        ),
+        "SHEAR_RESULTS_DIR": (
+            "/home/jofre/Members/Eduard/Paper2/Simulations/"
+            "NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/"
             "Wall_shear_correlations/test_3"
         ),
-        "WALL_NORMAL_LENGTH": 0.08,
+        "WALL_NORMAL_LENGTH": 0.1,
     },
     "AoA12": {
         "AOA_DEG": 12.0,
         "BASE_RESULTS_DIR": (
             "/home/jofre/Members/Eduard/Paper2/Simulations/"
             "NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/"
+            "Wall_pressure_correlations/test_4"
+        ),
+        "SHEAR_RESULTS_DIR": (
+            "/home/jofre/Members/Eduard/Paper2/Simulations/"
+            "NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/"
             "Wall_shear_correlations/test_5"
         ),
-        "WALL_NORMAL_LENGTH": 0.25,
+        "WALL_NORMAL_LENGTH": 0.3,
     },
 }
 
@@ -71,7 +83,7 @@ CASES = {
 OUTPUT_DIR = (
     "/home/jofre/Members/Eduard/Paper2/Simulations/"
     "NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/"
-    "Wall_shear_correlations/comparison_AOA5_AOA12/Figures"
+    "Wall_pressure_correlations/comparison_AOA5_AOA12/Figures"
 )
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -138,8 +150,8 @@ def build_result_file_candidates(base_dir, x_c):
     requested explicitly in the new plotting specification.
     """
     return [
-        os.path.join(base_dir, f"wall_shear_correlation_unconditional_xc_{x_c:.3f}.h5"),
-        os.path.join(base_dir, f"wall_shear_correlation_unconditional_xc{x_c:.3f}.h5"),
+        os.path.join(base_dir, f"wall_pressure_correlation_unconditional_xc_{x_c:.3f}.h5"),
+        os.path.join(base_dir, f"wall_pressure_correlation_unconditional_xc{x_c:.3f}.h5"),
     ]
 
 
@@ -152,8 +164,27 @@ def resolve_result_file(base_dir, x_c):
     return None
 
 
+def build_shear_file_candidates(base_dir, x_c):
+    """Return possible unconditional shear correlation filenames for one target x/c."""
+    return [
+        os.path.join(base_dir, f"wall_shear_correlation_unconditional_xc_{x_c:.3f}.h5"),
+        os.path.join(base_dir, f"wall_shear_correlation_unconditional_xc{x_c:.3f}.h5"),
+    ]
+
+
+def load_tau_w_mean(shear_base_dir, x_c):
+    """Load tau_w_mean from shear correlation file."""
+    candidates = build_shear_file_candidates(shear_base_dir, x_c)
+    for path in candidates:
+        if os.path.exists(path):
+            with h5py.File(path, "r") as f:
+                tau_w_mean = float(f.attrs.get("tau_w_mean", np.nan))
+            return tau_w_mean
+    return np.nan
+
+
 def load_dz0_unconditional_map(filepath):
-    """Load R_tau_u and mesh coordinates at Delta z = 0."""
+    """Load R_p_u and mesh coordinates at Delta z = 0."""
     with h5py.File(filepath, "r") as f:
         if "R" not in f:
             raise KeyError(f"Dataset 'R' not found in {filepath}")
@@ -173,8 +204,8 @@ def load_dz0_unconditional_map(filepath):
         y_actual = float(f.attrs["y_actual"])
         n_samples = int(f.attrs.get("N_samples", -1))
         n_snapshots = int(f.attrs.get("N_snapshots", -1))
-        tau_w_rms = float(f.attrs.get("tau_w_rms", np.nan))
-        tau_w_mean = float(f.attrs.get("tau_w_mean", np.nan))
+        p_w_rms = float(f.attrs.get("p_w_rms", np.nan))
+        p_w_mean = float(f.attrs.get("p_w_mean", np.nan))
 
     return {
         "R_2d": np.asarray(R_2d),
@@ -184,12 +215,12 @@ def load_dz0_unconditional_map(filepath):
         "y_actual": y_actual,
         "N_samples": n_samples,
         "N_snapshots": n_snapshots,
-        "tau_w_rms": tau_w_rms,
-        "tau_w_mean": tau_w_mean,
+        "p_w_rms": p_w_rms,
+        "p_w_mean": p_w_mean,
     }
 
 
-def extract_wall_normal_profile(data, angle_rad, wall_normal_length):
+def extract_wall_normal_profile(data, angle_rad, wall_normal_length, tau_w_mean):
     """Extract one KDTree wall-normal profile from a Delta z = 0 map."""
     R_2d = data["R_2d"]
     x_2d = data["x_2d"]
@@ -254,8 +285,6 @@ def extract_wall_normal_profile(data, angle_rad, wall_normal_length):
     if MAX_KDTREE_DISTANCE is not None:
         mask &= dist_u <= MAX_KDTREE_DISTANCE
 
-    tau_w_mean = float(data.get("tau_w_mean", np.nan))
-
     if np.isfinite(tau_w_mean):
         u_tau = np.sqrt(np.abs(tau_w_mean) / rho_ref)
     else:
@@ -292,7 +321,7 @@ def extract_wall_normal_profile(data, angle_rad, wall_normal_length):
 # =============================================================================
 
 print("=" * 78)
-print("UNCONDITIONAL WALL-SHEAR / STREAMWISE-VELOCITY WALL-NORMAL DECAY")
+print("UNCONDITIONAL WALL-PRESSURE / STREAMWISE-VELOCITY WALL-NORMAL DECAY")
 print("=" * 78)
 print(f"Results directory: {[cfg['BASE_RESULTS_DIR'] for cfg in CASES.values()]}")
 print(f"Output directory:  {OUTPUT_DIR}")
@@ -306,6 +335,7 @@ for case_name, case_cfg in CASES.items():
     aoa_deg = case_cfg["AOA_DEG"]
     aoa_rad = np.deg2rad(aoa_deg)
     base_results_dir = case_cfg["BASE_RESULTS_DIR"]
+    shear_results_dir = case_cfg["SHEAR_RESULTS_DIR"]
     wall_normal_length = case_cfg["WALL_NORMAL_LENGTH"]
 
     profiles[case_name] = {}
@@ -328,7 +358,8 @@ for case_name, case_cfg in CASES.items():
 
         print(f"\nLoading {case_name}, x/c target {x_c_target:.3f}: {os.path.basename(filepath)}")
         data = load_dz0_unconditional_map(filepath)
-        profile = extract_wall_normal_profile(data, aoa_rad, wall_normal_length)
+        tau_w_mean = load_tau_w_mean(shear_results_dir, x_c_target)
+        profile = extract_wall_normal_profile(data, aoa_rad, wall_normal_length, tau_w_mean)
 
         profiles[case_name][x_c_target] = {
             **data,
@@ -357,7 +388,7 @@ for case_name, case_cfg in CASES.items():
 profiles = {case_name: case_profiles for case_name, case_profiles in profiles.items() if case_profiles}
 
 if not profiles:
-    raise RuntimeError("No unconditional wall-shear correlation files were loaded.")
+    raise RuntimeError("No unconditional wall-pressure correlation files were loaded.")
 
 x_c_sorted = sorted(X_C_LOCATIONS)
 
@@ -466,7 +497,7 @@ fig0.tight_layout()
 
 plot0_png = os.path.join(
     OUTPUT_DIR,
-    "R_tau_u_unconditional_wall_normal_kdtree_extraction_AOA5_AOA12.png",
+    "R_p_u_unconditional_wall_normal_kdtree_extraction_AOA5_AOA12.png",
 )
 fig0.savefig(plot0_png, dpi=300, bbox_inches="tight")
 print(f"  Saved: {plot0_png}")
@@ -476,8 +507,10 @@ if SAVE_EPS:
     fig0.savefig(plot0_eps, dpi=300, bbox_inches="tight")
     print(f"  Saved: {plot0_eps}")
 
+plt.close(fig0)
+
 # =============================================================================
-# Plot 1: wall-normal decay in outer units, AoA comparison
+# Plot 1: wall-normal decay in outer units
 # =============================================================================
 
 print("\nCreating Plot 1: wall-normal decay profiles in outer units...")
@@ -512,7 +545,7 @@ for case_name, case_profiles in profiles.items():
 
 ax1.axhline(0.0, color="0.4", linewidth=0.8, alpha=0.6)
 ax1.set_xlabel(r"$\eta/c$")
-ax1.set_ylabel(r"$R_{\tau_w^\prime u^\prime}$")
+ax1.set_ylabel(r"$R_{p^\prime u^\prime}$")
 ax1.set_xlim(left=0.0)
 ax1.set_ylim(bottom=0.0)
 color_handles = [
@@ -527,7 +560,7 @@ fig1.tight_layout()
 
 plot1_png = os.path.join(
     OUTPUT_DIR,
-    "R_tau_u_unconditional_wall_normal_decay_eta_AOA5_AOA12.png",
+    "R_p_u_unconditional_wall_normal_decay_eta_AOA5_AOA12.png",
 )
 fig1.savefig(plot1_png, dpi=300, bbox_inches="tight")
 print(f"  Saved: {plot1_png}")
@@ -537,16 +570,20 @@ if SAVE_EPS:
     fig1.savefig(plot1_eps, dpi=300, bbox_inches="tight")
     print(f"  Saved: {plot1_eps}")
 
+if SAVE_EPS:
+    plot1_eps = plot1_png.replace(".png", ".eps")
+    fig1.savefig(plot1_eps, dpi=300, bbox_inches="tight")
+    print(f"  Saved: {plot1_eps}")
+
 # =============================================================================
-# Plot 2: wall-normal decay in local wall units, AoA comparison
+# Plot 2: wall-normal decay in local wall units
 # =============================================================================
 
 print("\nCreating Plot 2: wall-normal decay profiles in wall units...")
 fig2, ax2 = plt.subplots(figsize=(7.2, 5.4))
 
 decay_summary = {}
-# YPLUS_PLOT_MIN = 1.0e-1
-YPLUS_PLOT_MIN = 0
+YPLUS_PLOT_MIN = 1.0e-1
 
 for case_name, case_profiles in profiles.items():
     linestyle = linestyle_by_case.get(case_name, "-")
@@ -620,7 +657,7 @@ for case_name, case_profiles in profiles.items():
 
 ax2.axhline(0.0, color="0.4", linewidth=0.8, alpha=0.6)
 ax2.set_xlabel(r"$y^+$")
-ax2.set_ylabel(r"$R_{\tau_w^\prime u^\prime}$")
+ax2.set_ylabel(r"$R_{p^\prime u^\prime}$")
 ax2.set_xscale("log")
 ax2.set_xlim(left=YPLUS_PLOT_MIN)
 ax2.set_ylim(bottom=0.0)
@@ -636,7 +673,7 @@ fig2.tight_layout()
 
 plot2_png = os.path.join(
     OUTPUT_DIR,
-    "R_tau_u_unconditional_wall_normal_decay_yplus_AOA5_AOA12.png",
+    "R_p_u_unconditional_wall_normal_decay_yplus_AOA5_AOA12.png",
 )
 fig2.savefig(plot2_png, dpi=300, bbox_inches="tight")
 print(f"  Saved: {plot2_png}")
@@ -645,6 +682,7 @@ if SAVE_EPS:
     plot2_eps = plot2_png.replace(".png", ".eps")
     fig2.savefig(plot2_eps, dpi=300, bbox_inches="tight")
     print(f"  Saved: {plot2_eps}")
+
 
 # =============================================================================
 # Summary
@@ -666,7 +704,6 @@ for case_name, case_profiles in profiles.items():
         print(
             f"  target x/c={x_c:.3f}, actual x/c={data['x_c_actual']:.5f}, "
             f"N_samples={data['N_samples']}, N_snapshots={data['N_snapshots']}, "
-            f"tau_w_mean={data['tau_w_mean']:.6e}, "
             f"u_tau={data['u_tau']:.6e}, "
             f"points plotted={len(data['eta_plot'])}"
         )
@@ -700,8 +737,3 @@ print("\nOutput files:")
 print(f"  {plot0_png}")
 print(f"  {plot1_png}")
 print(f"  {plot2_png}")
-
-if SHOW_FIGURES:
-    plt.show()
-else:
-    plt.close("all")

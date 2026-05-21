@@ -39,61 +39,63 @@ from data_loader_functions import CompressedSnapshotLoader
 
 ### AOA 12º
 
-# Slice data paths
-MESH_SLICE_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA12_Re50000_1716x1662x128/Slice_data/slice_5/"
-MESH_SLICE_NAME = "slice_5-CROP-MESH.h5"
-SLICES_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA12_Re50000_1716x1662x128/Slice_data/slice_5/"
-
-# Geometric data (for visualization only)
-GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Geometrical_data/"
-GEO_NAME = "3d_NACA0012_Re50000_AoA12_Geometrical_Data.h5"
-GEO_FILE = os.path.join(GEO_PATH, GEO_NAME)
-
-MESH_SLICE_FILE = os.path.join(MESH_SLICE_PATH, MESH_SLICE_NAME)
-
-# Output directory
-SAVE_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Energy_spectra/"
-os.makedirs(SAVE_DIR, exist_ok=True)
-
-
-# Physical parameters
-rho_ref = 1.0           # Reference density [kg/m³]
-u_infty = 1.0           # Free-stream velocity [m/s]
-c = 1.0                 # Airfoil chord length [m]
-Re_c = 50000            # Reynolds number
-AOA_deg = 12.0          # Angle of attack [degrees]
-AOA_rad = np.radians(AOA_deg)
-
-### AOA 5º
 # # Slice data paths
-# MESH_SLICE_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA5_Re50000_1716x1662x128/Slice_data/slice_9/"
+# MESH_SLICE_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA12_Re50000_1716x1662x128/Slice_data/slice_9/"
 # MESH_SLICE_NAME = "slice_9-CROP-MESH.h5"
-# SLICES_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA5_Re50000_1716x1662x128/Slice_data/slice_9/"
+# SLICES_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA12_Re50000_1716x1662x128/Slice_data/slice_9/"
 
 # # Geometric data (for visualization only)
-# GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Geometrical_data/"
-# GEO_NAME = "3d_NACA0012_Re50000_AoA5_Geometrical_Data.h5"
+# GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Geometrical_data/"
+# GEO_NAME = "3d_NACA0012_Re50000_AoA12_Geometrical_Data.h5"
 # GEO_FILE = os.path.join(GEO_PATH, GEO_NAME)
 
 # MESH_SLICE_FILE = os.path.join(MESH_SLICE_PATH, MESH_SLICE_NAME)
 
 # # Output directory
-# SAVE_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/Energy_spectra/"
+# SAVE_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Energy_spectra/"
 # os.makedirs(SAVE_DIR, exist_ok=True)
+
 
 # # Physical parameters
 # rho_ref = 1.0           # Reference density [kg/m³]
 # u_infty = 1.0           # Free-stream velocity [m/s]
 # c = 1.0                 # Airfoil chord length [m]
 # Re_c = 50000            # Reynolds number
-# AOA_deg = 5.0          # Angle of attack [degrees]
+# AOA_deg = 12.0          # Angle of attack [degrees]
 # AOA_rad = np.radians(AOA_deg)
+
+### AOA 5º
+# Slice data paths
+MESH_SLICE_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA5_Re50000_1716x1662x128/Slice_data/slice_9/"
+MESH_SLICE_NAME = "slice_9-CROP-MESH.h5"
+SLICES_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA5_Re50000_1716x1662x128/Slice_data/slice_9/"
+
+# Geometric data (for visualization only)
+GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Geometrical_data/"
+GEO_NAME = "3d_NACA0012_Re50000_AoA5_Geometrical_Data.h5"
+GEO_FILE = os.path.join(GEO_PATH, GEO_NAME)
+
+MESH_SLICE_FILE = os.path.join(MESH_SLICE_PATH, MESH_SLICE_NAME)
+
+# Output directory
+SAVE_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/Energy_spectra/"
+os.makedirs(SAVE_DIR, exist_ok=True)
+
+# Physical parameters
+rho_ref = 1.0           # Reference density [kg/m³]
+u_infty = 1.0           # Free-stream velocity [m/s]
+c = 1.0                 # Airfoil chord length [m]
+Re_c = 50000            # Reynolds number
+AOA_deg = 5.0          # Angle of attack [degrees]
+AOA_rad = np.radians(AOA_deg)
 
 # Physical time step [CRITICAL - must match simulation]
 dt_iteration = 2.0e-06  # Physical time per iteration [s]
 
 # Probe locations: absolute y-coordinates in domain
-Y_LOCATIONS = [0.057, 0.08, 0.13, 0.22]  # Specify actual y-coordinate values
+# Y_LOCATIONS = [0.057, 0.08, 0.13, 0.22]  # Specify actual y-coordinate values
+Y_LOCATIONS = [0.03, 0.06, 0.09]  # Specify actual y-coordinate values
+
 
 
 
