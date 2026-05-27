@@ -7,8 +7,8 @@ import numpy as np
 # Define file path and name
 # FILE_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA12_Re50000_1716x1662x128/Steady_state/batch_35113101/last_snapshot"
 # FILE_NAME = "3d_ibm_stl_naca0012_1716_1662_128_aoa12_Re50000_26500000.h5"
-FILE_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA12_Re50000_1716x1662x128/"
-FILE_NAME = "3d_ibm_stl_naca0012_1716_1662_128_aoa12_Re50000_26500000.h5"
+FILE_PATH = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA5_Re50000_1716x1662x128/"
+FILE_NAME = "3d_ibm_stl_naca0012_1916_1988_128_aoa5_Re50000_27160000.h5"
 FULL_PATH = os.path.join(FILE_PATH, FILE_NAME)
 
 
