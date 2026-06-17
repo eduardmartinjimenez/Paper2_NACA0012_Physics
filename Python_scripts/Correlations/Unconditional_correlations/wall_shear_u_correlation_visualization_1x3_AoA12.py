@@ -1,8 +1,8 @@
 """
-Wall-Pressure & Streamwise Velocity Correlation Visualization Script (3x1 Panel)
+Wall-Shear & Streamwise Velocity Correlation Visualization Script (3x1 Panel)
 
 This script generates a 3-panel visualization of unconditional correlations between
-wall-pressure (p') and streamwise velocity (u') fluctuations at three chord
+wall-shear stress (τ_w) and streamwise velocity (u') fluctuations at three chord
 locations (x/c = 0.5, 0.7, 0.9).
 
 Features:
@@ -33,7 +33,7 @@ plt.rc("text.latex", preamble=r"\usepackage{amsmath} \usepackage{amssymb}")
 RESULTS_DIR = (
     "/home/jofre/Members/Eduard/Paper2/Simulations/"
     "NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/"
-    "Wall_pressure_correlations/test_4/"
+    "Wall_shear_correlations/test_5/"
 )
 
 # Geometrical data file (contains airfoil surface)
@@ -58,8 +58,8 @@ X_C_LOCATIONS = [0.5, 0.7, 0.9]
 
 # Visualization window offsets (relative to reference coordinates)
 # Format: OFFSET = [left/bottom_extent, right/top_extent]
-VIZ_XLIM_OFFSET = [0.1, 0.35]   # Symmetric x-window
-VIZ_YLIM_OFFSET = [0.07, 0.15]  # Extended y-window to show airfoil surface
+VIZ_XLIM_OFFSET = [0.2, 0.12]   # Symmetric x-window
+VIZ_YLIM_OFFSET = [0.025, 0.12]  # Extended y-window to show airfoil surface
 
 # ============================================================================
 # Create Output Directory
@@ -80,7 +80,7 @@ print("FILE DISCOVERY")
 print("="*70)
 
 # Find all unconditional correlation files
-h5_files_all = sorted(glob.glob(os.path.join(RESULTS_DIR, "wall_pressure_correlation_unconditional_xc_*.h5")))
+h5_files_all = sorted(glob.glob(os.path.join(RESULTS_DIR, "wall_shear_correlation_unconditional_xc_*.h5")))
 
 # Extract x/c values
 def extract_xc(filepath):
@@ -114,6 +114,48 @@ for h5_file in h5_files:
     xc = extract_xc(h5_file)
     xc_values.append(xc)
     print(f"  x/c = {xc:.3f}: {os.path.basename(h5_file)}")
+
+# ==========================================================================
+# Helpers
+# ==========================================================================
+    
+def get_visible_window_values_structured(data_list):
+    """
+    Collect R values only inside the actual plotted visualization windows.
+    Works for structured 2D arrays x, y, R.
+    """
+    values = []
+
+    for data in data_list:
+        R = data["R"]
+        x = data["x"]
+        y = data["y"]
+        x_c = data["x_c_actual"]
+        y_c = data["y_c_actual"]
+
+        xlim = [x_c - VIZ_XLIM_OFFSET[0], x_c + VIZ_XLIM_OFFSET[1]]
+        ylim = [y_c - VIZ_YLIM_OFFSET[0], y_c + VIZ_YLIM_OFFSET[1]]
+
+        window_mask = (
+            np.isfinite(x)
+            & np.isfinite(y)
+            & np.isfinite(R)
+            & (x >= xlim[0])
+            & (x <= xlim[1])
+            & (y >= ylim[0])
+            & (y <= ylim[1])
+        )
+
+        if np.any(window_mask):
+            values.append(R[window_mask])
+
+    if not values:
+        raise RuntimeError(
+            "No valid R values found inside the plotted windows. "
+            "Check VIZ_XLIM_OFFSET and VIZ_YLIM_OFFSET."
+        )
+
+    return np.concatenate(values)
 
 # ============================================================================
 # Load Airfoil Geometry
@@ -217,22 +259,24 @@ print("\n" + "="*70)
 print("CREATING 3X1 PANEL VISUALIZATION")
 print("="*70)
 
-# Compute common color scale across all locations
-r_min_all = []
-r_max_all = []
-for d in data_list:
-    R = d['R']
-    r_min_all.append(np.nanmin(R))
-    r_max_all.append(np.nanmax(R))
+# Compute common color scale using only values inside the plotted windows
+visible_values = get_visible_window_values_structured(data_list)
 
-r_global_min = max(0.0, np.min(r_min_all))  # Ensure minimum is 0
-r_global_max = np.max(r_max_all)
+r_visible_min = float(np.nanmin(visible_values))
+r_visible_max = float(np.nanmax(visible_values))
 
-print(f"\nCorrelation statistics across all panels:")
-print(f"  Global min: {r_global_min:.4f}")
-print(f"  Global max: {r_global_max:.4f}")
-print(f"  Fixed range [0, 1]: [0.0000, 1.0000]")
-print(f"  Dynamic range [0, max]: [0.0000, {r_global_max:.4f}]")
+# Positive-only correlation style, same as the current figure
+vmin_plot = 0.0
+vmax_plot = max(r_visible_max, 1e-12)
+
+levels_r = np.linspace(vmin_plot, vmax_plot, 101)
+reference_contour = 0.5 * vmax_plot
+
+print(f"\nCorrelation statistics inside visible windows:")
+print(f"  Visible min: {r_visible_min:.4f}")
+print(f"  Visible max: {r_visible_max:.4f}")
+print(f"  Visualization range: [{vmin_plot:.4f}, {vmax_plot:.4f}]")
+print(f"  Reference contour: {reference_contour:.4f}")
 
 # ============================================================================
 # Custom Colormap: monotonic fade from background to red
@@ -252,16 +296,6 @@ corr_cmap = LinearSegmentedColormap.from_list(
     ],
     N=256
 )
-
-levels_r = np.linspace(0.0, 1.0, 101)
-
-# ============================================================================
-# PLOT 1: Create 3x1 Panel Visualization with Fixed Range [0, 1]
-# ============================================================================
-
-print("\n" + "="*70)
-print("CREATING PLOT 1: FIXED RANGE [0, 1]")
-print("="*70)
 
 # Create figure with 1 row, 3 columns
 n_locations = len(data_list)
@@ -289,14 +323,15 @@ for col, data in enumerate(data_list):
     y_c = data['y_c_actual']
 
     # Plot correlation field with range [0, 1]
+    R_plot = np.clip(R_2d, vmin_plot, vmax_plot)
+
     im_last = ax.contourf(
-        x_2d, y_2d, R_2d,
+        x_2d, y_2d, R_plot,
         levels=levels_r,
         cmap=corr_cmap,
-        vmin=0.0,
-        vmax=1.0
+        vmin=vmin_plot,
+        vmax=vmax_plot
     )
-
     # Add airfoil surface overlay if available
     if x_airfoil_upper is not None and y_airfoil_upper is not None:
         # Apply AOA rotation to upper surface around the reference point
@@ -346,14 +381,15 @@ for col, data in enumerate(data_list):
                 zorder=12)
 
     # Add contour line at 0.5 for structural reference
-    ax.contour(
-        x_2d, y_2d, R_2d,
-        levels=[0.25],
-        colors='black',
-        linewidths=0.8,
-        alpha=0.7,
-        linestyles='dashdot'
-    )
+    if np.nanmin(R_2d) <= reference_contour <= np.nanmax(R_2d):
+        ax.contour(
+            x_2d, y_2d, R_2d,
+            levels=[reference_contour],
+            colors='black',
+            linewidths=0.8,
+            alpha=0.7,
+            linestyles='dashdot'
+        )
 
     # Mark reference point
     ax.plot(x_c, y_c, marker='*', color='k', markersize=12, zorder=13)
@@ -401,180 +437,15 @@ cbar = fig.colorbar(
 )
 
 # Put colorbar label at the top, horizontally
-cbar.set_ticks(np.linspace(0, 1, 6))
-cbar.ax.set_title(r'$R_{p^\prime u^\prime}$', fontsize=14, pad=10)
+cbar.set_ticks(np.linspace(vmin_plot, vmax_plot, 6))
+cbar.ax.set_title(r'$R_{\tau_w^\prime u^\prime}$', fontsize=14, pad=10)
 
 # Save figure
-output_path_png = os.path.join(OUTPUT_DIR, "wall_pressure_u_correlation_1x3panel_AOA12.png")
-output_path_eps = os.path.join(OUTPUT_DIR, "wall_pressure_u_correlation_1x3panel_AOA12.eps")
+output_path_png = os.path.join(OUTPUT_DIR, "wall_shear_u_correlation_1x3panel_AOA12.png")
+output_path_eps = os.path.join(OUTPUT_DIR, "wall_shear_u_correlation_1x3panel_AOA12.eps")
 fig.savefig(output_path_png, dpi=300, bbox_inches='tight')
 fig.savefig(output_path_eps, dpi=300, bbox_inches='tight')
-print(f"\nPlot 1 saved: {output_path_png}")
-
-# ============================================================================
-# PLOT 2: Create 3x1 Panel Visualization with Dynamic Range [0, max]
-# ============================================================================
-
-print("\n" + "="*70)
-print("CREATING PLOT 2: DYNAMIC RANGE [0, {:.4f}]".format(r_global_max))
-print("="*70)
-
-# Use levels based on actual data range
-levels_r_dynamic = np.linspace(r_global_min, r_global_max, 101)
-
-# Create figure with 1 row, 3 columns
-fig2, axes2 = plt.subplots(1, n_locations, figsize=(12, 5), constrained_layout=True)
-
-# Ensure axes is iterable even for single subplot
-if n_locations == 1:
-    axes2 = [axes2]
-
-# Set background color for each axis panel
-for ax in axes2:
-    ax.set_facecolor(BACKGROUND_COLOR)
-
-# Track last image for colorbar
-im_last2 = None
-
-# Plot each location
-for col, data in enumerate(data_list):
-    ax = axes2[col]
-
-    R_2d = data['R']
-    x_2d = data['x']
-    y_2d = data['y']
-    x_c = data['x_c_actual']
-    y_c = data['y_c_actual']
-
-    # Plot correlation field with dynamic range [0, r_global_max]
-    im_last2 = ax.contourf(
-        x_2d, y_2d, R_2d,
-        levels=levels_r_dynamic,
-        cmap=corr_cmap,
-        vmin=r_global_min,
-        vmax=r_global_max
-    )
-
-    # Add airfoil surface overlay if available
-    if x_airfoil_upper is not None and y_airfoil_upper is not None:
-        # Apply AOA rotation to upper surface around the reference point
-        cos_aoa = np.cos(AOA_rad)
-        sin_aoa = np.sin(AOA_rad)
-
-        # Center and rotate upper surface
-        x_air_centered = x_airfoil_upper - x_c
-        y_air_centered = y_airfoil_upper - y_c
-        x_air_rot = x_air_centered * cos_aoa + y_air_centered * sin_aoa
-        y_air_rot = -x_air_centered * sin_aoa + y_air_centered * cos_aoa
-        x_air_final_upper = x_air_rot + x_c
-        y_air_final_upper = y_air_rot + y_c
-
-        # Center and rotate lower surface
-        x_air_centered = x_airfoil_lower - x_c
-        y_air_centered = y_airfoil_lower - y_c
-        x_air_rot = x_air_centered * cos_aoa + y_air_centered * sin_aoa
-        y_air_rot = -x_air_centered * sin_aoa + y_air_centered * cos_aoa
-        x_air_final_lower = x_air_rot + x_c
-        y_air_final_lower = y_air_rot + y_c
-
-        # Sort upper surface by x-coordinate
-        sort_idx_upper = np.argsort(x_air_final_upper)
-        x_upper_sorted = x_air_final_upper[sort_idx_upper]
-        y_upper_sorted = y_air_final_upper[sort_idx_upper]
-
-        # Sort lower surface by x-coordinate (reverse for closing polygon)
-        sort_idx_lower = np.argsort(x_air_final_lower)
-        x_lower_sorted = x_air_final_lower[sort_idx_lower]
-        y_lower_sorted = y_air_final_lower[sort_idx_lower]
-
-        # Create closed polygon: upper surface + reversed lower surface
-        x_polygon = np.concatenate([x_upper_sorted, x_lower_sorted[::-1]])
-        y_polygon = np.concatenate([y_upper_sorted, y_lower_sorted[::-1]])
-
-        # Fill the airfoil interior with light gray
-        ax.fill(x_polygon, y_polygon, color='0.85', alpha=0.35, zorder=11)
-
-        # Plot upper surface outline
-        ax.plot(x_upper_sorted, y_upper_sorted, 'k-', linewidth=1.0,
-                zorder=12, label='Airfoil surface')
-
-        # Plot lower surface outline
-        ax.plot(x_lower_sorted, y_lower_sorted, 'k-', linewidth=1.0,
-                zorder=12)
-
-    # # Add contour line at 50% of max correlation for structural reference
-    # contour_level = r_global_max * 0.5
-    # ax.contour(
-    #     x_2d, y_2d, R_2d,
-    #     levels=[contour_level],
-    #     colors='black',
-    #     linewidths=0.8,
-    #     alpha=0.7,
-    #     linestyles='dashdot'
-    # )
-
-    # Add contour line at 0.5 for structural reference
-    ax.contour(
-        x_2d, y_2d, R_2d,
-        levels=[0.3],
-        colors='black',
-        linewidths=0.8,
-        alpha=0.7,
-        linestyles='dashdot'
-    )
-
-    # Mark reference point
-    ax.plot(x_c, y_c, marker='*', color='k', markersize=12, zorder=13)
-
-    # Title for each panel showing x/c location
-    ax.set_title(
-        rf'$x/c = {xc_values[col]:.2f}$',
-        fontsize=12
-    )
-
-    # x-label on all bottom panels
-    ax.set_xlabel('x/c', fontsize=11)
-
-    # y-label only on first column
-    if col == 0:
-        ax.set_ylabel('y/c', fontsize=11)
-    else:
-        ax.set_ylabel('')
-
-    ax.set_aspect('equal', adjustable='box')
-
-    # Apply dynamic visualization window
-    xlim = [x_c - VIZ_XLIM_OFFSET[0], x_c + VIZ_XLIM_OFFSET[1]]
-    ylim = [y_c - VIZ_YLIM_OFFSET[0], y_c + VIZ_YLIM_OFFSET[1]]
-
-    print(f"\nPanel {col+1} (x/c={xc_values[col]:.3f}):")
-    print(f"  Reference point: x={x_c:.4f}, y={y_c:.4f}")
-    print(f"  Visualization window: x={xlim[0]:.4f} to {xlim[1]:.4f}, y={ylim[0]:.4f} to {ylim[1]:.4f}")
-
-    ax.set_xlim(xlim)
-    ax.set_ylim(ylim)
-
-# Add colorbar
-cbar2 = fig2.colorbar(
-    im_last2,
-    ax=axes2,
-    fraction=0.046,
-    pad=0.04,
-    orientation='vertical',
-    shrink=0.4
-)
-
-# Put colorbar label at the top, horizontally
-cbar_ticks = np.linspace(r_global_min, r_global_max, 6)
-cbar2.set_ticks(cbar_ticks)
-cbar2.ax.set_title(r'$R_{p^\prime u^\prime}$', fontsize=14, pad=10)
-
-# Save figure
-output_path_png2 = os.path.join(OUTPUT_DIR, "wall_pressure_u_correlation_1x3panel_AOA12_dynamic_range.png")
-output_path_eps2 = os.path.join(OUTPUT_DIR, "wall_pressure_u_correlation_1x3panel_AOA12_dynamic_range.eps")
-fig2.savefig(output_path_png2, dpi=300, bbox_inches='tight')
-fig2.savefig(output_path_eps2, dpi=300, bbox_inches='tight')
-print(f"\nPlot 2 saved: {output_path_png2}")
+print(f"\nVisualization saved: {output_path_png}")
 
 
 # ============================================================================
@@ -586,7 +457,7 @@ print("VISUALIZATION SUMMARY")
 print("="*70)
 print(f"\nFigure Configuration:")
 print(f"  Layout: 1×3 panel (one per x/c location)")
-print(f"  Correlation type: p' vs u' fluctuations")
+print(f"  Correlation type: τ_w vs u' fluctuations")
 print(f"  Spanwise separation: Δz = 0")
 print(f"  AOA rotation: {AOA}°")
 print(f"\nChord Locations:")
@@ -594,12 +465,9 @@ for i, xc in enumerate(xc_values, 1):
     print(f"  Panel {i}: x/c = {xc:.3f}")
 
 print(f"\nColor Scale:")
-print(f"  Range: [0.0000, 1.0000]")
-print(f"  Colormap: Custom fade (Light Blue → Dark Red)")
-print(f"  Reference contour: 0.5 (black line)")
-print(f"  Panel background: Light blue (fades from correlations)")
-print(f"  Airfoil surface: Black outline (linewidth=1.0)")
-print(f"  Airfoil interior: Light gray fill (alpha=0.6)")
+print(f"  Range: [{vmin_plot:.4f}, {vmax_plot:.4f}]")
+print(f"  Range computed only from points inside plotted windows")
+print(f"  Reference contour: {reference_contour:.4f} (black line)")
 
 print(f"\nVisualization Window:")
 print(f"  X-offset: [{VIZ_XLIM_OFFSET[0]:.2f}, {VIZ_XLIM_OFFSET[1]:.2f}]")

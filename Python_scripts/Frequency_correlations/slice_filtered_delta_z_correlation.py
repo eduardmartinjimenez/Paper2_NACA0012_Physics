@@ -39,31 +39,31 @@ logging.getLogger("matplotlib.font_manager").setLevel(logging.ERROR)
 
 # Configuration
 
-aoa = 5  # Angle of attack in degrees
+# aoa = 5  # Angle of attack in degrees
 
-CACHE_FILE = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/Coherence/timeseries_both_xc_0.900.h5"
+# CACHE_FILE = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/Coherence/timeseries_both_xc_0.500.h5"
 
-OUT_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/Freq_correlations/"
-
-TARGET_N_OVER_C = [
-    0.0005, 0.001, 0.002, 0.003, 0.005,
-    0.0075, 0.01, 0.015, 0.02, 0.03,
-    0.05, 0.075, 0.10
-    ]  # Target wall-normal distances
-
-# aoa = 12  # Angle of attack in degrees
-
-# CACHE_FILE = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Coherence/timeseries_both_xc_0.900.h5"
-
-# OUT_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Freq_correlations/"
+# OUT_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/Freq_correlations/"
 
 # TARGET_N_OVER_C = [
 #     0.0005, 0.001, 0.002, 0.003, 0.005,
 #     0.0075, 0.01, 0.015, 0.02, 0.03,
-#     0.05, 0.075, 0.10, 0.125, 0.15, 0.175, 0.20
+#     0.05, 0.075, 0.10
 #     ]  # Target wall-normal distances
 
-# Create output directory if it doesn't exist
+aoa = 12  # Angle of attack in degrees
+
+CACHE_FILE = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Coherence/timeseries_both_xc_0.500.h5"
+
+OUT_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Freq_correlations/"
+
+TARGET_N_OVER_C = [
+    0.0005, 0.001, 0.002, 0.003, 0.005,
+    0.0075, 0.01, 0.015, 0.02, 0.03,
+    0.05, 0.075, 0.10, 0.125, 0.15, 0.175, 0.20
+    ]  # Target wall-normal distances
+
+# Create base output directory if it does not exist
 os.makedirs(OUT_PATH, exist_ok=True)
 
 # Load metadata and time arrays
@@ -136,6 +136,23 @@ with h5py.File(CACHE_FILE, 'r') as f:
     print(f"Spanwise planes (nz): {nz}")
     print(f"Number of probes: {num_probes}")
     print(f"Loaded velocity probes: {list(velocity_fluct.keys())}")
+    
+    # ============================================================================
+    # CASE-SPECIFIC OUTPUT DIRECTORIES
+    # ============================================================================
+
+    CASE_TAG = f"{aoa_str}_{xc_str}"
+
+    CASE_OUT_PATH = os.path.join(OUT_PATH, CASE_TAG)
+    FIGURES_PATH = os.path.join(CASE_OUT_PATH, "figures")
+    DATA_PATH = os.path.join(CASE_OUT_PATH, "data")
+
+    os.makedirs(FIGURES_PATH, exist_ok=True)
+    os.makedirs(DATA_PATH, exist_ok=True)
+
+    print(f"Case output directory: {CASE_OUT_PATH}")
+    print(f"Figures directory:     {FIGURES_PATH}")
+    print(f"Data directory:        {DATA_PATH}")
 
 # ============================================================================
 # ZERO-MEAN VALIDATION
@@ -236,7 +253,7 @@ plt.suptitle(
 fig_filename = f"timeseries_visualization_{aoa_str}_{xc_str}.png"
 
 plt.savefig(
-    os.path.join(OUT_PATH, fig_filename),
+    os.path.join(FIGURES_PATH, fig_filename),
     dpi=150,
     bbox_inches="tight"
 )
@@ -546,7 +563,10 @@ for signal_name, q_full in {
 
     plt.tight_layout()
 
-    output_file = os.path.join(OUT_PATH, f"filtered_{signal_name}_signals_{aoa_str}_{xc_str}_z{z_idx_plot}.png")
+    output_file = os.path.join(
+    FIGURES_PATH,
+    f"filtered_{signal_name}_signals_{aoa_str}_{xc_str}_z{z_idx_plot}.png"
+    )
     plt.savefig(output_file, dpi=200, bbox_inches="tight")
     print(f"Saved filtered signal plot: {output_file}")
     plt.show()
@@ -720,7 +740,7 @@ for signal_name in ["tau_w", "pressure"]:
     plt.tight_layout()
 
     output_file = os.path.join(
-        OUT_PATH,
+        FIGURES_PATH,
         f"filtered_correlation_comparison_{signal_name}_{aoa_str}_{xc_str}.png"
     )
 
@@ -769,7 +789,7 @@ for signal_name in ["tau_w", "pressure"]:
     plt.tight_layout()
 
     output_file = os.path.join(
-        OUT_PATH,
+        FIGURES_PATH,
         f"filtered_correlation_difference_{signal_name}_{aoa_str}_{xc_str}.png"
     )
 
@@ -1001,7 +1021,7 @@ for corr_type, corr_dict in [
         plt.tight_layout()
 
         output_file = os.path.join(
-            OUT_PATH,
+            FIGURES_PATH,
             f"delta_z_map_{corr_type}_{signal_name}_{aoa_str}_{xc_str}.png"
         )
 
@@ -1068,7 +1088,7 @@ for corr_type, corr_dict in [
             plt.tight_layout()
 
             output_file = os.path.join(
-                OUT_PATH,
+                FIGURES_PATH,
                 f"delta_z_curves_{corr_type}_{signal_name}_{band_name}_{aoa_str}_{xc_str}.png"
             )
 
@@ -1086,7 +1106,7 @@ Nz_dim = metadata.get('nz', nz)
 
 # Create HDF5 filename
 h5_filename = f"filtered_slice_correlations_with_delta_z_{aoa_str}_{xc_str}.h5"
-h5_filepath = os.path.join(OUT_PATH, h5_filename)
+h5_filepath = os.path.join(DATA_PATH, h5_filename)
 
 print("\n" + "="*60)
 print("SAVING RESULTS TO HDF5")

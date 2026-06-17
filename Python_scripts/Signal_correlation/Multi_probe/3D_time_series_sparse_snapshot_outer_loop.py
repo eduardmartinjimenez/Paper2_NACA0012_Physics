@@ -63,30 +63,82 @@ def extract_iteration_number(filepath):
 # Configuration
 # ============================================================================
 
+# # Data directories
+# BASE_SNAPSHOT_DIR = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA12_Re50000_1716x1662x128/Steady_state/High_frequency/"
+
+# # Pattern to match batch directories
+# # BATCH_PATTERN = "all*"
+# BATCH_PATTERN = "com*"
+
+
+# # Mesh data file
+# MESH_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Geometrical_data/"
+# MESH_NAME = "3d_NACA0012_Re50000_AoA12-CROP-MESH.h5"
+# MESH_FILE = os.path.join(MESH_PATH, MESH_NAME)
+
+# # Geometrical data file
+# GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Geometrical_data/"
+# GEO_NAME = "3d_NACA0012_Re50000_AoA12_Geometrical_Data.h5"
+# GEO_FILE = os.path.join(GEO_PATH, GEO_NAME)
+
+# # Output configuration
+# OUTPUT_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Signal_correlation/3D_time_series/new/"
+# OUTPUT_FILENAME_PREFIX = "3D_time_series_AoA12_Re50000_high_freq_all_snapshots"
+
+# # Cache configuration
+# SKIP_IF_EXISTS = False  # Set to False to recompute even if file exists
+
+# # ============================================================================
+# # Timing Diagnostics
+# # ============================================================================
+
+# script_start_time = time.time()
+# timing_log = {}
+
+# # ============================================================================
+# # Analysis Parameters
+# # ============================================================================
+
+# u_infty = 1.0 # Free-stream velocity
+# AOA = 12  # degrees
+# AOA_rad = np.deg2rad(AOA)
+# c = 1.0  # chord length
+
+# # Physical parameters
+# rho_ref = 1.0   # Reference density
+# Re_c = 50000    # Reynolds number
+# mu_ref = 1.0 / Re_c # Dynamic viscosity
+
+# # Chord locations for correlation analysis (x/c values)
+# X_C_LOCATIONS = [0.5, 0.7, 0.9]
+# # X_C_LOCATIONS = [0.5]
+
+# # Spatial subsampling parameters
+# STRIDE_X = 2
+# STRIDE_Y = 10
+# STRIDE_Z = 1
+
+
 # Data directories
-BASE_SNAPSHOT_DIR = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA12_Re50000_1716x1662x128/Steady_state/"
+BASE_SNAPSHOT_DIR = "/home/jofre/disc2/Members/Eduard/NACA_0012_AOA5_Re50000_1716x1662x128/Steady_state/High_frequency/"
 
 # Pattern to match batch directories
-BATCH_PATTERN = "all_*"
+# BATCH_PATTERN = "all_*"
+BATCH_PATTERN = "com*"
 
 # Mesh data file
-MESH_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Geometrical_data/"
-MESH_NAME = "3d_NACA0012_Re50000_AoA12-CROP-MESH.h5"
+MESH_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Geometrical_data/"
+MESH_NAME = "3d_NACA0012_Re50000_AoA5-CROP-MESH.h5"
 MESH_FILE = os.path.join(MESH_PATH, MESH_NAME)
 
-# Averaged snapshot file (for mean fields)
-LAST_SNAPSHOT_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/last_snapshot/"
-LAST_SNAPSHOT_NAME = "3d_NACA0012_Re50000_AoA12_avg_26500000-COMP-DATA.h5"
-LAST_SNAPSHOT_FILE = os.path.join(LAST_SNAPSHOT_PATH, LAST_SNAPSHOT_NAME)
-
 # Geometrical data file
-GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Geometrical_data/"
-GEO_NAME = "3d_NACA0012_Re50000_AoA12_Geometrical_Data.h5"
+GEO_PATH = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Geometrical_data/"
+GEO_NAME = "3d_NACA0012_Re50000_AoA5_Geometrical_Data.h5"
 GEO_FILE = os.path.join(GEO_PATH, GEO_NAME)
 
 # Output configuration
-OUTPUT_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA12_Re50000_1716x1662x128/Mean_data/Signal_correlation/3D_time_series"
-OUTPUT_FILENAME_PREFIX = "3D_time_series_AoA12_Re50000_all_snapshots"
+OUTPUT_DIR = "/home/jofre/Members/Eduard/Paper2/Simulations/NACA_0012_AOA5_Re50000_1716x1662x128/Mean_data/Signal_correlation/3D_time_series/new/"
+OUTPUT_FILENAME_PREFIX = "3D_time_series_AoA5_Re50000_high_freq_all_snapshots"
 
 # Cache configuration
 SKIP_IF_EXISTS = False  # Set to False to recompute even if file exists
@@ -103,7 +155,7 @@ timing_log = {}
 # ============================================================================
 
 u_infty = 1.0 # Free-stream velocity
-AOA = 12  # degrees
+AOA = 5  # degrees
 AOA_rad = np.deg2rad(AOA)
 c = 1.0  # chord length
 
@@ -117,8 +169,8 @@ X_C_LOCATIONS = [0.5, 0.7, 0.9]
 # X_C_LOCATIONS = [0.5]
 
 # Spatial subsampling parameters
-STRIDE_X = 5
-STRIDE_Y = 25
+STRIDE_X = 3
+STRIDE_Y = 15
 STRIDE_Z = 1
 
 # ============================================================================
@@ -382,10 +434,15 @@ y_min_domain, y_max_domain = np.min(y_data), np.max(y_data)
 print(f"  Full domain: x=[{x_min_domain:.3f}, {x_max_domain:.3f}], y=[{y_min_domain:.3f}, {y_max_domain:.3f}]")
 
 # Define window parameters (relative to each reference point)
-dx_upstream = 0.3
-dx_downstream = 0.3
-dy_down = 0.01
-dy_up = 0.3
+# dx_upstream = 0.1
+# dx_downstream = 0.1
+# dy_down = 0.01
+# dy_up = 0.15
+
+dx_upstream = 0.75
+dx_downstream = 0.75
+dy_down = 0.1
+dy_up = 0.5
 
 # Get 2D grid for index finding
 x_2d = x_data[0, :, :]  # (Ny, Nx)
